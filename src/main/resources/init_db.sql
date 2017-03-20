@@ -11,7 +11,7 @@ DROP TABLE IF EXISTS clients;
 DROP SEQUENCE IF EXISTS dep_seq;
 DROP SEQUENCE IF EXISTS empl_seq;
 DROP SEQUENCE IF EXISTS client_seq;
-DROP SEQUENCE IF EXISTS sub_proj_seq;
+DROP SEQUENCE IF EXISTS proj_seq;
 DROP SEQUENCE IF EXISTS work_seq;
 DROP SEQUENCE IF EXISTS work_unit_seq;
 DROP SEQUENCE IF EXISTS address_seq;
@@ -19,10 +19,11 @@ DROP SEQUENCE IF EXISTS address_seq;
 CREATE SEQUENCE dep_seq START 1000;
 CREATE SEQUENCE empl_seq START 1000;
 CREATE SEQUENCE client_seq START 1000;
-CREATE SEQUENCE sub_proj_seq START 1000;
+CREATE SEQUENCE proj_seq START 1000;
 CREATE SEQUENCE work_seq START 1000;
 CREATE SEQUENCE work_unit_seq START 1000;
 CREATE SEQUENCE address_seq START 1000;
+
 
 CREATE TABLE departments
 (
@@ -82,7 +83,7 @@ CREATE TABLE company_phones
 
 CREATE TABLE projects
 (
-  id         INTEGER PRIMARY KEY DEFAULT nextval('sub_proj_seq'),
+  id         INTEGER PRIMARY KEY DEFAULT nextval('proj_seq'),
   name       VARCHAR,
   company_id INTEGER NOT NULL,
   FOREIGN KEY (company_id) REFERENCES clients (id) ON DELETE CASCADE
@@ -90,15 +91,15 @@ CREATE TABLE projects
 
 CREATE TABLE work_agreements
 (
-  id             INTEGER PRIMARY KEY DEFAULT nextval('work_seq'),
-  tariff_type    VARCHAR,
-  tariff_amount  INTEGER,
-  employee_id    INTEGER   NOT NULL,
-  sub_project_id INTEGER   NOT NULL,
-  since          TIMESTAMP NOT NULL,
-  until          TIMESTAMP,
+  id            INTEGER PRIMARY KEY DEFAULT nextval('work_seq'),
+  tariff_type   VARCHAR,
+  tariff_amount INTEGER,
+  employee_id   INTEGER   NOT NULL,
+  project_id    INTEGER   NOT NULL,
+  since         TIMESTAMP NOT NULL,
+  until         TIMESTAMP,
   FOREIGN KEY (employee_id) REFERENCES employees (id) ON DELETE CASCADE,
-  FOREIGN KEY (sub_project_id) REFERENCES projects (id) ON DELETE CASCADE
+  FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE
 );
 
 CREATE TABLE work_units
