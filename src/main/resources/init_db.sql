@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS work_units;
 DROP TABLE IF EXISTS work_agreements;
 DROP TABLE IF EXISTS employees;
 DROP TABLE IF EXISTS departments;
-DROP TABLE IF EXISTS sub_projects;
+DROP TABLE IF EXISTS projects;
 DROP TABLE IF EXISTS clients;
 
 DROP SEQUENCE IF EXISTS dep_seq;
@@ -39,7 +39,7 @@ CREATE TABLE employees
   birthday      TIMESTAMP,
   email         VARCHAR NOT NULL,
   works_since   TIMESTAMP           DEFAULT now(),
-  works_until   TIMESTAMP,
+  active        BOOL                DEFAULT TRUE,
   private_phone VARCHAR,
   company_phone VARCHAR,
   password      VARCHAR NOT NULL,
@@ -55,6 +55,13 @@ CREATE TABLE employee_roles
   FOREIGN KEY (employee_id) REFERENCES employees (id) ON DELETE CASCADE
 );
 
+CREATE TABLE clients
+(
+  id             INTEGER PRIMARY KEY DEFAULT nextval('client_seq'),
+  company_number INTEGER NOT NULL,
+  name           VARCHAR NOT NULL
+);
+
 CREATE TABLE addresses
 (
   id           INTEGER PRIMARY KEY  DEFAULT nextval('address_seq'),
@@ -66,13 +73,6 @@ CREATE TABLE addresses
   FOREIGN KEY (client_id) REFERENCES clients (id) ON DELETE CASCADE
 );
 
-CREATE TABLE clients
-(
-  id             INTEGER PRIMARY KEY DEFAULT nextval('client_seq'),
-  company_number INTEGER NOT NULL,
-  name           VARCHAR NOT NULL
-);
-
 CREATE TABLE company_phones
 (
   company_id INTEGER NOT NULL,
@@ -80,7 +80,7 @@ CREATE TABLE company_phones
   FOREIGN KEY (company_id) REFERENCES clients (id) ON DELETE CASCADE
 );
 
-CREATE TABLE sub_projects
+CREATE TABLE projects
 (
   id         INTEGER PRIMARY KEY DEFAULT nextval('sub_proj_seq'),
   name       VARCHAR,
@@ -93,10 +93,12 @@ CREATE TABLE work_agreements
   id             INTEGER PRIMARY KEY DEFAULT nextval('work_seq'),
   tariff_type    VARCHAR,
   tariff_amount  INTEGER,
-  employee_id    INTEGER NOT NULL,
-  sub_project_id INTEGER NOT NULL,
+  employee_id    INTEGER   NOT NULL,
+  sub_project_id INTEGER   NOT NULL,
+  since          TIMESTAMP NOT NULL,
+  until          TIMESTAMP,
   FOREIGN KEY (employee_id) REFERENCES employees (id) ON DELETE CASCADE,
-  FOREIGN KEY (sub_project_id) REFERENCES sub_projects (id) ON DELETE CASCADE
+  FOREIGN KEY (sub_project_id) REFERENCES projects (id) ON DELETE CASCADE
 );
 
 CREATE TABLE work_units
@@ -105,5 +107,7 @@ CREATE TABLE work_units
   start             TIMESTAMP NOT NULL,
   finish            TIMESTAMP NOT NULL,
   work_agreement_id INTEGER   NOT NULL,
+  comment           VARCHAR,
+  approved          BOOL,
   FOREIGN KEY (work_agreement_id) REFERENCES work_agreements (id) ON DELETE CASCADE
 );
