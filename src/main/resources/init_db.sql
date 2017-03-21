@@ -1,10 +1,10 @@
-DROP SEQUENCE IF EXISTS dep_seq;
-DROP SEQUENCE IF EXISTS empl_seq;
-DROP SEQUENCE IF EXISTS client_seq;
-DROP SEQUENCE IF EXISTS proj_seq;
-DROP SEQUENCE IF EXISTS work_seq;
-DROP SEQUENCE IF EXISTS work_unit_seq;
-DROP SEQUENCE IF EXISTS address_seq;
+DROP SEQUENCE IF EXISTS dep_seq CASCADE;
+DROP SEQUENCE IF EXISTS empl_seq CASCADE;
+DROP SEQUENCE IF EXISTS client_seq CASCADE;
+DROP SEQUENCE IF EXISTS proj_seq CASCADE;
+DROP SEQUENCE IF EXISTS work_seq CASCADE;
+DROP SEQUENCE IF EXISTS work_unit_seq CASCADE;
+DROP SEQUENCE IF EXISTS address_seq CASCADE;
 
 DROP TABLE IF EXISTS addresses;
 DROP TABLE IF EXISTS company_phones;
@@ -36,10 +36,10 @@ CREATE TABLE employees
   id            INTEGER PRIMARY KEY DEFAULT nextval('empl_seq'),
   name          VARCHAR NOT NULL,
   surname       VARCHAR NOT NULL,
-  passport      INTEGER NOT NULL,
+  passportId    INTEGER NOT NULL,
   birthday      TIMESTAMP,
   email         VARCHAR NOT NULL,
-  works_since   TIMESTAMP           DEFAULT now(),
+  hired         TIMESTAMP           DEFAULT now(),
   active        BOOL                DEFAULT TRUE,
   private_phone VARCHAR,
   company_phone VARCHAR,
@@ -76,17 +76,17 @@ CREATE TABLE addresses
 
 CREATE TABLE company_phones
 (
-  company_id INTEGER NOT NULL,
-  telephone  VARCHAR,
-  FOREIGN KEY (company_id) REFERENCES clients (id) ON DELETE CASCADE
+  client_id INTEGER NOT NULL,
+  telephone VARCHAR,
+  FOREIGN KEY (client_id) REFERENCES clients (id) ON DELETE CASCADE
 );
 
 CREATE TABLE projects
 (
-  id         INTEGER PRIMARY KEY DEFAULT nextval('proj_seq'),
-  name       VARCHAR,
-  company_id INTEGER NOT NULL,
-  FOREIGN KEY (company_id) REFERENCES clients (id) ON DELETE CASCADE
+  id        INTEGER PRIMARY KEY DEFAULT nextval('proj_seq'),
+  name      VARCHAR,
+  client_id INTEGER NOT NULL,
+  FOREIGN KEY (client_id) REFERENCES clients (id) ON DELETE CASCADE
 );
 
 CREATE TABLE work_agreements

@@ -31,4 +31,8 @@ public class Address {
 
     @Column(name = "house_number", nullable = false)
     private Short houseNumber;
+
+    @ManyToOne
+    @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false)
+    private Client client;
 }
