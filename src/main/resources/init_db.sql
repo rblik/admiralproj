@@ -92,8 +92,8 @@ CREATE TABLE projects
 CREATE TABLE work_agreements
 (
   id            INTEGER PRIMARY KEY DEFAULT nextval('work_seq'),
-  tariff_type   VARCHAR NOT NULL,
-  tariff_amount INTEGER NOT NULL,
+  tariff_type   VARCHAR   NOT NULL,
+  tariff_amount INTEGER   NOT NULL,
   employee_id   INTEGER   NOT NULL,
   project_id    INTEGER   NOT NULL,
   since         TIMESTAMP NOT NULL,
@@ -107,6 +107,7 @@ CREATE TABLE work_units
   id                INTEGER PRIMARY KEY DEFAULT nextval('work_unit_seq'),
   start             TIMESTAMP NOT NULL,
   finish            TIMESTAMP NOT NULL,
+  absence_type      VARCHAR,
   work_agreement_id INTEGER   NOT NULL,
   comment           VARCHAR,
   approved          BOOL,

@@ -31,6 +31,10 @@ public class WorkUnit {
     @Column(name = "finish", nullable = false)
     private LocalDateTime finish;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "absence_type")
+    private AbsenceType absenceType;
+
     @Column(name = "approved")
     private Boolean approved = true;
 
