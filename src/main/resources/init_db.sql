@@ -7,7 +7,7 @@ DROP SEQUENCE IF EXISTS work_unit_seq CASCADE;
 DROP SEQUENCE IF EXISTS address_seq CASCADE;
 
 DROP TABLE IF EXISTS addresses;
-DROP TABLE IF EXISTS company_phones;
+DROP TABLE IF EXISTS client_phones;
 DROP TABLE IF EXISTS employee_roles;
 DROP TABLE IF EXISTS work_units;
 DROP TABLE IF EXISTS work_agreements;
@@ -74,7 +74,7 @@ CREATE TABLE addresses
   FOREIGN KEY (client_id) REFERENCES clients (id) ON DELETE CASCADE
 );
 
-CREATE TABLE company_phones
+CREATE TABLE client_phones
 (
   client_id INTEGER NOT NULL,
   phone     VARCHAR NOT NULL,

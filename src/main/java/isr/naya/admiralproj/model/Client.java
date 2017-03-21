@@ -32,8 +32,8 @@ public class Client {
     private String name;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "company_phones", joinColumns = @JoinColumn(name = "client_id"))
-    //@Column(name = "phone")
+    @CollectionTable(name = "client_phones", joinColumns = @JoinColumn(name = "client_id"))
+    @Column(name = "phone")
     private Set<String> phones;
 
     @OneToMany(mappedBy = "client", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
