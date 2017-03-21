@@ -2,20 +2,15 @@ package isr.naya.admiralproj.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by Blik on 03/21/2017.
- */
+
 @Data
 @Entity
 @Table(name = "employees")
@@ -38,7 +33,7 @@ public class Employee {
     @Column(name = "surname", nullable = false)
     private String surname;
 
-    @Column(name = "passportId", nullable = false)
+    @Column(name = "passport", nullable = false)
     private String passportId;
 
     @Column(name = "birthday")
@@ -47,7 +42,7 @@ public class Employee {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "hired", columnDefinition = "timestamp default now()")
+    @Column(name = "works_since", columnDefinition = "timestamp default now()")
     private LocalDate hired;
 
     @Column(name = "active")

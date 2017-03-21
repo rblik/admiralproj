@@ -2,17 +2,13 @@ package isr.naya.admiralproj.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.time.LocalDate;
 
-/**
- * Created by Blik on 03/21/2017.
- */
+
 @Data
 @Entity
 @Table(name = "work_agreements")

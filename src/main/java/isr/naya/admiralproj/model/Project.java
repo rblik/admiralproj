@@ -6,14 +6,8 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.util.List;
 
-/**
- * Created by Blik on 03/20/2017.
- */
 
 @Data
 @Entity
@@ -38,6 +32,6 @@ public class Project {
     private List<WorkAgreement> workAgreements;
 
     @ManyToOne
-    @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "company_id", referencedColumnName = "id", nullable = false)
     private Client client;
 }

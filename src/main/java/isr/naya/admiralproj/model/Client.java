@@ -2,20 +2,13 @@ package isr.naya.admiralproj.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by Blik on 03/20/2017.
- */
 @Entity
 @Table(name = "clients")
 @EqualsAndHashCode(of = "id")
@@ -39,12 +32,12 @@ public class Client {
     private String name;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "company_phones", joinColumns = @JoinColumn(name = "client_id"))
-    @Column(name = "phone")
+    @CollectionTable(name = "company_phones", joinColumns = @JoinColumn(name = "company_id"))
+    //@Column(name = "phone")
     private Set<String> phones;
 
     @OneToMany(mappedBy = "client", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Address> adresses;
+    private Set<Address> addresses;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private List<Project> projects;
