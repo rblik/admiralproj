@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Set;
 
@@ -25,9 +26,11 @@ public class Client {
     @Column(name = "id")
     private Integer id;
 
+    @NotNull
     @Column(name = "company_number", nullable = false)
     private Integer companyNumber;
 
+    @NotNull
     @Column(name = "name", nullable = false)
     private String name;
 

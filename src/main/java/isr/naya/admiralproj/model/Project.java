@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 
@@ -25,12 +26,14 @@ public class Project {
     @Column(name = "id")
     private Integer id;
 
+    @NotNull
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "project")
     private List<WorkAgreement> workAgreements;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false)
     private Client client;

@@ -69,7 +69,7 @@ CREATE TABLE addresses
   area         VARCHAR NOT NULL,
   city         VARCHAR NOT NULL,
   street       VARCHAR NOT NULL,
-  house_number SMALLINT,
+  house_number VARCHAR,
   client_id    INTEGER NOT NULL,
   FOREIGN KEY (client_id) REFERENCES clients (id) ON DELETE CASCADE
 );
@@ -96,7 +96,7 @@ CREATE TABLE work_agreements
   tariff_amount INTEGER   NOT NULL,
   employee_id   INTEGER   NOT NULL,
   project_id    INTEGER   NOT NULL,
-  since         TIMESTAMP NOT NULL,
+  since         TIMESTAMP DEFAULT now(),
   until         TIMESTAMP,
   FOREIGN KEY (employee_id) REFERENCES employees (id) ON DELETE CASCADE,
   FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE

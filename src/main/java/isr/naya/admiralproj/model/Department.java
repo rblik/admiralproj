@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 
@@ -25,6 +26,7 @@ public class Department {
     @Column(name = "id")
     private Integer id;
 
+    @NotNull
     @Column(name = "name", nullable = false)
     private String name;
 

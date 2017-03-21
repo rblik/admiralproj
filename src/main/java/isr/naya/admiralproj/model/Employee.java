@@ -1,14 +1,19 @@
 package isr.naya.admiralproj.model;
 
+import com.google.common.collect.Sets;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+
+import static com.google.common.collect.Sets.newHashSet;
 
 
 @Data
@@ -27,18 +32,22 @@ public class Employee {
     @Column(name = "id")
     private Integer id;
 
+    @NotNull
     @Column(name = "name", nullable = false)
     private String name;
 
+    @NotNull
     @Column(name = "surname", nullable = false)
     private String surname;
 
+    @NotNull
     @Column(name = "passportid", nullable = false)
     private String passportId;
 
     @Column(name = "birthday")
     private LocalDate birthday;
 
+    @NotNull
     @Column(name = "email", nullable = false)
     private String email;
 
@@ -54,6 +63,7 @@ public class Employee {
     @Column(name = "company_phone")
     private String companyPhone;
 
+    @NotNull
     @Column(name = "password", nullable = false)
     private String password;
 
@@ -61,7 +71,7 @@ public class Employee {
     @CollectionTable(name = "employee_roles", joinColumns = @JoinColumn(name = "employee_id"))
     @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
-    private Set<Role> roles;
+    private Set<Role> roles = newHashSet(Role.ROLE_USER);
 
     @ManyToOne
     @JoinColumn(name = "department_id", referencedColumnName = "id", nullable = false)

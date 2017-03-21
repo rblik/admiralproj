@@ -4,8 +4,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 
@@ -38,9 +40,11 @@ public class WorkUnit {
     @Column(name = "approved")
     private Boolean approved = true;
 
+    @Length(max = 50)
     @Column(name = "comment")
     private String comment;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "work_agreement_id", referencedColumnName = "id", nullable = false)
     private WorkAgreement workAgreement;

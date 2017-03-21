@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 
@@ -29,19 +30,22 @@ public class WorkAgreement {
     @Enumerated(EnumType.STRING)
     private TariffType tariffType = TariffType.HOURLY;
 
-    @Column(name = "tariff_amount")
+    @NotNull
+    @Column(name = "tariff_amount", nullable = false)
     private Integer tariffAmount;
 
-    @Column(name = "since", nullable = false, columnDefinition = "timestamp default now()")
+    @Column(name = "since", columnDefinition = "timestamp default now()")
     private LocalDate since;
 
-    @Column(name = "until", nullable = false, columnDefinition = "timestamp default now()")
+    @Column(name = "until")
     private LocalDate until;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "project_id", referencedColumnName = "id", nullable = false)
     private Project project;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "employee_id", referencedColumnName = "id",nullable = false)
     private Employee employee;

@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -24,18 +25,22 @@ public class Address {
     @Column(name = "id")
     private Integer id;
 
+    @NotNull
     @Column(name = "area", nullable = false)
     private String area;
 
+    @NotNull
     @Column(name = "city", nullable = false)
     private String city;
 
+    @NotNull
     @Column(name = "street", nullable = false)
     private String street;
 
-    @Column(name = "house_number", nullable = false)
-    private Short houseNumber;
+    @Column(name = "house_number")
+    private String houseNumber;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false)
     private Client client;
