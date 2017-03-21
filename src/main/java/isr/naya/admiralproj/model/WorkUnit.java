@@ -2,8 +2,12 @@ package isr.naya.admiralproj.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import org.hibernate.annotations.Parameter;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 /**
@@ -16,7 +20,11 @@ import java.time.LocalDateTime;
 public class WorkUnit {
 
     @Id
-    @SequenceGenerator(name = "work_unit_seq", sequenceName = "work_unit_seq", allocationSize = 1, initialValue = 1000)
+    @GenericGenerator(name = "work_unit_seq", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
+            @Parameter(name = "sequence_name", value = "work_unit_seq"),
+            @Parameter(name = "initial_value", value = "1000"),
+            @Parameter(name = "increment_size", value = "1")
+    })
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "work_unit_seq")
     @Column(name = "id")
     private Integer id;

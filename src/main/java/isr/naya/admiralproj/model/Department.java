@@ -2,8 +2,13 @@ package isr.naya.admiralproj.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.List;
 
 /**
@@ -16,7 +21,11 @@ import java.util.List;
 public class Department {
 
     @Id
-    @SequenceGenerator(name = "dep_seq", sequenceName = "dep_seq", allocationSize = 1, initialValue = 1000)
+    @GenericGenerator(name = "dep_seq", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
+            @Parameter(name = "sequence_name", value = "dep_seq"),
+            @Parameter(name = "initial_value", value = "1000"),
+            @Parameter(name = "increment_size", value = "1")
+    })
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dep_seq")
     @Column(name = "id")
     private Integer id;
