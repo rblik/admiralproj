@@ -33,7 +33,7 @@ public class Employee {
     @Column(name = "surname", nullable = false)
     private String surname;
 
-    @Column(name = "passport", nullable = false)
+    @Column(name = "passportid", nullable = false)
     private String passportId;
 
     @Column(name = "birthday")
@@ -42,7 +42,7 @@ public class Employee {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "works_since", columnDefinition = "timestamp default now()")
+    @Column(name = "hired", columnDefinition = "timestamp default now()")
     private LocalDate hired;
 
     @Column(name = "active")

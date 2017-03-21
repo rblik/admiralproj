@@ -6,12 +6,8 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
-/**
- * Created by Blik on 03/20/2017.
- */
+
 @Entity
 @Table(name = "addresses")
 @Data

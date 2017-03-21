@@ -32,6 +32,6 @@ public class Project {
     private List<WorkAgreement> workAgreements;
 
     @ManyToOne
-    @JoinColumn(name = "company_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false)
     private Client client;
 }
