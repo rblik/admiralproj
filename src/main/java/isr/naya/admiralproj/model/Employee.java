@@ -19,7 +19,7 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "employees")
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "passportId")
 public class Employee {
 
     @Id
@@ -51,7 +51,7 @@ public class Employee {
     private LocalDate hired;
 
     @Column(name = "active")
-    private boolean active;
+    private Boolean active = true;
 
     @Column(name = "private_phone")
     private String privatePhone;
@@ -69,7 +69,7 @@ public class Employee {
     private Set<Role> roles;
 
     @ManyToOne
-    @JoinColumn(name = "department_id", referencedColumnName = "id")
+    @JoinColumn(name = "department_id", referencedColumnName = "id", nullable = false)
     private Department department;
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.REMOVE)

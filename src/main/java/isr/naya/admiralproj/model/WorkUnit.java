@@ -36,12 +36,12 @@ public class WorkUnit {
     private LocalDateTime finish;
 
     @Column(name = "approved")
-    private boolean approved;
+    private Boolean approved = true;
 
     @Column(name = "comment")
     private String comment;
 
     @ManyToOne
-    @JoinColumn(name = "work_agreement_id", referencedColumnName = "id")
+    @JoinColumn(name = "work_agreement_id", referencedColumnName = "id", nullable = false)
     private WorkAgreement workAgreement;
 }

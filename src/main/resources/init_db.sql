@@ -77,7 +77,7 @@ CREATE TABLE addresses
 CREATE TABLE company_phones
 (
   client_id INTEGER NOT NULL,
-  telephone VARCHAR,
+  phone     VARCHAR NOT NULL,
   FOREIGN KEY (client_id) REFERENCES clients (id) ON DELETE CASCADE
 );
 
@@ -92,8 +92,8 @@ CREATE TABLE projects
 CREATE TABLE work_agreements
 (
   id            INTEGER PRIMARY KEY DEFAULT nextval('work_seq'),
-  tariff_type   VARCHAR,
-  tariff_amount INTEGER,
+  tariff_type   VARCHAR NOT NULL,
+  tariff_amount INTEGER NOT NULL,
   employee_id   INTEGER   NOT NULL,
   project_id    INTEGER   NOT NULL,
   since         TIMESTAMP NOT NULL,

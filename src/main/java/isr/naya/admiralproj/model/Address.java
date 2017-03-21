@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "addresses")
 @Data
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = {"area", "city", "street", "houseNumber"})
 public class Address {
 
     @Id
@@ -40,7 +40,7 @@ public class Address {
     @Column(name = "house_number", nullable = false)
     private Short houseNumber;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false)
     private Client client;
 }

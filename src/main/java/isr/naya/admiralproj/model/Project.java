@@ -34,7 +34,7 @@ public class Project {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
     private List<WorkAgreement> workAgreements;
 
     @ManyToOne

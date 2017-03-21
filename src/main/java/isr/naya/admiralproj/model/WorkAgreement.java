@@ -31,7 +31,7 @@ public class WorkAgreement {
 
     @Column(name = "tariff_type")
     @Enumerated(EnumType.STRING)
-    private TariffType tariffType;
+    private TariffType tariffType = TariffType.HOURLY;
 
     @Column(name = "tariff_amount")
     private Integer tariffAmount;
@@ -43,10 +43,10 @@ public class WorkAgreement {
     private LocalDate until;
 
     @ManyToOne
-    @JoinColumn(name = "project_id", referencedColumnName = "id")
+    @JoinColumn(name = "project_id", referencedColumnName = "id", nullable = false)
     private Project project;
 
     @ManyToOne
-    @JoinColumn(name = "employee_id", referencedColumnName = "id")
+    @JoinColumn(name = "employee_id", referencedColumnName = "id",nullable = false)
     private Employee employee;
 }

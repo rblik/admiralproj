@@ -10,6 +10,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Blik on 03/21/2017.
@@ -34,5 +35,5 @@ public class Department {
     private String name;
 
     @OneToMany(mappedBy = "department", cascade = CascadeType.REMOVE)
-    private List<Employee> employees;
+    private Set<Employee> employees;
 }
