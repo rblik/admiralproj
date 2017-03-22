@@ -1,20 +1,4 @@
-ALTER SEQUENCE departments_id_seq RESTART WITH 1;
-ALTER SEQUENCE employees_id_seq RESTART WITH 1;
-ALTER SEQUENCE clients_id_seq RESTART WITH 1;
-ALTER SEQUENCE projects_id_seq RESTART WITH 1;
-ALTER SEQUENCE work_agreements_id_seq RESTART WITH 1;
-ALTER SEQUENCE work_units_id_seq RESTART WITH 1;
-ALTER SEQUENCE addresses_id_seq RESTART WITH 1;
-
-DELETE FROM work_units;
-DELETE FROM work_agreements;
-DELETE FROM client_phones;
-DELETE FROM addresses;
-DELETE FROM projects;
-DELETE FROM clients;
-DELETE FROM employee_roles;
-DELETE FROM employees;
-DELETE FROM departments;
+TRUNCATE SCHEMA PUBLIC RESTART IDENTITY AND COMMIT NO CHECK;
 
 INSERT INTO departments (name) VALUES
   ('Java'),
