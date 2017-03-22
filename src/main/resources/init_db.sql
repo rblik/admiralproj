@@ -3,26 +3,29 @@ DROP SEQUENCE IF EXISTS empl_seq CASCADE;
 DROP SEQUENCE IF EXISTS client_seq CASCADE;
 DROP SEQUENCE IF EXISTS proj_seq CASCADE;
 DROP SEQUENCE IF EXISTS work_seq CASCADE;
+DROP SEQUENCE IF EXISTS tariff_seq CASCADE;
 DROP SEQUENCE IF EXISTS work_unit_seq CASCADE;
 DROP SEQUENCE IF EXISTS address_seq CASCADE;
 
-DROP TABLE IF EXISTS addresses;
-DROP TABLE IF EXISTS client_phones;
-DROP TABLE IF EXISTS employee_roles;
-DROP TABLE IF EXISTS work_units;
-DROP TABLE IF EXISTS work_agreements;
-DROP TABLE IF EXISTS employees;
-DROP TABLE IF EXISTS departments;
-DROP TABLE IF EXISTS projects;
-DROP TABLE IF EXISTS clients;
+DROP TABLE IF EXISTS addresses CASCADE ;
+DROP TABLE IF EXISTS client_phones CASCADE ;
+DROP TABLE IF EXISTS employee_roles CASCADE ;
+DROP TABLE IF EXISTS work_units CASCADE ;
+DROP TABLE IF EXISTS work_agreements CASCADE ;
+DROP TABLE IF EXISTS tariffs CASCADE ;
+DROP TABLE IF EXISTS employees CASCADE ;
+DROP TABLE IF EXISTS departments CASCADE ;
+DROP TABLE IF EXISTS projects CASCADE ;
+DROP TABLE IF EXISTS clients CASCADE ;
 
-CREATE SEQUENCE dep_seq START 1000;
-CREATE SEQUENCE empl_seq START 1000;
-CREATE SEQUENCE client_seq START 1000;
-CREATE SEQUENCE proj_seq START 1000;
-CREATE SEQUENCE work_seq START 1000;
-CREATE SEQUENCE work_unit_seq START 1000;
-CREATE SEQUENCE address_seq START 1000;
+CREATE SEQUENCE dep_seq START 1;
+CREATE SEQUENCE empl_seq START 1;
+CREATE SEQUENCE client_seq START 1;
+CREATE SEQUENCE proj_seq START 1;
+CREATE SEQUENCE work_seq START 1;
+CREATE SEQUENCE tariff_seq START 1;
+CREATE SEQUENCE work_unit_seq START 1;
+CREATE SEQUENCE address_seq START 1;
 
 
 CREATE TABLE departments
@@ -92,14 +95,20 @@ CREATE TABLE projects
   FOREIGN KEY (client_id) REFERENCES clients (id) ON DELETE CASCADE
 );
 
+CREATE TABLE tariffs (
+  id            INTEGER PRIMARY KEY DEFAULT nextval('tariff_seq'),
+  tariff_amount INTEGER NOT NULL,
+  tariff_type   VARCHAR
+);
+
 CREATE TABLE work_agreements
 (
   id            INTEGER PRIMARY KEY DEFAULT nextval('work_seq'),
-  tariff_type   VARCHAR   NOT NULL,
-  tariff_amount INTEGER   NOT NULL,
-  employee_id   INTEGER   NOT NULL,
-  project_id    INTEGER   NOT NULL,
-  since         TIMESTAMP DEFAULT now(),
+  tariff_type   VARCHAR NOT NULL,
+  tariff_amount INTEGER NOT NULL,
+  employee_id   INTEGER NOT NULL,
+  project_id    INTEGER NOT NULL,
+  since         TIMESTAMP           DEFAULT now(),
   until         TIMESTAMP,
   FOREIGN KEY (employee_id) REFERENCES employees (id) ON DELETE CASCADE,
   FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE

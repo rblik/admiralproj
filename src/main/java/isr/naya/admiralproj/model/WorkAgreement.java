@@ -15,19 +15,14 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true, of = "")
 public class WorkAgreement extends BaseEntity{
 
-    @Column(name = "tariff_type")
-    @Enumerated(EnumType.STRING)
-    private TariffType tariffType = TariffType.HOURLY;
-
-    @NotNull
-    @Column(name = "tariff_amount", nullable = false)
-    private Integer tariffAmount;
-
     @Column(name = "since", columnDefinition = "date default now()")
     private LocalDate since;
 
     @Column(name = "until", columnDefinition = "date")
     private LocalDate until;
+
+    @OneToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
+    private Tariff tariff;
 
     @NotNull
     @ManyToOne

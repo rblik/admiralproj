@@ -1,4 +1,4 @@
-TRUNCATE departments, employees, employee_roles, clients, addresses, client_phones, projects, work_agreements, work_units RESTART IDENTITY;
+TRUNCATE departments, employees, employee_roles, clients, addresses, client_phones, projects, work_agreements, tariffs, work_units RESTART IDENTITY;
 
 INSERT INTO departments (name) VALUES
   ('Java'),
@@ -73,13 +73,21 @@ INSERT INTO projects (name, client_id) VALUES
   ('Consulting', 6),
   ('Developing', 6);
 
-INSERT INTO work_agreements (tariff_type, tariff_amount, employee_id, project_id, since, until) VALUES
-  ('HOURLY', '100', 1, 7, '2016-05-11', '2017-05-11'),
-  ('MONTHLY', '20000', 2, 8, '2017-01-10', NULL),
-  ('HOURLY', '100', 3, 1, '2015-09-22', NULL),
-  ('HOURLY', '80', 4, 10, '2016-08-01', NULL),
-  ('HOURLY', '150', 5, 9, '2016-03-03', NULL),
-  ('HOURLY', '150', 5, 11, '2016-07-12', NULL);
+INSERT INTO tariffs (tariff_type, tariff_amount) VALUES
+    ('HOURLY', '100'),
+    ('MONTHLY', '20000'),
+    ('HOURLY', '100'),
+    ('HOURLY', '80'),
+    ('HOURLY', '150'),
+    ('HOURLY', '150');
+
+INSERT INTO work_agreements (employee_id, project_id, since, until, tariff_id) VALUES
+  (1, 7, '2016-05-11', '2017-05-11', 1),
+  (2, 8, '2017-01-10', NULL, 2),
+  (3, 1, '2015-09-22', NULL, 3),
+  (4, 10, '2016-08-01', NULL, 4),
+  (5, 9, '2016-03-03', NULL, 5),
+  (5, 11, '2016-07-12', NULL, 6);
 
 INSERT INTO work_units (start, finish, absence_type, work_agreement_id, comment) VALUES
   ('2017-03-19 09:00:00', '2017-03-19 16:00:00', NULL, 1, 'Just dumping'),
