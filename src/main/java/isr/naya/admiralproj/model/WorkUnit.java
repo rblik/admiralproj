@@ -6,7 +6,9 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
 
@@ -46,8 +48,9 @@ public class WorkUnit {
     @PrePersist
     public void checkAbsence() {
         if (this.absenceType != null && this.start != null) {
-            this.start = this.start.truncatedTo(ChronoUnit.DAYS);
-            this.finish = this.finish.withHour(23).withMinute(59);
+            LocalDate date = this.start.toLocalDate();
+            this.start = date.atStartOfDay();
+            this.finish = date.atTime(LocalTime.MAX);
         }
     }
 }
