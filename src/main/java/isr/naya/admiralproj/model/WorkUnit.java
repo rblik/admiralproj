@@ -2,13 +2,12 @@ package isr.naya.admiralproj.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 
 @Data
@@ -18,19 +17,14 @@ import java.time.LocalDateTime;
 public class WorkUnit {
 
     @Id
-    @GenericGenerator(name = "work_unit_seq", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
-            @Parameter(name = "sequence_name", value = "work_unit_seq"),
-            @Parameter(name = "initial_value", value = "1000"),
-            @Parameter(name = "increment_size", value = "1")
-    })
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "work_unit_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "start", nullable = false)
+    @Column(name = "start", nullable = false, columnDefinition = "timestamp")
     private LocalDateTime start;
 
-    @Column(name = "finish", nullable = false)
+    @Column(name = "finish", nullable = false, columnDefinition = "timestamp")
     private LocalDateTime finish;
 
     @Enumerated(EnumType.STRING)
@@ -38,9 +32,9 @@ public class WorkUnit {
     private AbsenceType absenceType;
 
     @Column(name = "approved")
-    private Boolean approved = true;
+    private Boolean approved = false;
 
-    @Length(max = 50)
+    @Size(max = 50)
     @Column(name = "comment")
     private String comment;
 
@@ -48,4 +42,12 @@ public class WorkUnit {
     @ManyToOne
     @JoinColumn(name = "work_agreement_id", referencedColumnName = "id", nullable = false)
     private WorkAgreement workAgreement;
+
+    @PrePersist
+    public void checkAbsence() {
+        if (this.absenceType != null && this.start != null) {
+            this.start = this.start.truncatedTo(ChronoUnit.DAYS);
+            this.finish = this.finish.withHour(23).withMinute(59);
+        }
+    }
 }

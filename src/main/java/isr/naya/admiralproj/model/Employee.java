@@ -1,15 +1,14 @@
 package isr.naya.admiralproj.model;
 
-import com.google.common.collect.Sets;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
+import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -20,15 +19,11 @@ import static com.google.common.collect.Sets.newHashSet;
 @Entity
 @Table(name = "employees")
 @EqualsAndHashCode(of = "passportId")
+@EntityListeners(EntityListeners.class)
 public class Employee {
 
     @Id
-    @GenericGenerator(name = "empl_seq", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
-            @Parameter(name = "sequence_name", value = "empl_seq"),
-            @Parameter(name = "initial_value", value = "1000"),
-            @Parameter(name = "increment_size", value = "1")
-    })
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "empl_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
@@ -44,26 +39,34 @@ public class Employee {
     @Column(name = "passportid", nullable = false)
     private String passportId;
 
-    @Column(name = "birthday")
+    @Column(name = "birthday", columnDefinition = "date")
     private LocalDate birthday;
 
     @NotNull
+    @Email
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "hired", columnDefinition = "timestamp default now()")
+    @Column(name = "hired", columnDefinition = "date default now()")
     private LocalDate hired;
 
     @Column(name = "active")
     private Boolean active = true;
 
+    @Size(min = 10)
     @Column(name = "private_phone")
     private String privatePhone;
 
+    @Size(min = 10)
     @Column(name = "company_phone")
     private String companyPhone;
 
+    /**
+     * regexp
+     * https://github.com/srinath4ever/JavaTest/blob/master/JavaTest/src/com/core/regex/RegExDemo.java
+     */
     @NotNull
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{6,20}$")
     @Column(name = "password", nullable = false)
     private String password;
 

@@ -36,7 +36,7 @@ CREATE TABLE employees
   id            INTEGER PRIMARY KEY DEFAULT nextval('empl_seq'),
   name          VARCHAR NOT NULL,
   surname       VARCHAR NOT NULL,
-  passportId    INTEGER NOT NULL,
+  passportId    VARCHAR NOT NULL,
   birthday      TIMESTAMP,
   email         VARCHAR NOT NULL,
   hired         TIMESTAMP           DEFAULT now(),
