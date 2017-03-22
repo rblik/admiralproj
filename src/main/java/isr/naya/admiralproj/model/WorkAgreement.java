@@ -35,7 +35,7 @@ public class WorkAgreement extends BaseEntity{
     private Project project;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id", referencedColumnName = "id",nullable = false)
     private Employee employee;
 
