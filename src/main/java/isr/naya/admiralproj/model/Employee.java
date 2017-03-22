@@ -36,7 +36,7 @@ public class Employee {
     private String surname;
 
     @NotNull
-    @Column(name = "passportid", nullable = false)
+    @Column(name = "passportid", nullable = false, unique = true)
     private String passportId;
 
     @Column(name = "birthday", columnDefinition = "date")
@@ -44,7 +44,7 @@ public class Employee {
 
     @NotNull
     @Email
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "hired", columnDefinition = "date default now()")

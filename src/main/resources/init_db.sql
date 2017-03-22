@@ -48,6 +48,9 @@ CREATE TABLE employees
   FOREIGN KEY (department_id) REFERENCES departments (id) ON DELETE CASCADE
 );
 
+CREATE UNIQUE INDEX employee_email_idx_unique ON employees (email);
+CREATE UNIQUE INDEX employee_passport_idx_unique ON employees (passportId);
+
 CREATE TABLE employee_roles
 (
   employee_id INTEGER NOT NULL,
