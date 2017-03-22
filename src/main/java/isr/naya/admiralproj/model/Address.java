@@ -10,13 +10,8 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "addresses")
 @Data
-@EqualsAndHashCode(of = {"area", "city", "street", "houseNumber"})
-public class Address {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
+@EqualsAndHashCode(callSuper = false,of = {"area", "city", "street", "houseNumber"})
+public class Address extends BaseEntity{
 
     @NotNull
     @Column(name = "area", nullable = false)

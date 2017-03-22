@@ -11,15 +11,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Data
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(callSuper = true, of = "")
 @Entity
 @Table(name = "work_units")
-public class WorkUnit {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
+public class WorkUnit extends BaseEntity{
 
     @Column(name = "start", nullable = false, columnDefinition = "timestamp")
     private LocalDateTime start;

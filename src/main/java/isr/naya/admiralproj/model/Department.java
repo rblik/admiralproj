@@ -11,13 +11,8 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "departments")
-@EqualsAndHashCode(of = "id")
-public class Department {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
+@EqualsAndHashCode(callSuper = true, of = "")
+public class Department extends BaseEntity{
 
     @NotNull
     @Column(name = "name", nullable = false)

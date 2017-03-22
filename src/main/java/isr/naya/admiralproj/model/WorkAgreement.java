@@ -11,13 +11,8 @@ import java.time.LocalDate;
 @Data
 @Entity
 @Table(name = "work_agreements")
-@EqualsAndHashCode(of = "id")
-public class WorkAgreement {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
+@EqualsAndHashCode(callSuper = true, of = "")
+public class WorkAgreement extends BaseEntity{
 
     @Column(name = "tariff_type")
     @Enumerated(EnumType.STRING)

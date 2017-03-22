@@ -11,13 +11,8 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "projects")
-@EqualsAndHashCode(of = "id")
-public class Project {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
+@EqualsAndHashCode(callSuper = true, of = "")
+public class Project extends BaseEntity{
 
     @NotNull
     @Column(name = "name", nullable = false)

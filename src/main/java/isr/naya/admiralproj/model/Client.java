@@ -10,14 +10,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "clients")
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(callSuper = true, of = "")
 @Data
-public class Client {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
+public class Client extends BaseEntity{
 
     @NotNull
     @Column(name = "company_number", nullable = false)

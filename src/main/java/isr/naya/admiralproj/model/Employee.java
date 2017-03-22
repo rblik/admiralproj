@@ -18,14 +18,8 @@ import static com.google.common.collect.Sets.newHashSet;
 @Data
 @Entity
 @Table(name = "employees")
-@EqualsAndHashCode(of = "passportId")
-@EntityListeners(EntityListeners.class)
-public class Employee {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
+@EqualsAndHashCode(callSuper = false, of = "passportId")
+public class Employee extends BaseEntity{
 
     @NotNull
     @Column(name = "name", nullable = false)
