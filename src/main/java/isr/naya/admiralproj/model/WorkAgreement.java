@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.List;
 
 
 @Data
@@ -37,4 +38,7 @@ public class WorkAgreement extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "employee_id", referencedColumnName = "id",nullable = false)
     private Employee employee;
+
+    @OneToMany(mappedBy = "workAgreement", cascade = CascadeType.REMOVE)
+    private List<WorkUnit> workUnits;
 }

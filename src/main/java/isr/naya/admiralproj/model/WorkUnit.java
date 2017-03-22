@@ -34,7 +34,7 @@ public class WorkUnit extends BaseEntity{
     private String comment;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "work_agreement_id", referencedColumnName = "id", nullable = false)
     private WorkAgreement workAgreement;
 
