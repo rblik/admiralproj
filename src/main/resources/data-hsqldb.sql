@@ -18,6 +18,13 @@ INSERT INTO employees (name, surname, passportid, birthday, email, hired, privat
   ('Name4', 'Surname4', 133222888, '1982-11-02', 'name4@gmail.com', '2015-04-30', '055-7656222', 'Qwerty123', 5),
   ('Name5', 'Surname5', 125225322, '1981-08-25', 'name5@gmail.com', '2014-12-21', '053-0023341', 'Qwerty123', 5);
 
+INSERT INTO contracts (min_hours, salary, employee_id) VALUES
+  (180, 15000, 1),
+  (190, 18000, 2),
+  (200, 22000, 3),
+  (190, 14000, 4),
+  (180, 21000, 5);
+
 INSERT INTO employee_roles (employee_id, role) VALUES
   (1, 'ROLE_USER'),
   (2, 'ROLE_USER'),

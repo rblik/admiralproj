@@ -1,4 +1,4 @@
-TRUNCATE departments, employees, employee_roles, clients, addresses, client_phones, projects, work_agreements, tariffs, work_units RESTART IDENTITY;
+TRUNCATE departments, contracts, employees, employee_roles, clients, addresses, client_phones, projects, work_agreements, tariffs, work_units RESTART IDENTITY;
 
 INSERT INTO departments (name) VALUES
   ('Java'),
@@ -17,6 +17,13 @@ INSERT INTO employees (name, surname, passportid, birthday, email, hired, privat
   ('Name3', 'Surname3', 224535323, '1987-03-21', 'name3@gmail.com', '2015-05-01', '053-1231232', 'Qwerty123', 7),
   ('Name4', 'Surname4', 133222888, '1982-11-02', 'name4@gmail.com', '2015-04-30', '055-7656222', 'Qwerty123', 5),
   ('Name5', 'Surname5', 125225322, '1981-08-25', 'name5@gmail.com', '2014-12-21', '053-0023341', 'Qwerty123', 5);
+
+INSERT INTO contracts (min_hours, salary, employee_id) VALUES
+  (180, 15000, 1),
+  (190, 18000, 2),
+  (200, 22000, 3),
+  (190, 14000, 4),
+  (180, 21000, 5);
 
 INSERT INTO employee_roles (employee_id, role) VALUES
   (1, 'ROLE_USER'),

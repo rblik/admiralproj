@@ -66,6 +66,10 @@ public class Employee extends BaseEntity{
     @Column(name = "password", nullable = false)
     private String password;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "employee_id", referencedColumnName = "id")
+    private Set<Contract> contracts;
+
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "employee_roles", joinColumns = @JoinColumn(name = "employee_id"))
     @Column(name = "role")
