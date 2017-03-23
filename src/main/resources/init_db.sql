@@ -1,5 +1,6 @@
 DROP SEQUENCE IF EXISTS dep_seq CASCADE;
 DROP SEQUENCE IF EXISTS empl_seq CASCADE;
+DROP SEQUENCE IF EXISTS contract_seq CASCADE;
 DROP SEQUENCE IF EXISTS client_seq CASCADE;
 DROP SEQUENCE IF EXISTS proj_seq CASCADE;
 DROP SEQUENCE IF EXISTS work_seq CASCADE;
@@ -7,19 +8,21 @@ DROP SEQUENCE IF EXISTS tariff_seq CASCADE;
 DROP SEQUENCE IF EXISTS work_unit_seq CASCADE;
 DROP SEQUENCE IF EXISTS address_seq CASCADE;
 
-DROP TABLE IF EXISTS addresses CASCADE ;
-DROP TABLE IF EXISTS client_phones CASCADE ;
-DROP TABLE IF EXISTS employee_roles CASCADE ;
-DROP TABLE IF EXISTS work_units CASCADE ;
-DROP TABLE IF EXISTS work_agreements CASCADE ;
-DROP TABLE IF EXISTS tariffs CASCADE ;
-DROP TABLE IF EXISTS employees CASCADE ;
-DROP TABLE IF EXISTS departments CASCADE ;
-DROP TABLE IF EXISTS projects CASCADE ;
-DROP TABLE IF EXISTS clients CASCADE ;
+DROP TABLE IF EXISTS addresses CASCADE;
+DROP TABLE IF EXISTS client_phones CASCADE;
+DROP TABLE IF EXISTS employee_roles CASCADE;
+DROP TABLE IF EXISTS work_units CASCADE;
+DROP TABLE IF EXISTS work_agreements CASCADE;
+DROP TABLE IF EXISTS tariffs CASCADE;
+DROP TABLE IF EXISTS contracts CASCADE;
+DROP TABLE IF EXISTS employees CASCADE;
+DROP TABLE IF EXISTS departments CASCADE;
+DROP TABLE IF EXISTS projects CASCADE;
+DROP TABLE IF EXISTS clients CASCADE;
 
 CREATE SEQUENCE dep_seq START 1;
 CREATE SEQUENCE empl_seq START 1;
+CREATE SEQUENCE contract_seq START 1;
 CREATE SEQUENCE client_seq START 1;
 CREATE SEQUENCE proj_seq START 1;
 CREATE SEQUENCE work_seq START 1;
@@ -40,7 +43,7 @@ CREATE TABLE employees
   name          VARCHAR NOT NULL,
   surname       VARCHAR NOT NULL,
   passportId    VARCHAR NOT NULL,
-  birthday      TIMESTAMP,
+  birthday      DATE,
   email         VARCHAR NOT NULL,
   hired         TIMESTAMP           DEFAULT now(),
   active        BOOL                DEFAULT TRUE,
@@ -51,15 +54,28 @@ CREATE TABLE employees
   FOREIGN KEY (department_id) REFERENCES departments (id) ON DELETE CASCADE
 );
 
-CREATE UNIQUE INDEX employee_email_idx_unique ON employees (email);
-CREATE UNIQUE INDEX employee_passport_idx_unique ON employees (passportId);
+CREATE UNIQUE INDEX employee_email_idx_unique
+  ON employees (email);
+CREATE UNIQUE INDEX employee_passport_idx_unique
+  ON employees (passportId);
+
+CREATE TABLE contracts
+(
+  id          INTEGER PRIMARY KEY DEFAULT nextval('contract_seq'),
+  salary      INTEGER,
+  min_hours   INTEGER,
+  since       DATE,
+  until       DATE,
+  employee_id INTEGER NOT NULL,
+  FOREIGN KEY (employee_id) REFERENCES employees (id) ON DELETE CASCADE
+);
 
 CREATE TABLE employee_roles
 (
-  employee_id INTEGER NOT NULL,
-  role        VARCHAR,
-  CONSTRAINT employee_roles_idx UNIQUE (employee_id, role),
-  FOREIGN KEY (employee_id) REFERENCES employees (id) ON DELETE CASCADE
+  id   INTEGER NOT NULL,
+  role VARCHAR,
+  CONSTRAINT employee_roles_idx UNIQUE (id, role),
+  FOREIGN KEY (id) REFERENCES employees (id) ON DELETE CASCADE
 );
 
 CREATE TABLE clients
@@ -108,8 +124,8 @@ CREATE TABLE work_agreements
   tariff_amount INTEGER NOT NULL,
   employee_id   INTEGER NOT NULL,
   project_id    INTEGER NOT NULL,
-  since         TIMESTAMP           DEFAULT now(),
-  until         TIMESTAMP,
+  since         DATE                DEFAULT now(),
+  until         DATE,
   FOREIGN KEY (employee_id) REFERENCES employees (id) ON DELETE CASCADE,
   FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE
 );

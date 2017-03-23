@@ -11,19 +11,19 @@ INSERT INTO departments (name) VALUES
   ('Courses'),
   ('Human Resources');
 
-INSERT INTO employees (name, surname, passportid, birthday, email, hired, private_phone, password, department_id) VALUES
-  ('Name1', 'Surname1', 234472323, '1980-07-11', 'name1@gmail.com', '2016-03-02', '050-1111111', 'Qwerty123', 1),
-  ('Name2', 'Surname2', 321321222, '1977-10-11', 'name2@gmail.com', '2016-01-25', '041-3211412', 'Qwerty123', 3),
-  ('Name3', 'Surname3', 224535323, '1987-03-21', 'name3@gmail.com', '2015-05-01', '053-1231232', 'Qwerty123', 7),
-  ('Name4', 'Surname4', 133222888, '1982-11-02', 'name4@gmail.com', '2015-04-30', '055-7656222', 'Qwerty123', 5),
-  ('Name5', 'Surname5', 125225322, '1981-08-25', 'name5@gmail.com', '2014-12-21', '053-0023341', 'Qwerty123', 5);
+INSERT INTO employees (name, surname, passportid, birthday, email, private_phone, password, department_id) VALUES
+  ('Name1', 'Surname1', 234472323, '1980-07-11', 'name1@gmail.com', '050-1111111', 'Qwerty123', 1),
+  ('Name2', 'Surname2', 321321222, '1977-10-11', 'name2@gmail.com', '041-3211412', 'Qwerty123', 3),
+  ('Name3', 'Surname3', 224535323, '1987-03-21', 'name3@gmail.com', '053-1231232', 'Qwerty123', 7),
+  ('Name4', 'Surname4', 133222888, '1982-11-02', 'name4@gmail.com', '055-7656222', 'Qwerty123', 5),
+  ('Name5', 'Surname5', 125225322, '1981-08-25', 'name5@gmail.com', '053-0023341', 'Qwerty123', 5);
 
-INSERT INTO contracts (min_hours, salary, employee_id) VALUES
-  (180, 15000, 1),
-  (190, 18000, 2),
-  (200, 22000, 3),
-  (190, 14000, 4),
-  (180, 21000, 5);
+INSERT INTO contracts (min_hours, salary, since, until, employee_id) VALUES
+  (180, 15000, '2016-03-02', '2018-03-02', 1),
+  (190, 18000, '2016-01-25', '2018-01-25', 2),
+  (200, 22000, '2015-05-01', '2018-05-01', 3),
+  (190, 14000, '2015-04-30', '2018-04-30', 4),
+  (180, 21000, '2014-12-21', '2018-12-21', 5);
 
 INSERT INTO employee_roles (employee_id, role) VALUES
   (1, 'ROLE_USER'),

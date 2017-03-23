@@ -5,6 +5,8 @@ import lombok.*;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "contracts")
@@ -20,4 +22,12 @@ public class Contract extends BaseEntity {
 
     @Column(name = "min_hours")
     private Integer minHours;
+
+    @NotNull
+    @Column(name = "since", columnDefinition = "date", nullable = false)
+    private LocalDate since;
+
+    @NotNull
+    @Column(name = "until", columnDefinition = "date", nullable = false)
+    private LocalDate until;
 }

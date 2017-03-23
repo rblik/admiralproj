@@ -13,7 +13,6 @@ import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
 
-
 @Data
 @Entity
 @Table(name = "employees")
@@ -42,12 +41,6 @@ public class Employee extends BaseEntity{
     @Email
     @Column(name = "email", nullable = false, unique = true)
     private String email;
-
-    @Column(name = "hired", columnDefinition = "date default now()")
-    private LocalDate hired;
-
-    @Column(name = "active")
-    private Boolean active = true;
 
     @Size(min = 10)
     @Column(name = "private_phone")
