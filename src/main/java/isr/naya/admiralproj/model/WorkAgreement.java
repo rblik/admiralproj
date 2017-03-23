@@ -1,7 +1,6 @@
 package isr.naya.admiralproj.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -13,23 +12,26 @@ import java.util.List;
 @Entity
 @Table(name = "work_agreements")
 @EqualsAndHashCode(callSuper = true, of = "")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class WorkAgreement extends BaseEntity{
 
-    @Column(name = "since", columnDefinition = "date default now()")
+    @NotNull
+    @Column(name = "since", columnDefinition = "date", nullable = false)
     private LocalDate since;
 
-    @Column(name = "until", columnDefinition = "date")
+    @NotNull
+    @Column(name = "until", columnDefinition = "date", nullable = false)
     private LocalDate until;
 
     @OneToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
     private Tariff tariff;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "project_id", referencedColumnName = "id", nullable = false)
     private Project project;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id", referencedColumnName = "id",nullable = false)
     private Employee employee;

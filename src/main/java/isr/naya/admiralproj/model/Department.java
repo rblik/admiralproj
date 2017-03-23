@@ -1,7 +1,6 @@
 package isr.naya.admiralproj.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,6 +11,9 @@ import java.util.Set;
 @Entity
 @Table(name = "departments")
 @EqualsAndHashCode(callSuper = true, of = "")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Department extends BaseEntity{
 
     @NotNull

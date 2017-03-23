@@ -1,7 +1,6 @@
 package isr.naya.admiralproj.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -11,6 +10,9 @@ import javax.validation.constraints.NotNull;
 @Table(name = "addresses")
 @Data
 @EqualsAndHashCode(callSuper = false,of = {"area", "city", "street", "houseNumber"})
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Address extends BaseEntity{
 
     @NotNull
@@ -28,7 +30,6 @@ public class Address extends BaseEntity{
     @Column(name = "house_number")
     private String houseNumber;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false)
     private Client client;

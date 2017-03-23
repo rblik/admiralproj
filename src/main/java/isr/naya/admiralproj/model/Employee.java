@@ -1,7 +1,6 @@
 package isr.naya.admiralproj.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
@@ -19,6 +18,9 @@ import static com.google.common.collect.Sets.newHashSet;
 @Entity
 @Table(name = "employees")
 @EqualsAndHashCode(callSuper = false, of = "passportId")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Employee extends BaseEntity{
 
     @NotNull

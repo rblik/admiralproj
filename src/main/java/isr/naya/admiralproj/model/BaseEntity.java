@@ -1,7 +1,6 @@
 package isr.naya.admiralproj.model;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
@@ -15,10 +14,10 @@ public class BaseEntity implements Persistable<Integer> {
     @Column(name = "id")
     private Integer id;
 
-    @Override
-    public Integer getId() {
-        return id;
-    }
+//    @Override
+//    public Integer getId() {
+//        return id;
+//    }
 
     @Override
     public boolean isNew() {

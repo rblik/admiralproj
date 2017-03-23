@@ -1,7 +1,6 @@
 package isr.naya.admiralproj.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -10,6 +9,9 @@ import javax.validation.constraints.NotNull;
 @Table(name = "tariffs")
 @Data
 @EqualsAndHashCode(callSuper = false, of = {"tariffType", "tariffAmount"})
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Tariff extends BaseEntity {
 
     @Column(name = "tariff_type")

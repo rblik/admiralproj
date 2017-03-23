@@ -119,6 +119,7 @@ CREATE TABLE work_units
   id                INTEGER PRIMARY KEY DEFAULT nextval('work_unit_seq'),
   start             TIMESTAMP NOT NULL,
   finish            TIMESTAMP NOT NULL,
+  duration          INTEGER   NOT NULL,
   absence_type      VARCHAR,
   work_agreement_id INTEGER   NOT NULL,
   comment           VARCHAR,

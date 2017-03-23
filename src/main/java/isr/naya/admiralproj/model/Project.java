@@ -1,7 +1,6 @@
 package isr.naya.admiralproj.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,6 +11,9 @@ import java.util.List;
 @Entity
 @Table(name = "projects")
 @EqualsAndHashCode(callSuper = true, of = "")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Project extends BaseEntity{
 
     @NotNull
@@ -21,7 +23,6 @@ public class Project extends BaseEntity{
     @OneToMany(mappedBy = "project")
     private List<WorkAgreement> workAgreements;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false)
     private Client client;

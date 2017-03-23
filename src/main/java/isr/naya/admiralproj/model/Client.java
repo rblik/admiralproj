@@ -1,7 +1,6 @@
 package isr.naya.admiralproj.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,6 +11,9 @@ import java.util.Set;
 @Table(name = "clients")
 @EqualsAndHashCode(callSuper = true, of = "")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Client extends BaseEntity{
 
     @NotNull
