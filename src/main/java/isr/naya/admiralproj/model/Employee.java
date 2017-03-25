@@ -31,7 +31,7 @@ public class Employee extends BaseEntity{
     private String surname;
 
     @NotNull
-    @Column(name = "passportid", nullable = false, unique = true)
+    @Column(name = "passport_id", nullable = false, unique = true)
     private String passportId;
 
     @Column(name = "birthday", columnDefinition = "date")

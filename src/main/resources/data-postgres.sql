@@ -11,7 +11,7 @@ INSERT INTO departments (name) VALUES
   ('Courses'),
   ('Human Resources');
 
-INSERT INTO employees (name, surname, passportid, birthday, email, private_phone, password, department_id) VALUES
+INSERT INTO employees (name, surname, passport_id, birthday, email, private_phone, password, department_id) VALUES
   ('Name1', 'Surname1', 234472323, '1980-07-11', 'name1@gmail.com', '050-1111111', 'Qwerty123', 1),
   ('Name2', 'Surname2', 321321222, '1977-10-11', 'name2@gmail.com', '041-3211412', 'Qwerty123', 3),
   ('Name3', 'Surname3', 224535323, '1987-03-21', 'name3@gmail.com', '053-1231232', 'Qwerty123', 7),
@@ -122,8 +122,8 @@ INSERT INTO work_units (start, finish, duration, absence_type, work_agreement_id
   ('2017-03-21 10:00:00', '2017-03-21 12:00:00', 120, NULL, 5, 'Just dumping'),
   ('2017-03-22 10:00:00', '2017-03-22 14:00:00', 240, NULL, 5, 'Just dumping'),
   ('2017-03-23 00:00:00', '2017-03-23 23:59:59', 1440, 'HOLIDAY', 5, 'Just dumping'),
-  ('2017-03-19 15:00:00', '2017-03-19 17:00:00', 120, NULL, 6, 'Just dumping'),
-  ('2017-03-20 15:00:00', '2017-03-20 18:30:00', 210, NULL, 6, 'Just dumping'),
-  ('2017-03-21 13:00:00', '2017-03-21 17:00:00', 240, NULL, 6, 'Just dumping'),
-  ('2017-03-22 08:00:00', '2017-03-22 16:30:00', 510, NULL, 6, 'Just dumping'),
-  ('2017-03-23 00:00:00', '2017-03-23 23:59:59', 1440, 'HOLIDAY', 6, 'Just dumping');
+  ('2017-04-19 15:00:00', '2017-04-19 17:00:00', 120, NULL, 6, 'Just dumping'),
+  ('2017-04-20 15:00:00', '2017-04-20 18:30:00', 210, NULL, 6, 'Just dumping'),
+  ('2017-04-21 13:00:00', '2017-04-21 17:00:00', 240, NULL, 6, 'Just dumping'),
+  ('2017-04-22 08:00:00', '2017-04-22 16:30:00', 510, NULL, 6, 'Just dumping'),
+  ('2017-04-23 00:00:00', '2017-04-23 23:59:59', 1440, 'HOLIDAY', 6, 'Just dumping');

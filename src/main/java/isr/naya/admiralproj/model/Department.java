@@ -10,7 +10,7 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "departments")
-@EqualsAndHashCode(callSuper = true, of = "")
+@EqualsAndHashCode(callSuper = true, of = {})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

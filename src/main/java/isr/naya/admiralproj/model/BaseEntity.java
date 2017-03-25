@@ -14,11 +14,6 @@ public class BaseEntity implements Persistable<Integer> {
     @Column(name = "id")
     private Integer id;
 
-//    @Override
-//    public Integer getId() {
-//        return id;
-//    }
-
     @Override
     public boolean isNew() {
         return getId() == null;

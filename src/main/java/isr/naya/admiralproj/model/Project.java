@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "projects")
-@EqualsAndHashCode(callSuper = true, of = "")
+@EqualsAndHashCode(callSuper = true, of = {})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -23,7 +23,7 @@ public class Project extends BaseEntity{
     @OneToMany(mappedBy = "project")
     private List<WorkAgreement> workAgreements;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false)
     private Client client;
 }

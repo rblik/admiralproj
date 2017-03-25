@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "work_agreements")
-@EqualsAndHashCode(callSuper = true, of = "")
+@EqualsAndHashCode(callSuper = true, of = {})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -28,7 +28,7 @@ public class WorkAgreement extends BaseEntity{
     @OneToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
     private Tariff tariff;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id", referencedColumnName = "id", nullable = false)
     private Project project;
 
