@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class WorkUnit extends BaseEntity{
+public class WorkUnit extends BaseEntity {
 
     @NotNull
     @Column(name = "start", nullable = false, columnDefinition = "timestamp")
