@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Data
 @EqualsAndHashCode(callSuper = true, of = {})
@@ -25,7 +26,7 @@ public class WorkUnit extends BaseEntity {
     private LocalDateTime finish;
 
     @Column(name = "duration", nullable = false)
-    private Integer duration;
+    private Long duration;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "absence_type")
@@ -44,6 +45,6 @@ public class WorkUnit extends BaseEntity {
 
     @PrePersist
     public void checkAbsence() {
-        this.duration = this.finish.getMinute() - this.start.getMinute();
+        this.duration = ChronoUnit.MINUTES.between(this.start, this.finish);
     }
 }
