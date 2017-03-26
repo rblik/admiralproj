@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface WorkAgreementService {
-    List<WorkAgreement> getAllForEmployeeByDateRange(Integer employeeId, LocalDate from, LocalDate to);
+    List<WorkAgreement> getAllForEmployee(Integer employeeId, LocalDate from, LocalDate to);
 
     WorkAgreement save(Integer employeeId, Integer projectId, WorkAgreement workAgreement);
 

@@ -34,9 +34,9 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<WorkAgreement> getAllForEmployeeByDateRange(Integer employeeId, LocalDate from, LocalDate to) {
-        List<WorkAgreement> agreements = workAgreementRepository.findByEmployeeIdAndTimeRange(employeeId, from, to);
-        List<WorkAgreement> agreementsWithUnits = workAgreementRepository.findByEmployeeIdWithWorkUnitsBetween(employeeId, from.atStartOfDay(), to.atStartOfDay());
+    public List<WorkAgreement> getAllForEmployee(Integer employeeId, LocalDate from, LocalDate to) {
+        List<WorkAgreement> agreements = workAgreementRepository.findByEmployeeIdAndTimeRange(employeeId);
+        List<WorkAgreement> agreementsWithUnits = workAgreementRepository.findByEmployeeIdWithWorkUnitsBetween(employeeId, from, to);
         return intersect(agreements, agreementsWithUnits);
     }
 
@@ -52,7 +52,7 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
     @Transactional
     public WorkUnit saveUnit(Integer employeeId, Integer workAgreementId, WorkUnit workUnit) {
         workUnit.setWorkAgreement(checkNotFound(workAgreementRepository.findOne(workAgreementId), workAgreementId, WorkAgreement.class));
-        return checkTimeOverlap(workUnitRepository.countExisted(employeeId, workAgreementId, workUnit.getStart(), workUnit.getFinish())) ?
+        return checkTimeOverlap(workUnitRepository.countExisted(employeeId, workAgreementId, workUnit.getDate(), workUnit.getStart(), workUnit.getFinish())) ?
                 workUnitRepository.save(workUnit) : null;
     }
 

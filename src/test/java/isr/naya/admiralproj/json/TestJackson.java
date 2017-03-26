@@ -10,7 +10,7 @@ import org.springframework.boot.test.json.JsonContent;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 /**
  * JSON test for {@link WorkUnit}
@@ -25,7 +25,7 @@ public class TestJackson {
 
     @Test
     public void serializeJson() throws IOException {
-        WorkUnit build = WorkUnit.builder().start(LocalDateTime.now()).finish(LocalDateTime.now().plusHours(1)).build();
+        WorkUnit build = WorkUnit.builder().start(LocalTime.now()).finish(LocalTime.now().plusHours(1)).build();
         JsonContent<WorkUnit> write = this.tester.write(build);
         System.out.println(write.getJson());
 
