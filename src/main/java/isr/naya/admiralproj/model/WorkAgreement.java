@@ -17,17 +17,6 @@ import java.util.List;
 @Builder
 public class WorkAgreement extends BaseEntity{
 
-    @NotNull
-    @Column(name = "since", columnDefinition = "date", nullable = false)
-    private LocalDate since;
-
-    @NotNull
-    @Column(name = "until", columnDefinition = "date", nullable = false)
-    private LocalDate until;
-
-    @OneToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
-    private Tariff tariff;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id", referencedColumnName = "id", nullable = false)
     private Project project;

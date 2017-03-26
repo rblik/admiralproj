@@ -5,7 +5,9 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
 @Data
@@ -18,12 +20,16 @@ import java.time.temporal.ChronoUnit;
 public class WorkUnit extends BaseEntity {
 
     @NotNull
-    @Column(name = "start", nullable = false, columnDefinition = "timestamp")
-    private LocalDateTime start;
+    @Column(name = "date", nullable = false, columnDefinition = "date")
+    private LocalDate date;
 
     @NotNull
-    @Column(name = "finish", nullable = false, columnDefinition = "timestamp")
-    private LocalDateTime finish;
+    @Column(name = "start", nullable = false, columnDefinition = "time")
+    private LocalTime start;
+
+    @NotNull
+    @Column(name = "finish", nullable = false, columnDefinition = "time")
+    private LocalTime finish;
 
     @Column(name = "duration", nullable = false)
     private Long duration;
@@ -31,9 +37,6 @@ public class WorkUnit extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "absence_type")
     private AbsenceType absenceType;
-
-    @Column(name = "approved")
-    private Boolean approved = false;
 
     @Size(max = 50)
     @Column(name = "comment")
