@@ -17,6 +17,9 @@ import java.util.List;
 @Builder
 public class WorkAgreement extends BaseEntity{
 
+    @Column(name = "active", columnDefinition = "boolean default true")
+    private boolean active  = true;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id", referencedColumnName = "id", nullable = false)
     private Project project;
