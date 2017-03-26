@@ -8,6 +8,7 @@ import isr.naya.admiralproj.repo.EmployeeRepository;
 import isr.naya.admiralproj.repo.ProjectRepository;
 import isr.naya.admiralproj.repo.WorkAgreementRepository;
 import isr.naya.admiralproj.repo.WorkUnitRepository;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +35,7 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<WorkAgreement> getAllForEmployee(Integer employeeId, LocalDate from, LocalDate to) {
+    public List<WorkAgreement> getAllForEmployee(@NonNull Integer employeeId, @NonNull LocalDate from, @NonNull LocalDate to) {
         List<WorkAgreement> agreements = workAgreementRepository.findByEmployeeIdAndTimeRange(employeeId);
         List<WorkAgreement> agreementsWithUnits = workAgreementRepository.findByEmployeeIdWithWorkUnitsBetween(employeeId, from, to);
         return intersect(agreements, agreementsWithUnits);
@@ -42,7 +43,7 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
 
     @Transactional
     @Override
-    public WorkAgreement save(Integer employeeId, Integer projectId, WorkAgreement workAgreement) {
+    public WorkAgreement save(@NonNull Integer employeeId, @NonNull Integer projectId, @NonNull WorkAgreement workAgreement) {
         workAgreement.setEmployee(checkNotFound(employeeRepository.findOne(employeeId), employeeId, Employee.class));
         workAgreement.setProject(checkNotFound(projectRepository.findOne(projectId), projectId, Project.class));
         return workAgreementRepository.save(workAgreement);
@@ -50,8 +51,8 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
 
     @Override
     @Transactional
-    public WorkUnit saveUnit(Integer employeeId, Integer workAgreementId, WorkUnit workUnit) {
-        workUnit.setWorkAgreement(checkNotFound(workAgreementRepository.findOne(workAgreementId), workAgreementId, WorkAgreement.class));
+    public WorkUnit saveUnit(@NonNull Integer employeeId, @NonNull Integer workAgreementId, @NonNull WorkUnit workUnit) {
+        workUnit.setWorkAgreement(checkNotFound(workAgreementRepository.findFirstByIdAndEmployeeIdAndActiveIsTrue(workAgreementId, employeeId), workAgreementId, WorkAgreement.class));
         return checkTimeOverlap(workUnitRepository.countExisted(employeeId, workAgreementId, workUnit.getDate(), workUnit.getStart(), workUnit.getFinish())) ?
                 workUnitRepository.save(workUnit) : null;
     }
