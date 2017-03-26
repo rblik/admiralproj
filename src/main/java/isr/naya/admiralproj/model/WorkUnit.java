@@ -20,7 +20,7 @@ import java.time.temporal.ChronoUnit;
 public class WorkUnit extends BaseEntity {
 
     @NotNull
-    @Column(name = "date", nullable = false, columnDefinition = "date")
+    @Column(name = "work_date", nullable = false, columnDefinition = "date")
     private LocalDate date;
 
     @NotNull

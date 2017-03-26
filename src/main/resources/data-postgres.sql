@@ -81,7 +81,7 @@ INSERT INTO work_agreements (employee_id, project_id) VALUES
   (5, 9),
   (5, 11);
 
-INSERT INTO work_units (date, start, finish, duration, absence_type, work_agreement_id, comment) VALUES
+INSERT INTO work_units (work_date, start, finish, duration, absence_type, work_agreement_id, comment) VALUES
   ('2017-03-19', '09:00:00', '16:00:00', 420, NULL, 1, 'Just dumping'),
   ('2017-03-20', '09:00:00', '16:00:00', 420, NULL, 1, 'Just dumping'),
   ('2017-03-21', '09:00:00', '16:00:00', 420, NULL, 1, 'Just dumping'),
@@ -107,8 +107,8 @@ INSERT INTO work_units (date, start, finish, duration, absence_type, work_agreem
   ('2017-03-21', '10:00:00', '12:00:00', 120, NULL, 5, 'Just dumping'),
   ('2017-03-22', '10:00:00', '14:00:00', 240, NULL, 5, 'Just dumping'),
   ('2017-03-23', '00:00:00', '23:59:59', 1440, 'HOLIDAY', 5, 'Just dumping'),
-  ('2017-03-19', '15:00:00', '17:00:00', 120, NULL, 6, 'Just dumping'),
-  ('2017-03-20', '15:00:00', '18:30:00', 210, NULL, 6, 'Just dumping'),
-  ('2017-03-21', '13:00:00', '17:00:00', 240, NULL, 6, 'Just dumping'),
-  ('2017-03-22', '08:00:00', '16:30:00', 510, NULL, 6, 'Just dumping'),
-  ('2017-03-23', '00:00:00', '23:59:59', 1440, 'HOLIDAY', 6, 'Just dumping');
+  ('2017-04-19', '15:00:00', '17:00:00', 120, NULL, 6, 'Just dumping'),
+  ('2017-04-20', '15:00:00', '18:30:00', 210, NULL, 6, 'Just dumping'),
+  ('2017-04-21', '13:00:00', '17:00:00', 240, NULL, 6, 'Just dumping'),
+  ('2017-04-22', '08:00:00', '16:30:00', 510, NULL, 6, 'Just dumping'),
+  ('2017-04-23', '00:00:00', '23:59:59', 1440, 'HOLIDAY', 6, 'Just dumping');
