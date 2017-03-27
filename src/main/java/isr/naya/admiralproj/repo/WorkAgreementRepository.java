@@ -22,6 +22,6 @@ public interface WorkAgreementRepository extends JpaRepository<WorkAgreement, In
     @Query("select wa from WorkAgreement wa join fetch wa.employee join fetch wa.project p join fetch p.client")
     Set<WorkAgreement> findAllWithEmployees();
 
-    @Query("select new isr.naya.admiralproj.dto.PartialDay(wa.id, e.id, e.name, e.surname, wu.date, sum (wu.duration)) from WorkAgreement wa join wa.employee e join wa.workUnits wu where wa.employee.id = e.id and wu.date>=?1 and wu.date<?2 and wu.duration<= 60*?3 and wu.absenceType is null group by e.id, wa.id, wu.date")
+    @Query("select new isr.naya.admiralproj.dto.PartialDay(wa.id, e.id, e.name, e.surname, wu.date, sum (wu.duration)) from WorkAgreement wa join wa.employee e join wa.workUnits wu where wa.employee.id = e.id and wu.date>=?1 and wu.date<?2 group by e.id, wa.id, wu.date having sum(wu.duration)<60*?3")
     Set<PartialDay> getWithSumTime(LocalDate from, LocalDate to, Integer hours);
 }
