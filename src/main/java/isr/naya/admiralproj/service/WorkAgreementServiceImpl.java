@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -34,8 +35,8 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
     @Override
     @Transactional(readOnly = true)
     public List<WorkAgreement> getAllForEmployee(@NonNull Integer employeeId, @NonNull LocalDate from, @NonNull LocalDate to) {
-        List<WorkAgreement> agreements = workAgreementRepository.findByEmployeeIdAndTimeRange(employeeId);
-        List<WorkAgreement> agreementsWithUnits = workAgreementRepository.findByEmployeeIdWithWorkUnitsBetween(employeeId, from, to);
+        Set<WorkAgreement> agreements = workAgreementRepository.findByEmployeeIdAndTimeRange(employeeId);
+        Set<WorkAgreement> agreementsWithUnits = workAgreementRepository.findByEmployeeIdWithWorkUnitsBetween(employeeId, from, to);
         return intersect(agreements, agreementsWithUnits);
     }
 
@@ -58,12 +59,12 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
     @Override
     @Transactional(readOnly = true)
     public List<WorkAgreement> getAllWithTimeSum(@NonNull LocalDate from, @NonNull LocalDate to) {
-        List<WorkAgreement> agreementsWithWork = workAgreementRepository.getWithTimeSumTime(from, to).stream().map(WorkAgreementWithCount::getAgreement).collect(Collectors.toList());
-        List<WorkAgreement> agreements = workAgreementRepository.findAllWithEmployees();
+        Set<WorkAgreement> agreementsWithWork = workAgreementRepository.getWithTimeSumTime(from, to).stream().map(WorkAgreementWithCount::getAgreement).collect(Collectors.toSet());
+        Set<WorkAgreement> agreements = workAgreementRepository.findAllWithEmployees();
         return intersect(agreements, agreementsWithWork);
     }
 
-    private List<WorkAgreement> intersect(List<WorkAgreement> agreements, List<WorkAgreement> agreementsWithUnits) {
+    private List<WorkAgreement> intersect(Set<WorkAgreement> agreements, Set<WorkAgreement> agreementsWithUnits) {
         List<WorkAgreement> intersect = agreements.stream()
                 .filter(agreement -> !agreementsWithUnits.contains(agreement))
                 .map(this::populate)
