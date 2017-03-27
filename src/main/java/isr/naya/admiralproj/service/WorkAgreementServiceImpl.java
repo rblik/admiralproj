@@ -54,6 +54,13 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
                 workUnitRepository.save(workUnit) : null;
     }
 
+    @Override
+    public List<WorkAgreement> getAll(LocalDate from, LocalDate to) {
+        List<WorkAgreement> agreements = workAgreementRepository.findAllWithEmployees();
+        List<WorkAgreement> agreementsWithUnits = workAgreementRepository.findAllWithEmployeesAndWorkUnitsBetween(from, to);
+        return intersect(agreements, agreementsWithUnits);
+    }
+
     private List<WorkAgreement> intersect(List<WorkAgreement> agreements, List<WorkAgreement> agreementsWithUnits) {
         List<WorkAgreement> intersect = agreements.stream()
                 .filter(agreement -> !agreementsWithUnits.contains(agreement))

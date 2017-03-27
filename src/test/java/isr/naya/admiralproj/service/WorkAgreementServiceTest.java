@@ -4,6 +4,7 @@ import isr.naya.admiralproj.exception.NotFoundException;
 import isr.naya.admiralproj.exception.TimeOverlappingException;
 import isr.naya.admiralproj.model.WorkAgreement;
 import isr.naya.admiralproj.model.WorkUnit;
+import org.hamcrest.Matchers;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -99,5 +100,12 @@ public class WorkAgreementServiceTest {
                 WorkUnit.builder().date(LocalDate.of(2017, 3, 19)).
                         start(LocalTime.of(10, 0)).
                         finish(LocalTime.of(12, 0)).build());
+    }
+
+    @Test
+    public void testGetAll() {
+        List<WorkAgreement> all = service.getAll(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1));
+        assertThat(all, hasItem(hasProperty("workUnits", equalTo(emptyList()))));
+        assertThat(all, hasSize(6));
     }
 }

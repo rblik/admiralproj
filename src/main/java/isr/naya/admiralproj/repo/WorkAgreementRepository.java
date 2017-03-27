@@ -17,4 +17,10 @@ public interface WorkAgreementRepository extends JpaRepository<WorkAgreement, In
     List<WorkAgreement> findByEmployeeIdAndTimeRange(Integer id);
 
     WorkAgreement findFirstByIdAndEmployeeIdAndActiveIsTrue(Integer id, Integer employeeId);
+
+    @Query("select distinct wa from WorkAgreement wa join fetch wa.employee join fetch wa.project p join fetch p.client join fetch wa.workUnits wu where wu.date>=?1 and wu.date<?2")
+    List<WorkAgreement> findAllWithEmployeesAndWorkUnitsBetween(LocalDate from, LocalDate to);
+
+    @Query("select wa from WorkAgreement wa join fetch wa.employee")
+    List<WorkAgreement> findAllWithEmployees();
 }

@@ -12,4 +12,6 @@ public interface WorkAgreementService {
     WorkAgreement save(Integer employeeId, Integer projectId, WorkAgreement workAgreement);
 
     WorkUnit saveUnit(Integer employeeId, Integer workAgreementId, WorkUnit workUnit);
+
+    List<WorkAgreement> getAll(LocalDate from, LocalDate to);
 }
