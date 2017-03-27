@@ -23,6 +23,6 @@ public interface WorkAgreementRepository extends JpaRepository<WorkAgreement, In
     @Query("select wa from WorkAgreement wa join fetch wa.employee join fetch wa.project p join fetch p.client")
     List<WorkAgreement> findAllWithEmployees();
 
-    @Query("select new isr.naya.admiralproj.dto.WorkAgreementWithCount(e, wa, c, p, sum (wu.duration)) from Employee e, WorkAgreement wa, Client c, Project p join wa.workUnits wu where wa.employee.id = e.id and wa.project.id = p.id and p.client.id = c.id and wu.date>=?1 and wu.date<?2 group by e.id, wa.id, c.id, p.id")
+    @Query("select new isr.naya.admiralproj.dto.WorkAgreementWithCount(e, wa, c, p, sum (wu.duration)) from Employee e, WorkAgreement wa, Client c, Project p join wa.workUnits wu where wa.employee.id = e.id and wa.project.id = p.id and p.client.id = c.id and wu.date>=?1 and wu.date<?2 and wu.absenceType is null group by e.id, wa.id, c.id, p.id")
     Set<WorkAgreementWithCount> getMany(LocalDate from, LocalDate to);
 }
