@@ -8,8 +8,8 @@ import isr.naya.admiralproj.repo.EmployeeRepository;
 import isr.naya.admiralproj.repo.ProjectRepository;
 import isr.naya.admiralproj.repo.WorkAgreementRepository;
 import isr.naya.admiralproj.repo.WorkUnitRepository;
+import lombok.AllArgsConstructor;
 import lombok.NonNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,15 +22,12 @@ import static isr.naya.admiralproj.exception.ValidationUtil.checkNotFound;
 import static isr.naya.admiralproj.exception.ValidationUtil.checkTimeOverlap;
 
 @Service
+@AllArgsConstructor
 public class WorkAgreementServiceImpl implements WorkAgreementService {
 
-    @Autowired
     private WorkAgreementRepository workAgreementRepository;
-    @Autowired
     private WorkUnitRepository workUnitRepository;
-    @Autowired
     private EmployeeRepository employeeRepository;
-    @Autowired
     private ProjectRepository projectRepository;
 
     @Override
