@@ -1,24 +1,35 @@
 package isr.naya.admiralproj.dto;
 
-import isr.naya.admiralproj.model.*;
-import lombok.EqualsAndHashCode;
-import lombok.Value;
+import isr.naya.admiralproj.model.Client;
+import isr.naya.admiralproj.model.Employee;
+import isr.naya.admiralproj.model.Project;
+import isr.naya.admiralproj.model.WorkAgreement;
+import lombok.AllArgsConstructor;
 
-@Value
-@EqualsAndHashCode(of = "agreement")
+@AllArgsConstructor
 public class WorkAgreementWithCount {
-    private Employee employee;
-    private WorkAgreement agreement;
-    private Client client;
-    private Project project;
-    private Long count;
-
+    private Integer agreementId;
+    private Integer projectId;
+    private String projectName;
+    private Integer employeeId;
+    private String employeeName;
+    private String employeeSurname;
+    private Integer clientId;
+    private String clientName;
+    private Long duration;
 
     public WorkAgreement getAgreement() {
-        this.project.setClient(client);
-        this.agreement.setProject(project);
-        this.agreement.setEmployee(employee);
-        this.agreement.setCountTime(count);
-        return this.agreement;
+        Client client = new Client();
+        client.setId(clientId);
+        client.setName(clientName);
+        Project project = new Project(projectName, null, client);
+        project.setId(projectId);
+        Employee employee = new Employee();
+        employee.setId(employeeId);
+        employee.setName(employeeName);
+        employee.setSurname(employeeSurname);
+        WorkAgreement agreement = new WorkAgreement(true, project, employee, null, duration);
+        agreement.setId(agreementId);
+        return agreement;
     }
 }
