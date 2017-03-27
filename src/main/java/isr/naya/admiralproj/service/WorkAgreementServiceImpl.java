@@ -57,8 +57,8 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<WorkAgreement> getAllWithTimeSum(LocalDate from, LocalDate to) {
-        List<WorkAgreement> agreementsWithWork = workAgreementRepository.getMany(from, to).stream().map(WorkAgreementWithCount::getAgreement).collect(Collectors.toList());
+    public List<WorkAgreement> getAllWithTimeSum(@NonNull LocalDate from, @NonNull LocalDate to) {
+        List<WorkAgreement> agreementsWithWork = workAgreementRepository.getWithTimeSum(from, to).stream().map(WorkAgreementWithCount::getAgreement).collect(Collectors.toList());
         List<WorkAgreement> agreements = workAgreementRepository.findAllWithEmployees();
         return intersect(agreements, agreementsWithWork);
     }
