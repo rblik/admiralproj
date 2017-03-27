@@ -1,5 +1,6 @@
 package isr.naya.admiralproj.service;
 
+import isr.naya.admiralproj.dto.WorkAgreementWithCount;
 import isr.naya.admiralproj.model.Employee;
 import isr.naya.admiralproj.model.Project;
 import isr.naya.admiralproj.model.WorkAgreement;
@@ -55,10 +56,10 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
     }
 
     @Override
-    public List<WorkAgreement> getAll(LocalDate from, LocalDate to) {
+    public List<WorkAgreement> getAllWithTimeSum(LocalDate from, LocalDate to) {
+        List<WorkAgreement> agreementsWithWork = workAgreementRepository.getMany(from, to).stream().map(WorkAgreementWithCount::getAgreement).collect(Collectors.toList());
         List<WorkAgreement> agreements = workAgreementRepository.findAllWithEmployees();
-        List<WorkAgreement> agreementsWithUnits = workAgreementRepository.findAllWithEmployeesAndWorkUnitsBetween(from, to);
-        return intersect(agreements, agreementsWithUnits);
+        return intersect(agreements, agreementsWithWork);
     }
 
     private List<WorkAgreement> intersect(List<WorkAgreement> agreements, List<WorkAgreement> agreementsWithUnits) {

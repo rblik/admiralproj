@@ -13,5 +13,5 @@ public interface WorkAgreementService {
 
     WorkUnit saveUnit(Integer employeeId, Integer workAgreementId, WorkUnit workUnit);
 
-    List<WorkAgreement> getAll(LocalDate from, LocalDate to);
+    List<WorkAgreement> getAllWithTimeSum(LocalDate from, LocalDate to);
 }

@@ -30,4 +30,7 @@ public class WorkAgreement extends BaseEntity{
 
     @OneToMany(mappedBy = "workAgreement", cascade = CascadeType.REMOVE)
     private List<WorkUnit> workUnits;
+
+    @Transient
+    private Long countTime = 0L;
 }
