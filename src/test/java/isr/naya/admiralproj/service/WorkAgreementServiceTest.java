@@ -1,5 +1,6 @@
 package isr.naya.admiralproj.service;
 
+import isr.naya.admiralproj.dto.PartialDay;
 import isr.naya.admiralproj.exception.NotFoundException;
 import isr.naya.admiralproj.exception.TimeOverlappingException;
 import isr.naya.admiralproj.model.WorkAgreement;
@@ -17,6 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Set;
 
 import static java.util.Collections.emptyList;
 import static org.hamcrest.Matchers.*;
@@ -103,8 +105,12 @@ public class WorkAgreementServiceTest {
 
     @Test
     public void testGetAllWithTimeSum() {
-        List<WorkAgreement> all = service.getAllWithTimeSum(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1));
-        assertThat(all, hasItem(hasProperty("countTime", equalTo(0L))));
-        assertThat(all, hasSize(6));
+        Set<PartialDay> all = service.getPartialDays(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1), 12);
+        assertThat(all, hasItem(allOf(
+                hasProperty("agreementId", equalTo(1)),
+                hasProperty("employeeId", equalTo(1)),
+                hasProperty("date", equalTo(LocalDate.of(2017,3,19))),
+                hasProperty("duration", equalTo(420L)))));
+        assertThat(all, hasSize(21));
     }
 }

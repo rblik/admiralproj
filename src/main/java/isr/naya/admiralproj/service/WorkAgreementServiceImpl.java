@@ -1,6 +1,6 @@
 package isr.naya.admiralproj.service;
 
-import isr.naya.admiralproj.dto.WorkAgreementWithCount;
+import isr.naya.admiralproj.dto.PartialDay;
 import isr.naya.admiralproj.model.Employee;
 import isr.naya.admiralproj.model.Project;
 import isr.naya.admiralproj.model.WorkAgreement;
@@ -58,10 +58,8 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<WorkAgreement> getAllWithTimeSum(@NonNull LocalDate from, @NonNull LocalDate to) {
-        Set<WorkAgreement> agreementsWithWork = workAgreementRepository.getWithTimeSumTime(from, to).stream().map(WorkAgreementWithCount::getAgreement).collect(Collectors.toSet());
-        Set<WorkAgreement> agreements = workAgreementRepository.findAllWithEmployees();
-        return intersect(agreements, agreementsWithWork);
+    public Set<PartialDay> getPartialDays(@NonNull LocalDate from, @NonNull LocalDate to,@NonNull Integer maxHours) {
+        return workAgreementRepository.getWithSumTime(from, to, maxHours);
     }
 
     private List<WorkAgreement> intersect(Set<WorkAgreement> agreements, Set<WorkAgreement> agreementsWithUnits) {

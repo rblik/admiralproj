@@ -1,12 +1,11 @@
 package isr.naya.admiralproj.repo;
 
-import isr.naya.admiralproj.dto.WorkAgreementWithCount;
+import isr.naya.admiralproj.dto.PartialDay;
 import isr.naya.admiralproj.model.WorkAgreement;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 
 
@@ -23,6 +22,6 @@ public interface WorkAgreementRepository extends JpaRepository<WorkAgreement, In
     @Query("select wa from WorkAgreement wa join fetch wa.employee join fetch wa.project p join fetch p.client")
     Set<WorkAgreement> findAllWithEmployees();
 
-    @Query("select new isr.naya.admiralproj.dto.WorkAgreementWithCount(wa.id, p.id, p.name, e.id, e.name, e.surname, c.id, c.name, sum (wu.duration)) from WorkAgreement wa join wa.employee e join wa.project p join p.client c join wa.workUnits wu where wa.employee.id = e.id and wa.project.id = p.id and p.client.id = c.id and wu.date>=?1 and wu.date<?2 and wu.absenceType is null group by e.id, wa.id, c.id, p.id")
-    Set<WorkAgreementWithCount> getWithTimeSumTime(LocalDate from, LocalDate to);
+    @Query("select new isr.naya.admiralproj.dto.PartialDay(wa.id, e.id, e.name, e.surname, wu.date, sum (wu.duration)) from WorkAgreement wa join wa.employee e join wa.workUnits wu where wa.employee.id = e.id and wu.date>=?1 and wu.date<?2 and wu.duration<= 60*?3 and wu.absenceType is null group by e.id, wa.id, wu.date")
+    Set<PartialDay> getWithSumTime(LocalDate from, LocalDate to, Integer hours);
 }
