@@ -59,8 +59,8 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
     @Override
     @Transactional(readOnly = true)
     public Set<PartialDay> getPartialDays(@NonNull LocalDate from, @NonNull LocalDate to,@NonNull Integer maxHours) {
-        Set<PartialDay> partialDays = workAgreementRepository.getWithSumTime(from, to, maxHours);
-        Set<PartialDay> partialDaysWithAbsence = workAgreementRepository.getAbsenceWithSumTime(from, to);
+        Set<PartialDay> partialDays = workUnitRepository.getWithSumTime(from, to, maxHours);
+        Set<PartialDay> partialDaysWithAbsence = workUnitRepository.getAbsenceWithSumTime(from, to);
         return intersectDays(partialDays, partialDaysWithAbsence);
     }
 }
