@@ -4,18 +4,17 @@ import isr.naya.admiralproj.model.Department;
 import isr.naya.admiralproj.model.Employee;
 import isr.naya.admiralproj.repo.DepartmentRepository;
 import isr.naya.admiralproj.repo.EmployeeRepository;
+import lombok.AllArgsConstructor;
 import lombok.NonNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import static isr.naya.admiralproj.exception.ValidationUtil.checkNotFound;
 
 @Service
+@AllArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
 
-    @Autowired
     private EmployeeRepository employeeRepository;
-    @Autowired
     private DepartmentRepository departmentRepository;
 
     @Override

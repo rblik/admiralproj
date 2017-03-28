@@ -2,13 +2,14 @@ package isr.naya.admiralproj.service;
 
 import isr.naya.admiralproj.model.Department;
 import isr.naya.admiralproj.repo.DepartmentRepository;
+import lombok.AllArgsConstructor;
 import lombok.NonNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class DepartmentServiceImpl implements DepartmentService {
-    @Autowired
+
     private DepartmentRepository departmentRepository;
 
     @Override
