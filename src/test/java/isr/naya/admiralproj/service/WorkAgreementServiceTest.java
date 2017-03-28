@@ -118,4 +118,10 @@ public class WorkAgreementServiceTest {
         Set<MissingDay> days = service.getMissingDays(LocalDate.of(2017, 3, 19), LocalDate.of(2017, 3, 24));
         assertThat(days, hasSize(0));
     }
+
+    @Test
+    public void testGetAllUnitsByDate() {
+        Set<WorkUnit> workUnits = service.getAllUnitsByDate(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1));
+        assertThat(workUnits, hasSize(26));
+    }
 }

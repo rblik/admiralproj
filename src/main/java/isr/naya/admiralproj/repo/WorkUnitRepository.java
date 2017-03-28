@@ -19,4 +19,7 @@ public interface WorkUnitRepository extends JpaRepository<WorkUnit, Integer> {
 
     @Query("select new isr.naya.admiralproj.dto.MissingDay(e.id, wu.date) from WorkUnit wu join wu.workAgreement wa join wa.employee e join e.department d where wa.id = wu.workAgreement.id and e.id = wa.employee.id and wu.date>=?1 and wu.date<?2 group by e.id, wu.date")
     Set<MissingDay> getAllNonEmptyDays(LocalDate from, LocalDate to);
+
+    @Query("select wu from WorkUnit wu join fetch wu.workAgreement wa join fetch wa.employee join fetch wa.project p join fetch p.client where wu.date between ?1 and ?2")
+    Set<WorkUnit> getAllByDateBetween(LocalDate from, LocalDate to);
 }

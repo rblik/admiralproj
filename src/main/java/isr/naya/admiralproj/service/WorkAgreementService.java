@@ -18,4 +18,6 @@ public interface WorkAgreementService {
     Set<PartialDay> getPartialDays(LocalDate from, LocalDate to, Integer maxHours);
 
     Set<MissingDay> getMissingDays(LocalDate from, LocalDate to);
+
+    Set<WorkUnit> getAllUnitsByDate(LocalDate from, LocalDate to);
 }

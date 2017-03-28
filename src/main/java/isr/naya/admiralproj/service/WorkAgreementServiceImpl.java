@@ -64,4 +64,9 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
         List<Employee> employees = employeeRepository.findAll();
         return generate(workUnitRepository.getAllNonEmptyDays(from, to), from, to, employees);
     }
+
+    @Override
+    public Set<WorkUnit> getAllUnitsByDate(LocalDate from, LocalDate to) {
+        return workUnitRepository.getAllByDateBetween(from, to);
+    }
 }
