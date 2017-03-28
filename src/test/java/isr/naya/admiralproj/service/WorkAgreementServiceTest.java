@@ -115,7 +115,8 @@ public class WorkAgreementServiceTest {
 
     @Test
     public void testGetAllForMissing() {
-        Set<MissingDay> days = service.getMissingDays(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1));
+        Set<MissingDay> days = service.getMissingDays(LocalDate.of(2017, 3, 19), LocalDate.of(2017, 3, 25));
+        System.out.println();
         assertThat(days, notNullValue());
     }
 }

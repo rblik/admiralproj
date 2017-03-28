@@ -1,14 +1,12 @@
 package isr.naya.admiralproj.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Value;
 
 import java.time.LocalDate;
 
-@Data
+@Value
 @EqualsAndHashCode(of = {"employeeId", "date"})
-@AllArgsConstructor
 public class MissingDay {
     private Integer employeeId;
     private String employeeName;

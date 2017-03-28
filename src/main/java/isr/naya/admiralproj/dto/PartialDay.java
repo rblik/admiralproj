@@ -1,12 +1,11 @@
 package isr.naya.admiralproj.dto;
 
-import isr.naya.admiralproj.model.AbsenceType;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Value;
 
 import java.time.LocalDate;
 
-@Data
-@NoArgsConstructor
+@Value
 @EqualsAndHashCode(of = {"employeeId", "date"})
 public class PartialDay {
     private Integer employeeId;
@@ -14,12 +13,4 @@ public class PartialDay {
     private String employeeSurname;
     private LocalDate date;
     private Long duration;
-
-    public PartialDay(Integer employeeId, String employeeName, String employeeSurname, LocalDate date, Long duration) {
-        this.employeeId = employeeId;
-        this.employeeName = employeeName;
-        this.employeeSurname = employeeSurname;
-        this.date = date;
-        this.duration = duration;
-    }
 }
