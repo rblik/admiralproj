@@ -17,9 +17,9 @@ public interface WorkUnitRepository extends JpaRepository<WorkUnit, Integer> {
     @Query("select new isr.naya.admiralproj.dto.PartialDay(e.id, e.name, e.surname, wu.date, sum (wu.duration)) from WorkUnit wu join wu.workAgreement wa join wa.employee e where wa.id = wu.workAgreement.id and e.id = wa.employee.id and wu.date>=?1 and wu.date<?2 group by e.id, wu.date having sum(wu.duration)<60*?3")
     Set<PartialDay> getAllPartialBetweenDates(LocalDate from, LocalDate to, Integer maxHours);
 
-    @Query("select new isr.naya.admiralproj.dto.MissingDay(e.id, wu.date) from WorkUnit wu join wu.workAgreement wa join wa.employee e join e.department d where wa.id = wu.workAgreement.id and e.id = wa.employee.id and wu.date>=?1 and wu.date<?2 group by e.id, wu.date")
+    @Query("select new isr.naya.admiralproj.dto.MissingDay(e.id, wu.date) from WorkUnit wu join wu.workAgreement wa join wa.employee e join e.department d where wa.id = wu.workAgreement.id and e.id = wa.employee.id and d.id = e.department.id and wu.date>=?1 and wu.date<?2 group by e.id, wu.date")
     Set<MissingDay> getAllNonEmptyDays(LocalDate from, LocalDate to);
 
-    @Query("select wu from WorkUnit wu join fetch wu.workAgreement wa join fetch wa.employee join fetch wa.project p join fetch p.client where wu.date between ?1 and ?2")
+    @Query("select wu from WorkUnit wu join fetch wu.workAgreement wa join fetch wa.employee e join fetch wa.project p join fetch p.client c join fetch e.department where wu.date between ?1 and ?2")
     Set<WorkUnit> getAllByDateBetween(LocalDate from, LocalDate to);
 }
