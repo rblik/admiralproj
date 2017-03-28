@@ -14,8 +14,6 @@ public class PartialDay {
     private String employeeSurname;
     private LocalDate date;
     private Long duration;
-    private AbsenceType absenceType;
-    private Long absenceMinutes = 0L;
 
     public PartialDay(Integer employeeId, String employeeName, String employeeSurname, LocalDate date, Long duration) {
         this.employeeId = employeeId;
@@ -23,18 +21,5 @@ public class PartialDay {
         this.employeeSurname = employeeSurname;
         this.date = date;
         this.duration = duration;
-    }
-
-    public PartialDay(Integer employeeId, LocalDate date, AbsenceType absenceType, Long absenceMinutes) {
-        this.employeeId = employeeId;
-        this.date = date;
-        this.absenceType = absenceType;
-        this.absenceMinutes = absenceMinutes;
-    }
-
-    public PartialDay setAbsence(AbsenceType type, Long duration) {
-        this.absenceType = type;
-        this.absenceMinutes += duration;
-        return this;
     }
 }

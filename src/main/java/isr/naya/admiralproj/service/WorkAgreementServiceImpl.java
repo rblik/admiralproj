@@ -12,16 +12,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static isr.naya.admiralproj.exception.ValidationUtil.checkNotFound;
 import static isr.naya.admiralproj.exception.ValidationUtil.checkTimeOverlap;
 import static isr.naya.admiralproj.util.MappingUtil.intersectAgreements;
-import static isr.naya.admiralproj.util.MappingUtil.intersectDays;
 
 @Service
 @AllArgsConstructor
@@ -59,8 +54,6 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
     @Override
     @Transactional(readOnly = true)
     public Set<PartialDay> getPartialDays(@NonNull LocalDate from, @NonNull LocalDate to,@NonNull Integer maxHours) {
-        Set<PartialDay> partialDays = workUnitRepository.getWithSumTime(from, to, maxHours);
-        Set<PartialDay> partialDaysWithAbsence = workUnitRepository.getAbsenceWithSumTime(from, to);
-        return intersectDays(partialDays, partialDaysWithAbsence);
+        return workUnitRepository.getWithSumTime(from, to, maxHours);
     }
 }

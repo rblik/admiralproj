@@ -109,10 +109,8 @@ public class WorkAgreementServiceTest {
         Set<PartialDay> all = service.getPartialDays(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1), 12);
         assertThat(all, hasItem(allOf(
                 hasProperty("employeeId", equalTo(1)),
-                hasProperty("date", equalTo(LocalDate.of(2017,3,19))),
-                hasProperty("duration", equalTo(180L)),
-                hasProperty("absenceType", equalTo(AbsenceType.ILLNESS)),
-                hasProperty("absenceMinutes", equalTo(120L)))));
+                hasProperty("date", equalTo(LocalDate.of(2017, 3, 19))),
+                hasProperty("duration", equalTo(180L)))));
         assertThat(all, hasSize(21));
     }
 }
