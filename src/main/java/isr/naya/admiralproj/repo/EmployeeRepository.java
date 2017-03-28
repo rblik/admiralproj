@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
-    @Query("select e from Employee e join fetch e.workAgreements wa where e.department.name = ?1")
-    List<Employee> findByDepartmentName(String departmentName);
+    @Query("select e from Employee e join fetch e.department")
+    List<Employee> getAllWithDepartments();
 
 }

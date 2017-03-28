@@ -61,12 +61,12 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
 
     @Override
     public Set<MissingDay> getMissingDays(@NonNull LocalDate from, @NonNull LocalDate to) {
-        List<Employee> employees = employeeRepository.findAll();
+        List<Employee> employees = employeeRepository.getAllWithDepartments();
         return generate(workUnitRepository.getAllNonEmptyDays(from, to), from, to, employees);
     }
 
     @Override
-    public Set<WorkUnit> getAllUnitsByDate(LocalDate from, LocalDate to) {
+    public Set<WorkUnit> getAllUnitsByDate(@NonNull LocalDate from, @NonNull LocalDate to) {
         return workUnitRepository.getAllByDateBetween(from, to);
     }
 }
