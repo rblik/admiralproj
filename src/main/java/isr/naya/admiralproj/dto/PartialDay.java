@@ -1,11 +1,13 @@
 package isr.naya.admiralproj.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 import java.time.LocalDate;
 
 @Value
+@AllArgsConstructor
 @EqualsAndHashCode(of = {"employeeId", "date"})
 public class PartialDay {
     private Integer employeeId;

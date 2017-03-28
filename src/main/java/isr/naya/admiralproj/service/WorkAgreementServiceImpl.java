@@ -23,6 +23,7 @@ import static isr.naya.admiralproj.util.MappingUtil.intersectAgreements;
 
 @Service
 @AllArgsConstructor
+@Transactional(readOnly = true)
 public class WorkAgreementServiceImpl implements WorkAgreementService {
 
     private WorkAgreementRepository workAgreementRepository;
@@ -31,15 +32,14 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
     private ProjectRepository projectRepository;
 
     @Override
-    @Transactional(readOnly = true)
     public Set<WorkAgreement> getAllForEmployee(@NonNull Integer employeeId, @NonNull LocalDate from, @NonNull LocalDate to) {
         Set<WorkAgreement> agreements = workAgreementRepository.findByEmployeeIdAndTimeRange(employeeId);
         Set<WorkAgreement> agreementsWithUnits = workAgreementRepository.findByEmployeeIdWithWorkUnitsBetween(employeeId, from, to);
         return intersectAgreements(agreements, agreementsWithUnits);
     }
 
-    @Transactional
     @Override
+    @Transactional
     public WorkAgreement save(@NonNull Integer employeeId, @NonNull Integer projectId, @NonNull WorkAgreement workAgreement) {
         workAgreement.setEmployee(checkNotFound(employeeRepository.findOne(employeeId), employeeId, Employee.class));
         workAgreement.setProject(checkNotFound(projectRepository.findOne(projectId), projectId, Project.class));
@@ -55,15 +55,13 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Set<PartialDay> getPartialDays(@NonNull LocalDate from, @NonNull LocalDate to,@NonNull Integer maxHours) {
-        return workUnitRepository.getWithSumTime(from, to, maxHours);
+        return workUnitRepository.getAllPartialBetweenDates(from, to, maxHours);
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Set<MissingDay> getMissingDays(@NonNull LocalDate from, @NonNull LocalDate to) {
         List<Employee> employees = employeeRepository.findAll();
-        return generate(workUnitRepository.getAllDays(from, to), from, to, employees);
+        return generate(workUnitRepository.getAllNonEmptyDays(from, to), from, to, employees);
     }
 }
