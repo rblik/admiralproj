@@ -32,7 +32,7 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<WorkAgreement> getAllForEmployee(@NonNull Integer employeeId, @NonNull LocalDate from, @NonNull LocalDate to) {
+    public Set<WorkAgreement> getAllForEmployee(@NonNull Integer employeeId, @NonNull LocalDate from, @NonNull LocalDate to) {
         Set<WorkAgreement> agreements = workAgreementRepository.findByEmployeeIdAndTimeRange(employeeId);
         Set<WorkAgreement> agreementsWithUnits = workAgreementRepository.findByEmployeeIdWithWorkUnitsBetween(employeeId, from, to);
         return intersect(agreements, agreementsWithUnits);
@@ -57,19 +57,24 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
     @Override
     @Transactional(readOnly = true)
     public Set<PartialDay> getPartialDays(@NonNull LocalDate from, @NonNull LocalDate to,@NonNull Integer maxHours) {
-        Map<PartialDay, PartialDay> collect = workAgreementRepository.getAbsenceWithSumTime(from, to).stream().collect(Collectors.toMap(o -> o, o -> o));
-        Set<PartialDay> withSumTime = workAgreementRepository.getWithSumTime(from, to, maxHours);
+        Set<PartialDay> partialDays = workAgreementRepository.getWithSumTime(from, to, maxHours);
+        Set<PartialDay> partialDaysWithAbsence = workAgreementRepository.getAbsenceWithSumTime(from, to);
+        return intersectDays(partialDays, partialDaysWithAbsence);
+    }
+
+    private Set<PartialDay> intersectDays(Set<PartialDay> withSumTime, Set<PartialDay> absenceWithSumTime) {
+        Map<PartialDay, PartialDay> collect = absenceWithSumTime.stream().collect(Collectors.toMap(o -> o, o -> o));
         return withSumTime.stream().map(partialDay -> {
             PartialDay day = collect.getOrDefault(partialDay, new PartialDay());
             return partialDay.setAbsence(day.getAbsenceType(), day.getAbsenceMinutes());
         }).collect(Collectors.toSet());
     }
 
-    private List<WorkAgreement> intersect(Set<WorkAgreement> agreements, Set<WorkAgreement> agreementsWithUnits) {
-        List<WorkAgreement> intersect = agreements.stream()
+    private Set<WorkAgreement> intersect(Set<WorkAgreement> agreements, Set<WorkAgreement> agreementsWithUnits) {
+        Set<WorkAgreement> intersect = agreements.stream()
                 .filter(agreement -> !agreementsWithUnits.contains(agreement))
                 .map(this::populate)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
         intersect.addAll(agreementsWithUnits);
         return intersect;
     }

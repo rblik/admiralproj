@@ -5,11 +5,10 @@ import isr.naya.admiralproj.model.WorkAgreement;
 import isr.naya.admiralproj.model.WorkUnit;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 
 public interface WorkAgreementService {
-    List<WorkAgreement> getAllForEmployee(Integer employeeId, LocalDate from, LocalDate to);
+    Set<WorkAgreement> getAllForEmployee(Integer employeeId, LocalDate from, LocalDate to);
 
     WorkAgreement save(Integer employeeId, Integer projectId, WorkAgreement workAgreement);
 

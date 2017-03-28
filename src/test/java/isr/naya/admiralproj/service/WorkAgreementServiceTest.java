@@ -41,7 +41,7 @@ public class WorkAgreementServiceTest {
 
     @Test
     public void testGetAllForEmployeeByDateRange() {
-        List<WorkAgreement> agreements = service.getAllForEmployee(5,
+        Set<WorkAgreement> agreements = service.getAllForEmployee(5,
                 LocalDate.of(2017, 4, 19),
                 LocalDate.of(2017, 4, 26));
         assertThat(agreements, allOf(hasSize(2), contains(
