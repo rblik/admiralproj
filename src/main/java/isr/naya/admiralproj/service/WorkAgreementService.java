@@ -1,5 +1,6 @@
 package isr.naya.admiralproj.service;
 
+import isr.naya.admiralproj.dto.MissingDay;
 import isr.naya.admiralproj.dto.PartialDay;
 import isr.naya.admiralproj.model.WorkAgreement;
 import isr.naya.admiralproj.model.WorkUnit;
@@ -15,4 +16,6 @@ public interface WorkAgreementService {
     WorkUnit saveUnit(Integer employeeId, Integer workAgreementId, WorkUnit workUnit);
 
     Set<PartialDay> getPartialDays(LocalDate from, LocalDate to, Integer maxHours);
+
+    Set<MissingDay> getMissingDays(LocalDate from, LocalDate to);
 }

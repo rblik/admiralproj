@@ -1,5 +1,6 @@
 package isr.naya.admiralproj.service;
 
+import isr.naya.admiralproj.dto.MissingDay;
 import isr.naya.admiralproj.dto.PartialDay;
 import isr.naya.admiralproj.model.*;
 import isr.naya.admiralproj.repo.EmployeeRepository;
@@ -12,10 +13,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 import static isr.naya.admiralproj.exception.ValidationUtil.checkNotFound;
 import static isr.naya.admiralproj.exception.ValidationUtil.checkTimeOverlap;
+import static isr.naya.admiralproj.util.MappingUtil.generate;
 import static isr.naya.admiralproj.util.MappingUtil.intersectAgreements;
 
 @Service
@@ -55,5 +58,12 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
     @Transactional(readOnly = true)
     public Set<PartialDay> getPartialDays(@NonNull LocalDate from, @NonNull LocalDate to,@NonNull Integer maxHours) {
         return workUnitRepository.getWithSumTime(from, to, maxHours);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Set<MissingDay> getMissingDays(@NonNull LocalDate from, @NonNull LocalDate to) {
+        List<Employee> employees = employeeRepository.findAll();
+        return generate(workUnitRepository.getAllDays(from, to), from, to, employees);
     }
 }

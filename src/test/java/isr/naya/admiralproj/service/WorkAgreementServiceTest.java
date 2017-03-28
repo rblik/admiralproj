@@ -1,9 +1,9 @@
 package isr.naya.admiralproj.service;
 
+import isr.naya.admiralproj.dto.MissingDay;
 import isr.naya.admiralproj.dto.PartialDay;
 import isr.naya.admiralproj.exception.NotFoundException;
 import isr.naya.admiralproj.exception.TimeOverlappingException;
-import isr.naya.admiralproj.model.AbsenceType;
 import isr.naya.admiralproj.model.WorkAgreement;
 import isr.naya.admiralproj.model.WorkUnit;
 import org.junit.Rule;
@@ -18,7 +18,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 import java.util.Set;
 
 import static java.util.Collections.emptyList;
@@ -112,5 +111,11 @@ public class WorkAgreementServiceTest {
                 hasProperty("date", equalTo(LocalDate.of(2017, 3, 19))),
                 hasProperty("duration", equalTo(180L)))));
         assertThat(all, hasSize(21));
+    }
+
+    @Test
+    public void testGetAllForMissing() {
+        Set<MissingDay> days = service.getMissingDays(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1));
+        assertThat(days, notNullValue());
     }
 }
