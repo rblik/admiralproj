@@ -124,4 +124,22 @@ public class WorkAgreementServiceTest {
         Set<WorkUnit> workUnits = service.getAllUnitsByDate(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1));
         assertThat(workUnits, hasSize(26));
     }
+
+    @Test
+    public void testGetAllUnitsByDateAndEmployee() {
+        Set<WorkUnit> workUnits = service.getAllUnitsByDateAndEmployee(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1), 1);
+        assertThat(workUnits, hasSize(6));
+    }
+
+    @Test
+    public void testGetAllUnitsByDateAndProject() {
+        Set<WorkUnit> workUnits = service.getAllUnitsByDateAndProject(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1), 7);
+        assertThat(workUnits, hasSize(6));
+    }
+
+    @Test
+    public void testGetAllUnitsByDateAndEmployeeProject() {
+        Set<WorkUnit> workUnits = service.getAllUnitsByDateAndEmployeeAndProject(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1), 1, 7);
+        assertThat(workUnits, hasSize(6));
+    }
 }

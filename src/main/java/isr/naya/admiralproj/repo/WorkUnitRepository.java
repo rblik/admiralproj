@@ -22,4 +22,13 @@ public interface WorkUnitRepository extends JpaRepository<WorkUnit, Integer> {
 
     @Query("select wu from WorkUnit wu join fetch wu.workAgreement wa join fetch wa.employee e join fetch wa.project p join fetch p.client c join fetch e.department where wu.date between ?1 and ?2")
     Set<WorkUnit> getAllByDateBetween(LocalDate from, LocalDate to);
+
+    @Query("select wu from WorkUnit wu join fetch wu.workAgreement wa join fetch wa.employee e join fetch wa.project p join fetch p.client c join fetch e.department where e.id =?3 and wu.date between ?1 and ?2")
+    Set<WorkUnit> getAllByDateBetweenAndEmployeeId(LocalDate from, LocalDate to, Integer employeeId);
+
+    @Query("select wu from WorkUnit wu join fetch wu.workAgreement wa join fetch wa.employee e join fetch wa.project p join fetch p.client c join fetch e.department where p.id =?3 and wu.date between ?1 and ?2")
+    Set<WorkUnit> getAllByDateBetweenAndProjectId(LocalDate from, LocalDate to, Integer projectId);
+
+    @Query("select wu from WorkUnit wu join fetch wu.workAgreement wa join fetch wa.employee e join fetch wa.project p join fetch p.client c join fetch e.department where e.id =?3 and p.id=?4 and wu.date between ?1 and ?2")
+    Set<WorkUnit> getAllByDateBetweenAndEmployeeIdAndProjectId(LocalDate from, LocalDate to, Integer employeeId, Integer projectId);
 }

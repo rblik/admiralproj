@@ -20,4 +20,10 @@ public interface WorkAgreementService {
     Set<MissingDay> getMissingDays(LocalDate from, LocalDate to);
 
     Set<WorkUnit> getAllUnitsByDate(LocalDate from, LocalDate to);
+
+    Set<WorkUnit> getAllUnitsByDateAndEmployee(LocalDate from, LocalDate to, Integer employeeId);
+
+    Set<WorkUnit> getAllUnitsByDateAndProject(LocalDate from, LocalDate to, Integer projectId);
+
+    Set<WorkUnit> getAllUnitsByDateAndEmployeeAndProject(LocalDate from, LocalDate to, Integer employeeId, Integer projectId);
 }
