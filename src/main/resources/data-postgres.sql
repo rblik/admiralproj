@@ -82,7 +82,8 @@ INSERT INTO work_agreements (employee_id, project_id) VALUES
   (5, 11);
 
 INSERT INTO work_units (work_date, start, finish, duration, absence_type, work_agreement_id, comment) VALUES
-  ('2017-03-19', '09:00:00', '16:00:00', 420, NULL, 1, 'Just dumping'),
+  ('2017-03-19', '09:00:00', '11:00:00', 120, 'ILLNESS', 1, 'Just dumping'),
+  ('2017-03-19', '12:00:00', '13:00:00', 60, NULL, 1, 'Just dumping'),
   ('2017-03-20', '09:00:00', '16:00:00', 420, NULL, 1, 'Just dumping'),
   ('2017-03-21', '09:00:00', '16:00:00', 420, NULL, 1, 'Just dumping'),
   ('2017-03-22', '09:00:00', '16:00:00', 420, NULL, 1, 'Just dumping'),

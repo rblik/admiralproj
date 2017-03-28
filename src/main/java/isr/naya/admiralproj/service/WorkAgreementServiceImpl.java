@@ -1,10 +1,7 @@
 package isr.naya.admiralproj.service;
 
 import isr.naya.admiralproj.dto.PartialDay;
-import isr.naya.admiralproj.model.Employee;
-import isr.naya.admiralproj.model.Project;
-import isr.naya.admiralproj.model.WorkAgreement;
-import isr.naya.admiralproj.model.WorkUnit;
+import isr.naya.admiralproj.model.*;
 import isr.naya.admiralproj.repo.EmployeeRepository;
 import isr.naya.admiralproj.repo.ProjectRepository;
 import isr.naya.admiralproj.repo.WorkAgreementRepository;
@@ -16,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -59,7 +57,12 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
     @Override
     @Transactional(readOnly = true)
     public Set<PartialDay> getPartialDays(@NonNull LocalDate from, @NonNull LocalDate to,@NonNull Integer maxHours) {
-        return workAgreementRepository.getWithSumTime(from, to, maxHours);
+        Map<PartialDay, PartialDay> collect = workAgreementRepository.getAbsenceWithSumTime(from, to).stream().collect(Collectors.toMap(o -> o, o -> o));
+        Set<PartialDay> withSumTime = workAgreementRepository.getWithSumTime(from, to, maxHours);
+        return withSumTime.stream().map(partialDay -> {
+            PartialDay day = collect.getOrDefault(partialDay, new PartialDay());
+            return partialDay.setAbsence(day.getAbsenceType(), day.getAbsenceMinutes());
+        }).collect(Collectors.toSet());
     }
 
     private List<WorkAgreement> intersect(Set<WorkAgreement> agreements, Set<WorkAgreement> agreementsWithUnits) {

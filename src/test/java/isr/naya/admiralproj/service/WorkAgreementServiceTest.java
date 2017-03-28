@@ -3,6 +3,7 @@ package isr.naya.admiralproj.service;
 import isr.naya.admiralproj.dto.PartialDay;
 import isr.naya.admiralproj.exception.NotFoundException;
 import isr.naya.admiralproj.exception.TimeOverlappingException;
+import isr.naya.admiralproj.model.AbsenceType;
 import isr.naya.admiralproj.model.WorkAgreement;
 import isr.naya.admiralproj.model.WorkUnit;
 import org.junit.Rule;
@@ -78,7 +79,7 @@ public class WorkAgreementServiceTest {
                         date(LocalDate.of(2017,1,1)).
                         start(LocalTime.of(10, 0)).
                         finish(LocalTime.of(12, 0)).build());
-        assertThat(save, hasProperty("id", is(31)));
+        assertThat(save, hasProperty("id", is(32)));
     }
 
     @Test
@@ -100,7 +101,7 @@ public class WorkAgreementServiceTest {
         WorkUnit save = service.saveUnit(1, 1,
                 WorkUnit.builder().date(LocalDate.of(2017, 3, 19)).
                         start(LocalTime.of(10, 0)).
-                        finish(LocalTime.of(12, 0)).build());
+                        finish(LocalTime.of(14, 0)).build());
     }
 
     @Test
@@ -110,7 +111,9 @@ public class WorkAgreementServiceTest {
                 hasProperty("agreementId", equalTo(1)),
                 hasProperty("employeeId", equalTo(1)),
                 hasProperty("date", equalTo(LocalDate.of(2017,3,19))),
-                hasProperty("duration", equalTo(420L)))));
+                hasProperty("duration", equalTo(180L)),
+                hasProperty("absenceType", equalTo(AbsenceType.ILLNESS)),
+                hasProperty("absenceMinutes", equalTo(120L)))));
         assertThat(all, hasSize(21));
     }
 }
