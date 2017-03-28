@@ -108,7 +108,6 @@ public class WorkAgreementServiceTest {
     public void testGetAllWithTimeSum() {
         Set<PartialDay> all = service.getPartialDays(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1), 12);
         assertThat(all, hasItem(allOf(
-                hasProperty("agreementId", equalTo(1)),
                 hasProperty("employeeId", equalTo(1)),
                 hasProperty("date", equalTo(LocalDate.of(2017,3,19))),
                 hasProperty("duration", equalTo(180L)),

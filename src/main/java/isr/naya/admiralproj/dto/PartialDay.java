@@ -7,9 +7,8 @@ import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(of = {"agreementId", "date"})
+@EqualsAndHashCode(of = {"employeeId", "date"})
 public class PartialDay {
-    private Integer agreementId;
     private Integer employeeId;
     private String employeeName;
     private String employeeSurname;
@@ -18,8 +17,7 @@ public class PartialDay {
     private AbsenceType absenceType;
     private Long absenceMinutes = 0L;
 
-    public PartialDay(Integer agreementId, Integer employeeId, String employeeName, String employeeSurname, LocalDate date, Long duration) {
-        this.agreementId = agreementId;
+    public PartialDay(Integer employeeId, String employeeName, String employeeSurname, LocalDate date, Long duration) {
         this.employeeId = employeeId;
         this.employeeName = employeeName;
         this.employeeSurname = employeeSurname;
@@ -27,8 +25,8 @@ public class PartialDay {
         this.duration = duration;
     }
 
-    public PartialDay(Integer agreementId, LocalDate date, AbsenceType absenceType, Long absenceMinutes) {
-        this.agreementId = agreementId;
+    public PartialDay(Integer employeeId, LocalDate date, AbsenceType absenceType, Long absenceMinutes) {
+        this.employeeId = employeeId;
         this.date = date;
         this.absenceType = absenceType;
         this.absenceMinutes = absenceMinutes;

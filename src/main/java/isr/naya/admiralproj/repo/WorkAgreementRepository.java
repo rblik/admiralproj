@@ -22,9 +22,9 @@ public interface WorkAgreementRepository extends JpaRepository<WorkAgreement, In
     @Query("select wa from WorkAgreement wa join fetch wa.employee join fetch wa.project p join fetch p.client")
     Set<WorkAgreement> findAllWithEmployees();
 
-    @Query("select new isr.naya.admiralproj.dto.PartialDay(wa.id, e.id, e.name, e.surname, wu.date, sum (wu.duration)) from WorkAgreement wa join wa.employee e join wa.workUnits wu where wa.employee.id = e.id and wu.date>=?1 and wu.date<?2 group by e.id, wa.id, wu.date having sum(wu.duration)<60*?3")
+    @Query("select new isr.naya.admiralproj.dto.PartialDay(e.id, e.name, e.surname, wu.date, sum (wu.duration)) from WorkAgreement wa join wa.employee e join wa.workUnits wu where wa.employee.id = e.id and wu.date>=?1 and wu.date<?2 group by e.id, wu.date having sum(wu.duration)<60*?3")
     Set<PartialDay> getWithSumTime(LocalDate from, LocalDate to, Integer hours);
 
-    @Query("select new isr.naya.admiralproj.dto.PartialDay(wa.id, wu.date, wu.absenceType, wu.duration) from WorkAgreement wa join wa.workUnits wu where wu.absenceType is not null and wu.date>=?1 and wu.date<?2 group by wa.id, wu.id")
+    @Query("select new isr.naya.admiralproj.dto.PartialDay(e.id, wu.date, wu.absenceType, wu.duration) from WorkAgreement wa join wa.employee e join wa.workUnits wu where wu.absenceType is not null and wu.date>=?1 and wu.date<?2 group by e.id, wu.id")
     Set<PartialDay> getAbsenceWithSumTime(LocalDate from, LocalDate to);
 }
