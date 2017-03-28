@@ -84,4 +84,9 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
     public Set<WorkUnit> getAllUnitsByDateAndEmployeeAndProject(@NonNull LocalDate from, @NonNull LocalDate to, @NonNull Integer employeeId, @NonNull Integer projectId) {
         return workUnitRepository.getAllByDateBetweenAndEmployeeIdAndProjectId(from, to, employeeId, projectId);
     }
+
+    @Override
+    public Set<WorkAgreement> getAgreementsGraph() {
+        return workAgreementRepository.getAllWithEmployeesAndDepartmentsAndProjectsAndClients();
+    }
 }

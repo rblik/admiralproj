@@ -26,4 +26,6 @@ public interface WorkAgreementService {
     Set<WorkUnit> getAllUnitsByDateAndProject(LocalDate from, LocalDate to, Integer projectId);
 
     Set<WorkUnit> getAllUnitsByDateAndEmployeeAndProject(LocalDate from, LocalDate to, Integer employeeId, Integer projectId);
+
+    Set<WorkAgreement> getAgreementsGraph();
 }

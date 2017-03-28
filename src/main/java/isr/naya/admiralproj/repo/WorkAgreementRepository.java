@@ -19,6 +19,6 @@ public interface WorkAgreementRepository extends JpaRepository<WorkAgreement, In
 
     WorkAgreement findFirstByIdAndEmployeeIdAndActiveIsTrue(Integer id, Integer employeeId);
 
-    @Query("select wa from WorkAgreement wa join fetch wa.employee join fetch wa.project p join fetch p.client")
-    Set<WorkAgreement> findAllWithEmployees();
+    @Query("select wa from WorkAgreement wa join fetch wa.employee e join fetch wa.project p join fetch p.client c join fetch e.department")
+    Set<WorkAgreement> getAllWithEmployeesAndDepartmentsAndProjectsAndClients();
 }

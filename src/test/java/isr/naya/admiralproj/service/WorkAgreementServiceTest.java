@@ -142,4 +142,10 @@ public class WorkAgreementServiceTest {
         Set<WorkUnit> workUnits = service.getAllUnitsByDateAndEmployeeAndProject(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1), 1, 7);
         assertThat(workUnits, hasSize(6));
     }
+
+    @Test
+    public void testGetAgreementsGraph() {
+        Set<WorkAgreement> agreements = service.getAgreementsGraph();
+        assertThat(agreements, hasSize(6));
+    }
 }
