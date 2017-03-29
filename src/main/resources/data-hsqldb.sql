@@ -19,12 +19,12 @@ INSERT INTO employees (name, surname, passport_id, birthday, email, private_phon
   ('Name5', 'Surname5', 125225322, '1981-08-25', 'name5@gmail.com', '053-0023341', 'Qwerty123', 5);
 
 INSERT INTO employee_roles (employee_id, role) VALUES
-  (1, 'ROLE_USER'),
-  (2, 'ROLE_USER'),
-  (3, 'ROLE_USER'),
+  (1, 'ROLE_EMPLOYEE'),
+  (2, 'ROLE_EMPLOYEE'),
+  (3, 'ROLE_EMPLOYEE'),
   (3, 'ROLE_ADMIN'),
-  (4, 'ROLE_USER'),
-  (5, 'ROLE_USER');
+  (4, 'ROLE_EMPLOYEE'),
+  (5, 'ROLE_EMPLOYEE');
 
 INSERT INTO clients (company_number, name) VALUES
   (123123123, 'Naya'),
