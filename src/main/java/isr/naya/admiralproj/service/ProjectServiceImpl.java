@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static isr.naya.admiralproj.exception.ValidationUtil.checkNotFound;
 
 @Service
@@ -21,5 +23,10 @@ public class ProjectServiceImpl implements ProjectService {
     public Project save(@NonNull Integer clientId, @NonNull Project project) {
         project.setClient(checkNotFound(clientRepository.findOne(clientId), clientId, Client.class));
         return projectRepository.save(project);
+    }
+
+    @Override
+    public List<Project> getAll() {
+        return projectRepository.getAllWithClients();
     }
 }

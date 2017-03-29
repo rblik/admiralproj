@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static isr.naya.admiralproj.exception.ValidationUtil.checkNotFound;
 
 @Service
@@ -21,5 +23,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee save(@NonNull Integer departmentId, @NonNull Employee employee) {
         employee.setDepartment(checkNotFound(departmentRepository.findOne(departmentId), departmentId, Department.class));
         return employeeRepository.save(employee);
+    }
+
+    @Override
+    public List<Employee> getAll() {
+        return employeeRepository.getAllWithDepartments();
     }
 }

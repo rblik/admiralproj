@@ -49,7 +49,7 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
     @Override
     @Transactional
     public WorkUnit saveUnit(@NonNull Integer employeeId, @NonNull Integer workAgreementId, @NonNull WorkUnit workUnit) {
-        workUnit.setWorkAgreement(checkNotFound(workAgreementRepository.findFirstByIdAndEmployeeIdAndActiveIsTrue(workAgreementId, employeeId), workAgreementId, WorkAgreement.class));
+        workUnit.setWorkAgreement(checkNotFound(workAgreementRepository.findFirstByIdAndEmployeeId(workAgreementId, employeeId), workAgreementId, WorkAgreement.class));
         return checkTimeOverlap(workUnitRepository.countExisted(employeeId, workAgreementId, workUnit.getDate(), workUnit.getStart(), workUnit.getFinish())) ?
                 workUnitRepository.save(workUnit) : null;
     }
