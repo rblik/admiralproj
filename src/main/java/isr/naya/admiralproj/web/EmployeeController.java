@@ -12,7 +12,7 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    @GetMapping()
+    @GetMapping("/profile")
     public Employee get() {
         return employeeService.get(AuthorizedUser.id());
     }
