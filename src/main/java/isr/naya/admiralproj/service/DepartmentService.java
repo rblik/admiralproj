@@ -10,5 +10,7 @@ public interface DepartmentService {
 
     List<Department> getAll();
 
-    List<Department> getAllWithProjects();
+    List<Department> getAllWithEmployees();
+
+    Department get(Integer id);
 }

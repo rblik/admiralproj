@@ -12,4 +12,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     @Query("select e from Employee e join fetch e.department")
     List<Employee> getAllWithDepartments();
 
+    @Query("select e from Employee e join fetch e.department where e.id=?1")
+    Employee getOneWithDepartment(Integer id);
 }

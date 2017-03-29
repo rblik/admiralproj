@@ -26,7 +26,17 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<Employee> getAll() {
+    public List<Employee> getAllWithDepartments() {
         return employeeRepository.getAllWithDepartments();
+    }
+
+    @Override
+    public Employee get(@NonNull Integer id) {
+        return checkNotFound(employeeRepository.findOne(id), id, Employee.class);
+    }
+
+    @Override
+    public Employee getWithDepartment(@NonNull Integer id) {
+        return checkNotFound(employeeRepository.getOneWithDepartment(id), id, Employee.class);
     }
 }

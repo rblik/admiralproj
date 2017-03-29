@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface DepartmentRepository extends JpaRepository<Department, Integer> {
 
-    @Query("select d from Department d join fetch d.employees")
+    @Query("select distinct d from Department d left join fetch d.employees")
     List<Department> getAllWithEmployees();
 }

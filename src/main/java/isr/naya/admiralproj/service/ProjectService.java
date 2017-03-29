@@ -8,5 +8,9 @@ public interface ProjectService {
 
     Project save(Integer clientId, Project project);
 
-    List<Project> getAll();
+    List<Project> getAllWithClients();
+
+    Project get(Integer id);
+
+    Project getWithClient(Integer id);
 }

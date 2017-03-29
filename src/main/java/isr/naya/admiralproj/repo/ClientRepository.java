@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface ClientRepository extends JpaRepository<Client, Integer> {
 
-    @Query("select c from Client c join fetch c.projects")
+    @Query("select distinct c from Client c left join fetch c.projects")
     List<Client> getAllWithProjects();
 }

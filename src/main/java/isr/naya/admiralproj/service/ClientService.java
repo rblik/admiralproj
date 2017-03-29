@@ -10,4 +10,6 @@ public interface ClientService {
     List<Client> getAll();
 
     List<Client> getAllWithProjects();
+
+    Client get(Integer id);
 }

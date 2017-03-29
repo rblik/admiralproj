@@ -26,7 +26,17 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<Project> getAll() {
+    public List<Project> getAllWithClients() {
         return projectRepository.getAllWithClients();
+    }
+
+    @Override
+    public Project get(Integer id) {
+        return checkNotFound(projectRepository.findOne(id), id, Project.class);
+    }
+
+    @Override
+    public Project getWithClient(Integer id) {
+        return checkNotFound(projectRepository.getOneWithClient(id), id, Project.class);
     }
 }

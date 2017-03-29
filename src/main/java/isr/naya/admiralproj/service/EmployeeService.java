@@ -8,5 +8,9 @@ public interface EmployeeService {
 
     Employee save(Integer departmentId, Employee employee);
 
-    List<Employee> getAll();
+    List<Employee> getAllWithDepartments();
+
+    Employee get(Integer id);
+
+    Employee getWithDepartment(Integer id);
 }
