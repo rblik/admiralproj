@@ -8,6 +8,7 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -52,5 +53,10 @@ public class EmployeeServiceTest {
         thrown.expect(NotFoundException.class);
         thrown.expectMessage("Not found department");
         service.save(-1, Employee.builder().name("AnotherN").surname("AnotherS").passportId("999999999").password("123123Aa").email("email@gg.com").build());
+    }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void testSaveWithDuplicateEmail() {
+        service.save(1, Employee.builder().name("AnotherN").surname("AnotherS").passportId("999999999").password("123123Aa").email("name1@gmail.com").build());
     }
 }
