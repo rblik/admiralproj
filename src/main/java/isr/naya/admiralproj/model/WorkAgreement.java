@@ -28,6 +28,6 @@ public class WorkAgreement extends BaseEntity{
     @JoinColumn(name = "employee_id", referencedColumnName = "id",nullable = false)
     private Employee employee;
 
-    @OneToMany(mappedBy = "workAgreement", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "workAgreement", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<WorkUnit> workUnits;
 }
