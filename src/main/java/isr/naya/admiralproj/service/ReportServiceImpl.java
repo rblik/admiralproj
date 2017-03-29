@@ -21,7 +21,7 @@ import static isr.naya.admiralproj.util.MappingUtil.generate;
 @Service
 @AllArgsConstructor
 @Transactional(readOnly = true)
-public class ReportServiceAdmin implements ReportService {
+public class ReportServiceImpl implements ReportService {
 
     private WorkUnitRepository workUnitRepository;
     private EmployeeRepository employeeRepository;
