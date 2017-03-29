@@ -2,18 +2,44 @@ package isr.naya.admiralproj.web;
 
 import isr.naya.admiralproj.AuthorizedUser;
 import isr.naya.admiralproj.model.Employee;
+import isr.naya.admiralproj.model.WorkAgreement;
+import isr.naya.admiralproj.model.WorkUnit;
 import isr.naya.admiralproj.service.EmployeeService;
+import isr.naya.admiralproj.service.WorkAgreementService;
+import isr.naya.admiralproj.service.WorkUnitService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.time.LocalDate;
+import java.util.Set;
 
 @RestController
 public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private WorkUnitService workUnitService;
+    @Autowired
+    private WorkAgreementService workAgreementService;
 
     @GetMapping("/profile")
-    public Employee get() {
+    public Employee getProfile() {
         return employeeService.get(AuthorizedUser.id());
+    }
+
+    @PostMapping(value = "/units", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity saveUnit(@Valid @RequestBody WorkUnit unit) {
+        WorkUnit workUnit = workUnitService.saveUnit(AuthorizedUser.id(), 1, unit);
+        return ResponseEntity.status(HttpStatus.CREATED).body(workUnit);
+    }
+
+    @GetMapping("/units")
+    public Set<WorkAgreement> getWorkAgreementsWithUnits(@RequestParam(value = "from") LocalDate from,
+                                                         @RequestParam(value = "to") LocalDate to) {
+        return workAgreementService.getAllForEmployee(AuthorizedUser.id(), from, to);
     }
 }
