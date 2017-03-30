@@ -1,5 +1,6 @@
 package isr.naya.admiralproj.service;
 
+import isr.naya.admiralproj.dto.AgreementDto;
 import isr.naya.admiralproj.model.Employee;
 import isr.naya.admiralproj.model.Project;
 import isr.naya.admiralproj.model.WorkAgreement;
@@ -11,11 +12,9 @@ import lombok.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
 import static isr.naya.admiralproj.exception.ValidationUtil.checkNotFound;
-import static isr.naya.admiralproj.util.MappingUtil.intersectAgreements;
 
 @Service
 @AllArgsConstructor
@@ -27,10 +26,8 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
     private ProjectRepository projectRepository;
 
     @Override
-    public Set<WorkAgreement> getAllForEmployee(@NonNull Integer employeeId, @NonNull LocalDate from, @NonNull LocalDate to) {
-        Set<WorkAgreement> agreements = workAgreementRepository.findByEmployeeIdAndTimeRange(employeeId);
-        Set<WorkAgreement> agreementsWithUnits = workAgreementRepository.findByEmployeeIdWithWorkUnitsBetween(employeeId, from, to);
-        return intersectAgreements(agreements, agreementsWithUnits);
+    public List<AgreementDto> getAllForEmployee(Integer employeeId) {
+        return workAgreementRepository.getWithProjectAndClientByEmployeeId(employeeId);
     }
 
     @Override
@@ -42,7 +39,7 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
     }
 
     @Override
-    public Set<WorkAgreement> getAgreementsGraph() {
+    public List<AgreementDto> getAgreementsGraph() {
         return workAgreementRepository.getAllWithEmployeesAndDepartmentsAndProjectsAndClients();
     }
 }

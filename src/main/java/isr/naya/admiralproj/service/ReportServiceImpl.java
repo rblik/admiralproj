@@ -2,7 +2,7 @@ package isr.naya.admiralproj.service;
 
 
 import isr.naya.admiralproj.dto.MissingDay;
-import isr.naya.admiralproj.dto.PartialDay;
+import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.model.Employee;
 import isr.naya.admiralproj.model.WorkUnit;
 import isr.naya.admiralproj.repo.EmployeeRepository;
@@ -27,8 +27,13 @@ public class ReportServiceImpl implements ReportService {
     private EmployeeRepository employeeRepository;
 
     @Override
-    public Set<PartialDay> getPartialDays(@NonNull LocalDate from, @NonNull LocalDate to, @NonNull Integer maxHours) {
+    public Set<WorkInfo> getPartialDays(@NonNull LocalDate from, @NonNull LocalDate to, @NonNull Integer maxHours) {
         return workUnitRepository.getAllPartialBetweenDates(from, to, maxHours);
+    }
+
+    @Override
+    public List<WorkInfo> getAllWorkUnitsForEmployee(@NonNull Integer employeeId, @NonNull LocalDate from, @NonNull LocalDate to) {
+        return workUnitRepository.getAllWithAgreements(employeeId, from, to);
     }
 
     @Override

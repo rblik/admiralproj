@@ -1,7 +1,7 @@
 package isr.naya.admiralproj.service;
 
 import isr.naya.admiralproj.dto.MissingDay;
-import isr.naya.admiralproj.dto.PartialDay;
+import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.model.WorkUnit;
 import org.junit.Rule;
 import org.junit.Test;
@@ -14,6 +14,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 import static org.hamcrest.Matchers.*;
@@ -32,12 +33,18 @@ public class ReportServiceTest {
 
     @Test
     public void testGetAllWithTimeSum() {
-        Set<PartialDay> all = service.getPartialDays(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1), 12);
+        Set<WorkInfo> all = service.getPartialDays(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1), 12);
         assertThat(all, hasItem(allOf(
                 hasProperty("employeeId", equalTo(1)),
                 hasProperty("date", equalTo(LocalDate.of(2017, 3, 19))),
                 hasProperty("duration", equalTo(180L)))));
         assertThat(all, hasSize(21));
+    }
+
+    @Test
+    public void testGetAllWorkUnitsForEmployee() {
+        List<WorkInfo> workInfos = service.getAllWorkUnitsForEmployee(1, LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1));
+        assertThat(workInfos, hasSize(6));
     }
 
     @Test

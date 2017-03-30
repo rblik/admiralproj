@@ -1,15 +1,18 @@
 package isr.naya.admiralproj.service;
 
 import isr.naya.admiralproj.dto.MissingDay;
-import isr.naya.admiralproj.dto.PartialDay;
+import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.model.WorkUnit;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 public interface ReportService {
 
-    Set<PartialDay> getPartialDays(LocalDate from, LocalDate to, Integer maxHours);
+    Set<WorkInfo> getPartialDays(LocalDate from, LocalDate to, Integer maxHours);
+
+    List<WorkInfo> getAllWorkUnitsForEmployee(Integer id, LocalDate from, LocalDate to);
 
     Set<MissingDay> getMissingDays(LocalDate from, LocalDate to);
 

@@ -1,5 +1,6 @@
 package isr.naya.admiralproj.service;
 
+import isr.naya.admiralproj.dto.AgreementDto;
 import isr.naya.admiralproj.exception.NotFoundException;
 import isr.naya.admiralproj.model.WorkAgreement;
 import org.junit.Rule;
@@ -12,8 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
 import static java.util.Collections.emptyList;
 import static org.hamcrest.Matchers.*;
@@ -32,16 +32,6 @@ public class WorkAgreementServiceTest {
     private WorkAgreementService service;
     @Rule
     public ExpectedException thrown = ExpectedException.none();
-
-    @Test
-    public void testGetAllForEmployeeByDateRange() {
-        Set<WorkAgreement> agreements = service.getAllForEmployee(5,
-                LocalDate.of(2017, 4, 19),
-                LocalDate.of(2017, 4, 26));
-        assertThat(agreements, allOf(hasSize(2), contains(
-                hasProperty("workUnits", hasSize(0)),
-                hasProperty("workUnits", hasSize(5)))));
-    }
 
     @Test
     public void testSave() {
@@ -68,7 +58,7 @@ public class WorkAgreementServiceTest {
 
     @Test
     public void testGetAgreementsGraph() {
-        Set<WorkAgreement> agreements = service.getAgreementsGraph();
+        List<AgreementDto> agreements = service.getAgreementsGraph();
         assertThat(agreements, hasSize(6));
     }
 }
