@@ -1,4 +1,4 @@
-package isr.naya.admiralproj.web.formatter;
+package isr.naya.admiralproj.web.util;
 
 import org.springframework.format.Formatter;
 import org.springframework.util.StringUtils;
