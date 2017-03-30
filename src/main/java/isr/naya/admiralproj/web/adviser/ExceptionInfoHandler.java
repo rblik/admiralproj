@@ -11,7 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -20,9 +23,8 @@ import java.util.Arrays;
 @RestControllerAdvice(annotations = RestController.class)
 public class ExceptionInfoHandler {
 
-    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
+    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY) // 422
     @ExceptionHandler(NotFoundException.class)
-    @ResponseBody
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public ErrorInfo notFoundError(HttpServletRequest req, NotFoundException e) {
         return logAndGetErrorInfo(req, e, false);
@@ -30,15 +32,13 @@ public class ExceptionInfoHandler {
 
     @ResponseStatus(value = HttpStatus.CONFLICT)  // 409
     @ExceptionHandler(DataIntegrityViolationException.class)
-    @ResponseBody
     @Order(Ordered.HIGHEST_PRECEDENCE + 1)
     public ErrorInfo conflict(HttpServletRequest req, DataIntegrityViolationException e) {
         return logAndGetErrorInfo(req, e, false);
     }
 
-    @ResponseStatus(value = HttpStatus.CONFLICT)
+    @ResponseStatus(value = HttpStatus.CONFLICT) // 409
     @ExceptionHandler(TimeOverlappingException.class)
-    @ResponseBody
     @Order(Ordered.HIGHEST_PRECEDENCE + 2)
     public ErrorInfo timeOverlappingError(HttpServletRequest req, TimeOverlappingException e) {
         return logAndGetErrorInfo(req, e, false);
@@ -46,7 +46,6 @@ public class ExceptionInfoHandler {
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)  // 400
     @ExceptionHandler(BindException.class)
-    @ResponseBody
     @Order(Ordered.HIGHEST_PRECEDENCE + 3)
     public ErrorInfo bindValidationError(HttpServletRequest req, BindingResult result) {
         return logAndGetValidationErrorInfo(req, result);
@@ -54,7 +53,6 @@ public class ExceptionInfoHandler {
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)  // 400
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseBody
     @Order(Ordered.HIGHEST_PRECEDENCE + 4)
     public ErrorInfo restValidationError(HttpServletRequest req, MethodArgumentNotValidException e) {
         return logAndGetValidationErrorInfo(req, e.getBindingResult());
@@ -62,7 +60,6 @@ public class ExceptionInfoHandler {
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR) // 500
     @ExceptionHandler(Exception.class)
-    @ResponseBody
     public ErrorInfo handleError(HttpServletRequest req, Exception e) {
         return logAndGetErrorInfo(req, e, true);
     }
