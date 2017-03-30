@@ -39,21 +39,21 @@ public class ExceptionInfoHandler {
 
     @ResponseStatus(value = HttpStatus.CONFLICT) // 409
     @ExceptionHandler(TimeOverlappingException.class)
-    @Order(Ordered.HIGHEST_PRECEDENCE + 2)
+    @Order(Ordered.HIGHEST_PRECEDENCE + 1)
     public ErrorInfo timeOverlappingError(HttpServletRequest req, TimeOverlappingException e) {
         return logAndGetErrorInfo(req, e, false);
     }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)  // 400
     @ExceptionHandler(BindException.class)
-    @Order(Ordered.HIGHEST_PRECEDENCE + 3)
+    @Order(Ordered.HIGHEST_PRECEDENCE + 2)
     public ErrorInfo bindValidationError(HttpServletRequest req, BindingResult result) {
         return logAndGetValidationErrorInfo(req, result);
     }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)  // 400
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    @Order(Ordered.HIGHEST_PRECEDENCE + 4)
+    @Order(Ordered.HIGHEST_PRECEDENCE + 2)
     public ErrorInfo restValidationError(HttpServletRequest req, MethodArgumentNotValidException e) {
         return logAndGetValidationErrorInfo(req, e.getBindingResult());
     }
