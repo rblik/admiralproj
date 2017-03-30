@@ -1,6 +1,5 @@
 package isr.naya.admiralproj.repo;
 
-import isr.naya.admiralproj.dto.MissingDay;
 import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.model.WorkUnit;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,8 +18,8 @@ public interface WorkUnitRepository extends JpaRepository<WorkUnit, Integer> {
     @Query("select new isr.naya.admiralproj.dto.WorkInfo(e.id, e.name, e.surname, wu.date, sum (wu.duration)) from WorkUnit wu join wu.workAgreement wa join wa.employee e where wa.id = wu.workAgreement.id and e.id = wa.employee.id and wu.date>=?1 and wu.date<?2 group by e.id, wu.date having sum(wu.duration)<60*?3")
     Set<WorkInfo> getAllPartialBetweenDates(LocalDate from, LocalDate to, Integer maxHours);
 
-    @Query("select new isr.naya.admiralproj.dto.MissingDay(e.id, wu.date) from WorkUnit wu join wu.workAgreement wa join wa.employee e where wa.id = wu.workAgreement.id and e.id = wa.employee.id and wu.date>=?1 and wu.date<?2 group by e.id, wu.date")
-    Set<MissingDay> getAllNonEmptyDays(LocalDate from, LocalDate to);
+    @Query("select new isr.naya.admiralproj.dto.WorkInfo(e.id, wu.date) from WorkUnit wu join wu.workAgreement wa join wa.employee e where wa.id = wu.workAgreement.id and e.id = wa.employee.id and wu.date>=?1 and wu.date<?2 group by e.id, wu.date")
+    Set<WorkInfo> getAllNonEmptyDays(LocalDate from, LocalDate to);
 
     @Query("select new isr.naya.admiralproj.dto.WorkInfo(wa.id, wu.date, wu.start, wu.finish, wu.duration) from WorkUnit wu join wu.workAgreement wa join wa.employee e where e.id = ?1 and wu.date between ?2 and ?3")
     List<WorkInfo> getAllWithAgreements(Integer employeeId, LocalDate from, LocalDate to);

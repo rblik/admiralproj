@@ -1,6 +1,6 @@
 package isr.naya.admiralproj.util;
 
-import isr.naya.admiralproj.dto.MissingDay;
+import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.model.Employee;
 import org.assertj.core.util.Sets;
 
@@ -16,12 +16,12 @@ public class MappingUtil {
     private MappingUtil() {
     }
 
-    public static Set<MissingDay> generate(Set<MissingDay> days, LocalDate from, LocalDate to, List<Employee> employees) {
-        Set<MissingDay> result = Sets.newHashSet();
+    public static Set<WorkInfo> generate(Set<WorkInfo> days, LocalDate from, LocalDate to, List<Employee> employees) {
+        Set<WorkInfo> result = Sets.newHashSet();
         employees.forEach(e -> {
-            Set<MissingDay> collect = Stream.iterate(
-                    new MissingDay(e.getId(), e.getName(), e.getSurname(), e.getDepartment().getName(), from),
-                    missingDay -> new MissingDay(e.getId(), e.getName(), e.getSurname(), e.getDepartment().getName(), missingDay.getDate().plusDays(1))).limit(DAYS.between(from, to)).collect(Collectors.toSet());
+            Set<WorkInfo> collect = Stream.iterate(
+                    new WorkInfo(e.getId(), e.getName(), e.getSurname(), e.getDepartment().getName(), from),
+                    missingDay -> new WorkInfo(e.getId(), e.getName(), e.getSurname(), e.getDepartment().getName(), missingDay.getDate().plusDays(1))).limit(DAYS.between(from, to)).collect(Collectors.toSet());
             result.addAll(collect);
         });
         result.removeAll(days);

@@ -1,7 +1,6 @@
 package isr.naya.admiralproj.service;
 
 
-import isr.naya.admiralproj.dto.MissingDay;
 import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.model.Employee;
 import isr.naya.admiralproj.model.WorkUnit;
@@ -37,7 +36,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public Set<MissingDay> getMissingDays(@NonNull LocalDate from, @NonNull LocalDate to) {
+    public Set<WorkInfo> getMissingDays(@NonNull LocalDate from, @NonNull LocalDate to) {
         List<Employee> employees = employeeRepository.getAllWithDepartments();
         return generate(workUnitRepository.getAllNonEmptyDays(from, to), from, to, employees);
     }

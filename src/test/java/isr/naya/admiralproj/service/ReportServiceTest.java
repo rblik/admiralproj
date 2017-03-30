@@ -1,6 +1,5 @@
 package isr.naya.admiralproj.service;
 
-import isr.naya.admiralproj.dto.MissingDay;
 import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.model.WorkUnit;
 import org.junit.Rule;
@@ -49,7 +48,7 @@ public class ReportServiceTest {
 
     @Test
     public void testGetAllForMissing() {
-        Set<MissingDay> days = service.getMissingDays(LocalDate.of(2017, 3, 19), LocalDate.of(2017, 3, 24));
+        Set<WorkInfo> days = service.getMissingDays(LocalDate.of(2017, 3, 19), LocalDate.of(2017, 3, 24));
         assertThat(days, hasSize(0));
     }
 

@@ -1,6 +1,5 @@
 package isr.naya.admiralproj.service;
 
-import isr.naya.admiralproj.dto.MissingDay;
 import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.model.WorkUnit;
 
@@ -14,7 +13,7 @@ public interface ReportService {
 
     List<WorkInfo> getAllWorkUnitsForEmployee(Integer id, LocalDate from, LocalDate to);
 
-    Set<MissingDay> getMissingDays(LocalDate from, LocalDate to);
+    Set<WorkInfo> getMissingDays(LocalDate from, LocalDate to);
 
     // Pivotal Report Block
     Set<WorkUnit> getAllUnitsByDate(LocalDate from, LocalDate to);
