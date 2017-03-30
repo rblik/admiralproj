@@ -1,4 +1,4 @@
-package isr.naya.admiralproj.web;
+package isr.naya.admiralproj.web.adviser;
 
 import isr.naya.admiralproj.web.util.LocalDateFormatter;
 import org.springframework.web.bind.WebDataBinder;
