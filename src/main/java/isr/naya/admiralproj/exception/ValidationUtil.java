@@ -1,14 +1,13 @@
 package isr.naya.admiralproj.exception;
 
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @NoArgsConstructor
 public class ValidationUtil {
 
-    public static boolean checkTimeOverlap(Integer count) {
+    public static boolean checkTimeOverlap(@NonNull Integer count) {
 
-        if (count == null)
-            return false;
         if (count != 0) {
             throw new TimeOverlappingException("There is already a record for this period of time.");
         } else

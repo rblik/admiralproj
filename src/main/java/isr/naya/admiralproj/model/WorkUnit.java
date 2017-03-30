@@ -10,7 +10,7 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, of = {})
 @Entity
 @Table(name = "work_units")
 @NoArgsConstructor

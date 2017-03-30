@@ -2,7 +2,6 @@ package isr.naya.admiralproj.util;
 
 import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.model.Employee;
-import lombok.NoArgsConstructor;
 import org.assertj.core.util.Sets;
 
 import java.time.LocalDate;
@@ -13,8 +12,9 @@ import java.util.stream.Stream;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
-@NoArgsConstructor
 public class MappingUtil {
+    private MappingUtil() {
+    }
 
     public static Set<WorkInfo> generate(Set<WorkInfo> days, LocalDate from, LocalDate to, List<Employee> employees) {
         Set<WorkInfo> result = Sets.newHashSet();

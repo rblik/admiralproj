@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "departments")
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, of = {})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
