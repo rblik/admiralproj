@@ -1,9 +1,7 @@
 package isr.naya.admiralproj.service;
 
 import isr.naya.admiralproj.model.Client;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,7 +15,7 @@ import java.util.List;
 import static com.google.common.collect.ImmutableSet.of;
 import static java.util.Collections.emptySet;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
@@ -37,7 +35,7 @@ public class ClientServiceTest {
 
     @Test(expected = ConstraintViolationException.class)
     public void testSaveWrong() {
-        service.save((Client.builder().companyNumber(321123321).build()));
+        service.save(Client.builder().companyNumber(321123321).build());
     }
 
     @Test
