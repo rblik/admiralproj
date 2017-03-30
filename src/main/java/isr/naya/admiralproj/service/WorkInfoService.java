@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
-public interface ReportService {
+public interface WorkInfoService {
 
     Set<WorkInfo> getPartialDays(LocalDate from, LocalDate to, Integer maxHours);
 

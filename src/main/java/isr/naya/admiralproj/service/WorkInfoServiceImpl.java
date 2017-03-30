@@ -1,6 +1,5 @@
 package isr.naya.admiralproj.service;
 
-
 import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.model.Employee;
 import isr.naya.admiralproj.repo.EmployeeRepository;
@@ -19,7 +18,7 @@ import static isr.naya.admiralproj.util.MappingUtil.generate;
 @Service
 @AllArgsConstructor
 @Transactional(readOnly = true)
-public class ReportServiceImpl implements ReportService {
+public class WorkInfoServiceImpl implements WorkInfoService {
 
     private WorkUnitRepository workUnitRepository;
     private EmployeeRepository employeeRepository;
