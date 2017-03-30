@@ -9,8 +9,8 @@ import lombok.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static isr.naya.admiralproj.exception.ValidationUtil.checkNotFound;
-import static isr.naya.admiralproj.exception.ValidationUtil.checkTimeOverlap;
+import static isr.naya.admiralproj.util.ValidationUtil.checkNotFound;
+import static isr.naya.admiralproj.util.ValidationUtil.checkTimeOverlap;
 
 @Service
 @AllArgsConstructor

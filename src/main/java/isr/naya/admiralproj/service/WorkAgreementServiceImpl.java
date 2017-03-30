@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static isr.naya.admiralproj.exception.ValidationUtil.checkNotFound;
+import static isr.naya.admiralproj.util.ValidationUtil.checkNotFound;
 
 @Service
 @AllArgsConstructor

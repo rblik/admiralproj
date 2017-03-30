@@ -1,5 +1,7 @@
-package isr.naya.admiralproj.exception;
+package isr.naya.admiralproj.util;
 
+import isr.naya.admiralproj.exception.NotFoundException;
+import isr.naya.admiralproj.exception.TimeOverlappingException;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
