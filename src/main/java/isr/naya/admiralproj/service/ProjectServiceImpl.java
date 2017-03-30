@@ -33,12 +33,12 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Project get(Integer id) {
+    public Project get(@NonNull Integer id) {
         return checkNotFound(projectRepository.findOne(id), id, Project.class);
     }
 
     @Override
-    public Project getWithClient(Integer id) {
+    public Project getWithClient(@NonNull Integer id) {
         return checkNotFound(projectRepository.getOneWithClient(id), id, Project.class);
     }
 }

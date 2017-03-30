@@ -13,11 +13,10 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.validation.ConstraintViolationException;
-
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
@@ -50,6 +49,7 @@ public class ProjectServiceTest {
     @Test
     public void testGetAllWithClients() {
         List<Project> projects = service.getAllWithClients();
+        System.out.println(1);
         assertThat(projects, hasSize(14));
         assertThat(projects, hasItem(allOf(hasProperty("name", is("Developing")), hasProperty("client", hasProperty("name", is("Elbit"))))));
     }

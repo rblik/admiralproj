@@ -25,7 +25,7 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
     private ProjectRepository projectRepository;
 
     @Override
-    public List<AgreementDto> getAllForEmployee(Integer employeeId) {
+    public List<AgreementDto> getAllForEmployee(@NonNull Integer employeeId) {
         return workAgreementRepository.getAllActiveWithProjectsAndClientsByEmployeeId(employeeId);
     }
 
