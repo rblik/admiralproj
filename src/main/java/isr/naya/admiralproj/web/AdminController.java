@@ -1,6 +1,5 @@
 package isr.naya.admiralproj.web;
 
-import com.sun.istack.internal.Nullable;
 import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.service.WorkInfoService;
 import lombok.AllArgsConstructor;
@@ -37,9 +36,16 @@ public class AdminController {
     @GetMapping("/pivotal")
     public List<WorkInfo> getPivotalReport(@RequestParam("from") LocalDate from,
                                            @RequestParam("to") LocalDate to,
-                                           @RequestParam("employeeId") @Nullable Optional<Integer> employeeId,
-                                           @RequestParam("projectId") @Nullable Optional<Integer> projectId) {
+                                           @RequestParam("employeeId") Optional<Integer> employeeId,
+                                           @RequestParam("projectId") Optional<Integer> projectId) {
 
-        return service.getAllUnitsByDateAndEmployeeAndProject(from, to, employeeId.get(), projectId.get());
+        if (employeeId.isPresent() && projectId.isPresent())
+            return service.getAllUnitsByDateAndEmployeeAndProject(from, to, employeeId.get(), projectId.get());
+        else if (employeeId.isPresent())
+            return service.getAllUnitsByDateAndEmployee(from, to, employeeId.get());
+        else if (projectId.isPresent())
+            return service.getAllUnitsByDateAndProject(from, to, projectId.get());
+        else
+            return service.getAllUnitsByDate(from, to);
     }
 }
