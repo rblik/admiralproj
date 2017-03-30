@@ -6,8 +6,8 @@ import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.model.Employee;
 import isr.naya.admiralproj.model.WorkUnit;
 import isr.naya.admiralproj.service.EmployeeService;
-import isr.naya.admiralproj.service.ReportService;
 import isr.naya.admiralproj.service.WorkAgreementService;
+import isr.naya.admiralproj.service.WorkInfoService;
 import isr.naya.admiralproj.service.WorkUnitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +28,7 @@ public class EmployeeController {
     @Autowired
     private WorkAgreementService workAgreementService;
     @Autowired
-    private ReportService reportService;
+    private WorkInfoService workInfoService;
 
     @GetMapping("/profile")
     public Employee getProfile() {
@@ -49,6 +49,6 @@ public class EmployeeController {
     @GetMapping("/units")
     public List<WorkInfo> getWorkUnits(@RequestParam(value = "from") LocalDate from,
                                        @RequestParam(value = "to") LocalDate to) {
-        return reportService.getAllWorkUnitsForEmployee(AuthorizedUser.id(), from, to);
+        return workInfoService.getAllWorkUnitsForEmployee(AuthorizedUser.id(), from, to);
     }
 }

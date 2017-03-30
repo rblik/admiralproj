@@ -25,7 +25,7 @@ import static org.junit.Assert.assertThat;
 public class ReportServiceTest {
 
     @Autowired
-    private ReportService service;
+    private WorkInfoService service;
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
