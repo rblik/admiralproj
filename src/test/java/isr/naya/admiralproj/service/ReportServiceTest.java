@@ -31,7 +31,7 @@ public class ReportServiceTest {
 
     @Test
     public void testGetAllWithTimeSum() {
-        Set<WorkInfo> all = service.getPartialDays(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1), 12);
+        List<WorkInfo> all = service.getPartialDays(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1), 12);
         assertThat(all, hasItem(allOf(
                 hasProperty("employeeId", equalTo(1)),
                 hasProperty("date", equalTo(LocalDate.of(2017, 3, 19))),
@@ -54,25 +54,25 @@ public class ReportServiceTest {
 
     @Test
     public void testGetAllUnitsByDate() {
-        Set<WorkInfo> workUnits = service.getAllUnitsByDate(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1));
+        List<WorkInfo> workUnits = service.getAllUnitsByDate(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1));
         assertThat(workUnits, hasSize(26));
     }
 
     @Test
     public void testGetAllUnitsByDateAndEmployee() {
-        Set<WorkInfo> workUnits = service.getAllUnitsByDateAndEmployee(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1), 1);
+        List<WorkInfo> workUnits = service.getAllUnitsByDateAndEmployee(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1), 1);
         assertThat(workUnits, hasSize(6));
     }
 
     @Test
     public void testGetAllUnitsByDateAndProject() {
-        Set<WorkInfo> workUnits = service.getAllUnitsByDateAndProject(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1), 7);
+        List<WorkInfo> workUnits = service.getAllUnitsByDateAndProject(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1), 7);
         assertThat(workUnits, hasSize(6));
     }
 
     @Test
     public void testGetAllUnitsByDateAndEmployeeProject() {
-        Set<WorkInfo> workUnits = service.getAllUnitsByDateAndEmployeeAndProject(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1), 1, 7);
+        List<WorkInfo> workUnits = service.getAllUnitsByDateAndEmployeeAndProject(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1), 1, 7);
         assertThat(workUnits, hasSize(6));
     }
 }
