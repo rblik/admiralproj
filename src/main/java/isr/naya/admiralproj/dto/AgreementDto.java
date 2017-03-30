@@ -16,7 +16,7 @@ public class AgreementDto {
     private Integer clientId;
     private String clientName;
 
-    public AgreementDto(Integer agreementId, String projectName, String clientName) {
-        this(agreementId, null, null, null, null, null, projectName, null, clientName);
+    public AgreementDto(Integer agreementId, Integer projectId, String projectName, Integer clientId, String clientName) {
+        this(agreementId, null, null, null, null, projectId, projectName, clientId, clientName);
     }
 }

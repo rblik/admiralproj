@@ -2,10 +2,11 @@ package isr.naya.admiralproj.util;
 
 import isr.naya.admiralproj.exception.NotFoundException;
 import isr.naya.admiralproj.exception.TimeOverlappingException;
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ValidationUtil {
 
     public static boolean checkTimeOverlap(@NonNull Integer count) {
