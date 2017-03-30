@@ -6,12 +6,11 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
 @Data
-@EqualsAndHashCode(callSuper = true, of = {})
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "work_units")
 @NoArgsConstructor
@@ -47,7 +46,7 @@ public class WorkUnit extends BaseEntity {
     private WorkAgreement workAgreement;
 
     @PrePersist
-    public void checkAbsence() {
+    public void calculateDuration() {
         this.duration = ChronoUnit.MINUTES.between(this.start, this.finish);
     }
 }

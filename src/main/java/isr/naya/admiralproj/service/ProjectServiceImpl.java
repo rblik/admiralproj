@@ -7,6 +7,7 @@ import isr.naya.admiralproj.repo.ProjectRepository;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,12 +15,14 @@ import static isr.naya.admiralproj.exception.ValidationUtil.checkNotFound;
 
 @Service
 @AllArgsConstructor
+@Transactional(readOnly = true)
 public class ProjectServiceImpl implements ProjectService {
 
     private ProjectRepository projectRepository;
     private ClientRepository clientRepository;
 
     @Override
+    @Transactional
     public Project save(@NonNull Integer clientId, @NonNull Project project) {
         project.setClient(checkNotFound(clientRepository.findOne(clientId), clientId, Client.class));
         return projectRepository.save(project);

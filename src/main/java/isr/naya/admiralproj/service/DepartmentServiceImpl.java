@@ -5,6 +5,7 @@ import isr.naya.admiralproj.repo.DepartmentRepository;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -12,11 +13,13 @@ import static isr.naya.admiralproj.exception.ValidationUtil.checkNotFound;
 
 @Service
 @AllArgsConstructor
+@Transactional(readOnly = true)
 public class DepartmentServiceImpl implements DepartmentService {
 
     private DepartmentRepository departmentRepository;
 
     @Override
+    @Transactional
     public Department save(@NonNull Department department) {
         return departmentRepository.save(department);
     }

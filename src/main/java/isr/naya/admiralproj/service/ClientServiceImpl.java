@@ -5,6 +5,7 @@ import isr.naya.admiralproj.repo.ClientRepository;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -12,11 +13,13 @@ import static isr.naya.admiralproj.exception.ValidationUtil.checkNotFound;
 
 @Service
 @AllArgsConstructor
+@Transactional(readOnly = true)
 public class ClientServiceImpl implements ClientService {
 
     private ClientRepository clientRepository;
 
     @Override
+    @Transactional
     public Client save(@NonNull Client client) {
         return clientRepository.save(client);
     }

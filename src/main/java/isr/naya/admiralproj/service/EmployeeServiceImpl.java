@@ -7,6 +7,7 @@ import isr.naya.admiralproj.repo.EmployeeRepository;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,12 +15,14 @@ import static isr.naya.admiralproj.exception.ValidationUtil.checkNotFound;
 
 @Service
 @AllArgsConstructor
+@Transactional(readOnly = true)
 public class EmployeeServiceImpl implements EmployeeService {
 
     private EmployeeRepository employeeRepository;
     private DepartmentRepository departmentRepository;
 
     @Override
+    @Transactional
     public Employee save(@NonNull Integer departmentId, @NonNull Employee employee) {
         employee.setDepartment(checkNotFound(departmentRepository.findOne(departmentId), departmentId, Department.class));
         return employeeRepository.save(employee);

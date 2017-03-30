@@ -1,16 +1,18 @@
 package isr.naya.admiralproj.exception;
 
-import com.google.common.base.CaseFormat;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 public class ValidationUtil {
-    private ValidationUtil() {
-    }
 
     public static boolean checkTimeOverlap(Integer count) {
+
+        if (count == null)
+            return false;
         if (count != 0) {
             throw new TimeOverlappingException("There is already a record for this period of time.");
-        }
-        return true;
+        } else
+            return true;
     }
 
     public static <T> T checkNotFound(T obj, Integer id, Class<T> clazz) {

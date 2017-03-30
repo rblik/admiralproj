@@ -62,5 +62,6 @@ public class WorkUnitServiceTest {
                 WorkUnit.builder().date(LocalDate.of(2017, 3, 19)).
                         start(LocalTime.of(10, 0)).
                         finish(LocalTime.of(14, 0)).build());
+        assertThat(save, hasProperty("id", is(31)));
     }
 }

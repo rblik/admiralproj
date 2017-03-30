@@ -4,13 +4,13 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Set;
+import java.util.List;
 
 
 @Data
 @Entity
 @Table(name = "departments")
-@EqualsAndHashCode(callSuper = true, of = {})
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -21,5 +21,5 @@ public class Department extends BaseEntity{
     private String name;
 
     @OneToMany(mappedBy = "department", cascade = CascadeType.REMOVE)
-    private Set<Employee> employees;
+    private List<Employee> employees;
 }

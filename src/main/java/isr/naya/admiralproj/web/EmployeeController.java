@@ -9,7 +9,7 @@ import isr.naya.admiralproj.service.EmployeeService;
 import isr.naya.admiralproj.service.WorkAgreementService;
 import isr.naya.admiralproj.service.WorkInfoService;
 import isr.naya.admiralproj.service.WorkUnitService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,14 +20,12 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
 public class EmployeeController {
-    @Autowired
+
     private EmployeeService employeeService;
-    @Autowired
     private WorkUnitService workUnitService;
-    @Autowired
     private WorkAgreementService workAgreementService;
-    @Autowired
     private WorkInfoService workInfoService;
 
     @GetMapping("/profile")
