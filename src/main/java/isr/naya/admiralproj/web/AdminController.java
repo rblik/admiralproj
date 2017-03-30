@@ -29,7 +29,7 @@ public class AdminController {
     }
 
     @GetMapping("/missing")
-    public Set<WorkInfo> getPartialDaysReport(@RequestParam("from") LocalDate from,
+    public Set<WorkInfo> getMissingDaysReport(@RequestParam("from") LocalDate from,
                                               @RequestParam("to") LocalDate to) {
         return service.getMissingDays(from, to);
     }
