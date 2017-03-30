@@ -6,6 +6,7 @@ import lombok.Value;
 @Value
 @AllArgsConstructor
 public class AgreementDto {
+
     private Integer agreementId;
     private Integer employeeId;
     private String employeeName;

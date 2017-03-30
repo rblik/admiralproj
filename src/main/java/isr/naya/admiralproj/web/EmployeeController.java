@@ -35,6 +35,7 @@ public class EmployeeController {
 
     @PostMapping(value = "/units", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity saveUnit(@Valid @RequestBody WorkUnit unit) {
+
         WorkUnit workUnit = workUnitService.saveUnit(AuthorizedUser.id(), 1, unit);
         return ResponseEntity.status(HttpStatus.CREATED).body(workUnit);
     }
@@ -45,8 +46,8 @@ public class EmployeeController {
     }
 
     @GetMapping("/units")
-    public List<WorkInfo> getWorkUnits(@RequestParam(value = "from") LocalDate from,
-                                       @RequestParam(value = "to") LocalDate to) {
+    public List<WorkInfo> getWorkUnits(@RequestParam("from") LocalDate from,
+                                       @RequestParam("to") LocalDate to) {
         return workInfoService.getAllWorkUnitsForEmployee(AuthorizedUser.id(), from, to);
     }
 }

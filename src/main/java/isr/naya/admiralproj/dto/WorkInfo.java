@@ -11,6 +11,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @EqualsAndHashCode(of = {"employeeId", "date", "from", "to"})
 public class WorkInfo {
+
     private Integer agreementId;
     private Integer employeeId;
     private String employeeName;
