@@ -12,4 +12,6 @@ public interface WorkAgreementService {
     WorkAgreement save(Integer employeeId, Integer projectId, WorkAgreement workAgreement);
 
     List<AgreementDto> getAgreementsGraph();
+
+    Integer findFirstIdByEmployeeId(Integer employeeId);
 }

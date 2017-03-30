@@ -41,4 +41,10 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
     public List<AgreementDto> getAgreementsGraph() {
         return workAgreementRepository.getAllWithEmployeesAndDepartmentsAndProjectsAndClients();
     }
+
+    @Override
+    public Integer findFirstIdByEmployeeId(Integer employeeId) {
+        return workAgreementRepository.findFirstIdByEmployeeId(employeeId);
+    }
+
 }

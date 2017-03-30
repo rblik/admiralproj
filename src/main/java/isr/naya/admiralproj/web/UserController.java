@@ -18,10 +18,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
-public class EmployeeController {
+public class UserController {
 
     private EmployeeService employeeService;
     private WorkUnitService workUnitService;
@@ -33,11 +34,12 @@ public class EmployeeController {
         return employeeService.get(AuthorizedUser.id());
     }
 
-    @PostMapping(value = "/units", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity saveUnit(@Valid @RequestBody WorkUnit unit) {
+    @PostMapping(value = "/units/{workAgreementId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity saveUnit(@PathVariable("workAgreementId") Optional<Integer> id,
+                                   @Valid @RequestBody WorkUnit unit) {
 
-        WorkUnit workUnit = workUnitService.save(AuthorizedUser.id(), 1, unit);
-        return ResponseEntity.status(HttpStatus.CREATED).body(workUnit);
+        return id.map(i -> ResponseEntity.status(HttpStatus.CREATED).body(workUnitService.save(AuthorizedUser.id(), i, unit)))
+                .orElse(ResponseEntity.status(HttpStatus.CREATED).body(workUnitService.save(AuthorizedUser.id(), workAgreementService.findFirstIdByEmployeeId(AuthorizedUser.id()), unit)));
     }
 
     @GetMapping("/agreements")
