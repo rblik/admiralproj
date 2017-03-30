@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%-5level %logger{0} [%file:%line] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.hibernate" level="info" />
+    <logger name="org.hibernate.sql" level="debug" />
+    <logger name="org.hibernate.hql.ast.AST" level="trace" />
+    <logger name="org.hibernate.tool.hbm2ddl" level="warn" />
+    <logger name="org.hibernate.hql" level="debug" />
+    <logger name="org.hibernate.cache" level="info" />
+    <logger name="org.hibernate.jdbc" level="debug" />
+    <logger name="org.hibernate" level="debug" />
+    <logger name="org.hibernate.pretty" level="debug" />
+    <logger name="org.hibernate.engine.transaction.internal" level="debug" />
+
+    <root level="info">
+        <appender-ref ref="console"/>
+    </root>
+</configuration>
