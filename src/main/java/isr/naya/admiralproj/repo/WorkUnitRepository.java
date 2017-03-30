@@ -16,7 +16,7 @@ public interface WorkUnitRepository extends JpaRepository<WorkUnit, Integer> {
     Integer countExisted(Integer employeeId, Integer workAgreementId, LocalDate date, LocalTime starts, LocalTime ends);
 
     @Query("select new isr.naya.admiralproj.dto.WorkInfo(e.id, e.name, e.surname, wu.date, sum (wu.duration)) from WorkUnit wu join wu.workAgreement wa join wa.employee e where wa.id = wu.workAgreement.id and e.id = wa.employee.id and wu.date>=?1 and wu.date<?2 group by e.id, wu.date having sum(wu.duration)<60*?3")
-    Set<WorkInfo> getAllPartialBetweenDates(LocalDate from, LocalDate to, Integer maxHours);
+    List<WorkInfo> getAllPartialBetweenDates(LocalDate from, LocalDate to, Integer maxHours);
 
     @Query("select new isr.naya.admiralproj.dto.WorkInfo(e.id, wu.date) from WorkUnit wu join wu.workAgreement wa join wa.employee e where wa.id = wu.workAgreement.id and e.id = wa.employee.id and wu.date>=?1 and wu.date<?2 group by e.id, wu.date")
     Set<WorkInfo> getAllNonEmptyDays(LocalDate from, LocalDate to);

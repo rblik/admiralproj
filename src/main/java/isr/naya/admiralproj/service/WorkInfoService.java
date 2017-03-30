@@ -8,7 +8,7 @@ import java.util.Set;
 
 public interface WorkInfoService {
 
-    Set<WorkInfo> getPartialDays(LocalDate from, LocalDate to, Integer maxHours);
+    List<WorkInfo> getPartialDays(LocalDate from, LocalDate to, Integer maxHours);
 
     List<WorkInfo> getAllWorkUnitsForEmployee(Integer id, LocalDate from, LocalDate to);
 

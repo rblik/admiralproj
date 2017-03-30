@@ -24,7 +24,7 @@ public class WorkInfoServiceImpl implements WorkInfoService {
     private EmployeeRepository employeeRepository;
 
     @Override
-    public Set<WorkInfo> getPartialDays(@NonNull LocalDate from, @NonNull LocalDate to, @NonNull Integer maxHours) {
+    public List<WorkInfo> getPartialDays(@NonNull LocalDate from, @NonNull LocalDate to, @NonNull Integer maxHours) {
         return workUnitRepository.getAllPartialBetweenDates(from, to, maxHours);
     }
 
