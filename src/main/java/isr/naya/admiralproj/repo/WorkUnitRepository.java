@@ -12,17 +12,18 @@ import java.util.Set;
 
 @SuppressWarnings({"JpaQlInspection", "SpringDataRepositoryMethodReturnTypeInspection"})
 public interface WorkUnitRepository extends JpaRepository<WorkUnit, Integer> {
+
     @Query("select count(wu) from WorkUnit wu where wu.workAgreement.employee.id = ?1 and wu.workAgreement.id = ?2 and wu.date = ?3 and not ((wu.start < ?4 and wu.finish < ?5) or (wu.start > ?4 and wu.finish > ?5))")
-    Integer countExisted(Integer employeeId, Integer workAgreementId, LocalDate date, LocalTime starts, LocalTime ends);
+    Integer countExistedByDateTimeRange(Integer employeeId, Integer workAgreementId, LocalDate date, LocalTime starts, LocalTime ends);
 
     @Query("select new isr.naya.admiralproj.dto.WorkInfo(e.id, e.name, e.surname, wu.date, sum (wu.duration)) from WorkUnit wu join wu.workAgreement wa join wa.employee e where wa.id = wu.workAgreement.id and e.id = wa.employee.id and wu.date>=?1 and wu.date<?2 group by e.id, wu.date having sum(wu.duration)<60*?3")
     List<WorkInfo> getAllPartialBetweenDates(LocalDate from, LocalDate to, Integer maxHours);
 
     @Query("select new isr.naya.admiralproj.dto.WorkInfo(e.id, wu.date) from WorkUnit wu join wu.workAgreement wa join wa.employee e where wa.id = wu.workAgreement.id and e.id = wa.employee.id and wu.date>=?1 and wu.date<?2 group by e.id, wu.date")
-    Set<WorkInfo> getAllNonEmptyDays(LocalDate from, LocalDate to);
+    Set<WorkInfo> getAllNonEmptyDaysBetweenDates(LocalDate from, LocalDate to);
 
     @Query("select new isr.naya.admiralproj.dto.WorkInfo(wa.id, wu.date, wu.start, wu.finish, wu.duration) from WorkUnit wu join wu.workAgreement wa join wa.employee e where e.id = ?1 and wu.date between ?2 and ?3")
-    List<WorkInfo> getAllWithAgreements(Integer employeeId, LocalDate from, LocalDate to);
+    List<WorkInfo> getAllForEmployeeBetweenDates(Integer employeeId, LocalDate from, LocalDate to);
 
     // Pivotal Report Block
     @Query("select new isr.naya.admiralproj.dto.WorkInfo(wa.id, e.id, e.name, e.surname, d.name, p.id, p.name, c.id, c.name, wu.date, wu.start, wu.finish, wu.duration) from WorkUnit wu join wu.workAgreement wa join wa.employee e join wa.project p join p.client c join e.department d where wu.date between ?1 and ?2")

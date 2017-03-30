@@ -15,7 +15,6 @@ import static isr.naya.admiralproj.util.ValidationUtil.checkNotFound;
 
 @Service
 @AllArgsConstructor
-@Transactional(readOnly = true)
 public class ProjectServiceImpl implements ProjectService {
 
     private ProjectRepository projectRepository;

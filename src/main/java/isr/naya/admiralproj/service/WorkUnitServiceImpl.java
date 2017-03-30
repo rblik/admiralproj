@@ -14,7 +14,6 @@ import static isr.naya.admiralproj.util.ValidationUtil.checkTimeOverlap;
 
 @Service
 @AllArgsConstructor
-@Transactional(readOnly = true)
 public class WorkUnitServiceImpl implements WorkUnitService {
 
     private WorkAgreementRepository workAgreementRepository;
@@ -22,9 +21,9 @@ public class WorkUnitServiceImpl implements WorkUnitService {
 
     @Override
     @Transactional
-    public WorkUnit saveUnit(@NonNull Integer employeeId, @NonNull Integer workAgreementId, @NonNull WorkUnit workUnit) {
+    public WorkUnit save(@NonNull Integer employeeId, @NonNull Integer workAgreementId, @NonNull WorkUnit workUnit) {
         workUnit.setWorkAgreement(checkNotFound(workAgreementRepository.findFirstByIdAndEmployeeId(workAgreementId, employeeId), workAgreementId, WorkAgreement.class));
-        return checkTimeOverlap(workUnitRepository.countExisted(employeeId, workAgreementId, workUnit.getDate(), workUnit.getStart(), workUnit.getFinish())) ?
+        return checkTimeOverlap(workUnitRepository.countExistedByDateTimeRange(employeeId, workAgreementId, workUnit.getDate(), workUnit.getStart(), workUnit.getFinish())) ?
                 workUnitRepository.save(workUnit) : null;
     }
 }

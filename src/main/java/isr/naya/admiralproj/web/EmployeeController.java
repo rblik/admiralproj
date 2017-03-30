@@ -36,7 +36,7 @@ public class EmployeeController {
     @PostMapping(value = "/units", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity saveUnit(@Valid @RequestBody WorkUnit unit) {
 
-        WorkUnit workUnit = workUnitService.saveUnit(AuthorizedUser.id(), 1, unit);
+        WorkUnit workUnit = workUnitService.save(AuthorizedUser.id(), 1, unit);
         return ResponseEntity.status(HttpStatus.CREATED).body(workUnit);
     }
 

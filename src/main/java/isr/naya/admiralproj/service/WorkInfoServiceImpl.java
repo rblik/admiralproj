@@ -7,7 +7,6 @@ import isr.naya.admiralproj.repo.WorkUnitRepository;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,7 +16,6 @@ import static isr.naya.admiralproj.util.MappingUtil.generate;
 
 @Service
 @AllArgsConstructor
-@Transactional(readOnly = true)
 public class WorkInfoServiceImpl implements WorkInfoService {
 
     private WorkUnitRepository workUnitRepository;
@@ -30,13 +28,13 @@ public class WorkInfoServiceImpl implements WorkInfoService {
 
     @Override
     public List<WorkInfo> getAllWorkUnitsForEmployee(@NonNull Integer employeeId, @NonNull LocalDate from, @NonNull LocalDate to) {
-        return workUnitRepository.getAllWithAgreements(employeeId, from, to);
+        return workUnitRepository.getAllForEmployeeBetweenDates(employeeId, from, to);
     }
 
     @Override
     public Set<WorkInfo> getMissingDays(@NonNull LocalDate from, @NonNull LocalDate to) {
         List<Employee> employees = employeeRepository.getAllWithDepartments();
-        return generate(workUnitRepository.getAllNonEmptyDays(from, to), from, to, employees);
+        return generate(workUnitRepository.getAllNonEmptyDaysBetweenDates(from, to), from, to, employees);
     }
 
     // Pivotal Report Block

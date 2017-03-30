@@ -18,7 +18,6 @@ import static isr.naya.admiralproj.util.ValidationUtil.checkNotFound;
 
 @Service
 @AllArgsConstructor
-@Transactional(readOnly = true)
 public class WorkAgreementServiceImpl implements WorkAgreementService {
 
     private WorkAgreementRepository workAgreementRepository;
@@ -27,7 +26,7 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
 
     @Override
     public List<AgreementDto> getAllForEmployee(Integer employeeId) {
-        return workAgreementRepository.getWithProjectAndClientByEmployeeId(employeeId);
+        return workAgreementRepository.getAllActiveWithProjectsAndClientsByEmployeeId(employeeId);
     }
 
     @Override

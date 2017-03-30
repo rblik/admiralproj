@@ -33,8 +33,8 @@ public class WorkUnitServiceTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
-    public void testSaveUnit() {
-        WorkUnit save = service.saveUnit(1, 1,
+    public void testSave() {
+        WorkUnit save = service.save(1, 1,
                 WorkUnit.builder().
                         date(LocalDate.of(2017, 1, 1)).
                         start(LocalTime.of(10, 0)).
@@ -43,10 +43,10 @@ public class WorkUnitServiceTest {
     }
 
     @Test
-    public void testSaveUnitWithWrongWorkAgreementId() {
+    public void testSaveWithWrongWorkAgreementId() {
         thrown.expect(NotFoundException.class);
         thrown.expectMessage("Not found work agreement");
-        WorkUnit save = service.saveUnit(1, -1,
+        WorkUnit save = service.save(1, -1,
                 WorkUnit.builder().
                         date(LocalDate.of(2017, 1, 1)).
                         start(LocalTime.of(10, 0)).
@@ -55,10 +55,10 @@ public class WorkUnitServiceTest {
     }
 
     @Test
-    public void testSaveUnitWithOverlappingTime() {
+    public void testSaveWithOverlappingTime() {
         thrown.expect(TimeOverlappingException.class);
         thrown.expectMessage("There is already a record");
-        WorkUnit save = service.saveUnit(1, 1,
+        WorkUnit save = service.save(1, 1,
                 WorkUnit.builder().date(LocalDate.of(2017, 3, 19)).
                         start(LocalTime.of(10, 0)).
                         finish(LocalTime.of(14, 0)).build());

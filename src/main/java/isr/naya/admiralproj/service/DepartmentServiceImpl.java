@@ -13,7 +13,6 @@ import static isr.naya.admiralproj.util.ValidationUtil.checkNotFound;
 
 @Service
 @AllArgsConstructor
-@Transactional(readOnly = true)
 public class DepartmentServiceImpl implements DepartmentService {
 
     private DepartmentRepository departmentRepository;
