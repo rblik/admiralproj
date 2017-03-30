@@ -1,8 +1,6 @@
 package isr.naya.admiralproj.service;
 
-import isr.naya.admiralproj.dto.MissingDay;
-import isr.naya.admiralproj.dto.PartialDay;
-import isr.naya.admiralproj.model.WorkUnit;
+import isr.naya.admiralproj.dto.WorkInfo;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -14,6 +12,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 import static org.hamcrest.Matchers.*;
@@ -26,13 +25,13 @@ import static org.junit.Assert.assertThat;
 public class ReportServiceTest {
 
     @Autowired
-    private ReportService service;
+    private WorkInfoService service;
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void testGetAllWithTimeSum() {
-        Set<PartialDay> all = service.getPartialDays(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1), 12);
+        Set<WorkInfo> all = service.getPartialDays(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1), 12);
         assertThat(all, hasItem(allOf(
                 hasProperty("employeeId", equalTo(1)),
                 hasProperty("date", equalTo(LocalDate.of(2017, 3, 19))),
@@ -41,33 +40,39 @@ public class ReportServiceTest {
     }
 
     @Test
+    public void testGetAllWorkUnitsForEmployee() {
+        List<WorkInfo> workInfos = service.getAllWorkUnitsForEmployee(1, LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1));
+        assertThat(workInfos, hasSize(6));
+    }
+
+    @Test
     public void testGetAllForMissing() {
-        Set<MissingDay> days = service.getMissingDays(LocalDate.of(2017, 3, 19), LocalDate.of(2017, 3, 24));
+        Set<WorkInfo> days = service.getMissingDays(LocalDate.of(2017, 3, 19), LocalDate.of(2017, 3, 24));
         assertThat(days, hasSize(0));
     }
 
 
     @Test
     public void testGetAllUnitsByDate() {
-        Set<WorkUnit> workUnits = service.getAllUnitsByDate(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1));
+        Set<WorkInfo> workUnits = service.getAllUnitsByDate(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1));
         assertThat(workUnits, hasSize(26));
     }
 
     @Test
     public void testGetAllUnitsByDateAndEmployee() {
-        Set<WorkUnit> workUnits = service.getAllUnitsByDateAndEmployee(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1), 1);
+        Set<WorkInfo> workUnits = service.getAllUnitsByDateAndEmployee(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1), 1);
         assertThat(workUnits, hasSize(6));
     }
 
     @Test
     public void testGetAllUnitsByDateAndProject() {
-        Set<WorkUnit> workUnits = service.getAllUnitsByDateAndProject(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1), 7);
+        Set<WorkInfo> workUnits = service.getAllUnitsByDateAndProject(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1), 7);
         assertThat(workUnits, hasSize(6));
     }
 
     @Test
     public void testGetAllUnitsByDateAndEmployeeProject() {
-        Set<WorkUnit> workUnits = service.getAllUnitsByDateAndEmployeeAndProject(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1), 1, 7);
+        Set<WorkInfo> workUnits = service.getAllUnitsByDateAndEmployeeAndProject(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1), 1, 7);
         assertThat(workUnits, hasSize(6));
     }
 }

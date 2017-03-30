@@ -1,15 +1,15 @@
 package isr.naya.admiralproj.service;
 
+import isr.naya.admiralproj.dto.AgreementDto;
 import isr.naya.admiralproj.model.WorkAgreement;
 
-import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
 public interface WorkAgreementService {
 
-    Set<WorkAgreement> getAllForEmployee(Integer employeeId, LocalDate from, LocalDate to);
+    List<AgreementDto> getAllForEmployee(Integer employeeId);
 
     WorkAgreement save(Integer employeeId, Integer projectId, WorkAgreement workAgreement);
 
-    Set<WorkAgreement> getAgreementsGraph();
+    List<AgreementDto> getAgreementsGraph();
 }
