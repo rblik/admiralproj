@@ -1,7 +1,6 @@
 package isr.naya.admiralproj.service;
 
 import isr.naya.admiralproj.dto.WorkInfo;
-import isr.naya.admiralproj.model.WorkUnit;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,11 +15,11 @@ public interface ReportService {
     Set<WorkInfo> getMissingDays(LocalDate from, LocalDate to);
 
     // Pivotal Report Block
-    Set<WorkUnit> getAllUnitsByDate(LocalDate from, LocalDate to);
+    Set<WorkInfo> getAllUnitsByDate(LocalDate from, LocalDate to);
 
-    Set<WorkUnit> getAllUnitsByDateAndEmployee(LocalDate from, LocalDate to, Integer employeeId);
+    Set<WorkInfo> getAllUnitsByDateAndEmployee(LocalDate from, LocalDate to, Integer employeeId);
 
-    Set<WorkUnit> getAllUnitsByDateAndProject(LocalDate from, LocalDate to, Integer projectId);
+    Set<WorkInfo> getAllUnitsByDateAndProject(LocalDate from, LocalDate to, Integer projectId);
 
-    Set<WorkUnit> getAllUnitsByDateAndEmployeeAndProject(LocalDate from, LocalDate to, Integer employeeId, Integer projectId);
+    Set<WorkInfo> getAllUnitsByDateAndEmployeeAndProject(LocalDate from, LocalDate to, Integer employeeId, Integer projectId);
 }

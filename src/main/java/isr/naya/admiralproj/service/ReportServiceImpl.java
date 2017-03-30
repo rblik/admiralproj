@@ -3,7 +3,6 @@ package isr.naya.admiralproj.service;
 
 import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.model.Employee;
-import isr.naya.admiralproj.model.WorkUnit;
 import isr.naya.admiralproj.repo.EmployeeRepository;
 import isr.naya.admiralproj.repo.WorkUnitRepository;
 import lombok.AllArgsConstructor;
@@ -43,22 +42,22 @@ public class ReportServiceImpl implements ReportService {
 
     // Pivotal Report Block
     @Override
-    public Set<WorkUnit> getAllUnitsByDate(@NonNull LocalDate from, @NonNull LocalDate to) {
+    public Set<WorkInfo> getAllUnitsByDate(@NonNull LocalDate from, @NonNull LocalDate to) {
         return workUnitRepository.getAllByDateBetween(from, to);
     }
 
     @Override
-    public Set<WorkUnit> getAllUnitsByDateAndEmployee(@NonNull LocalDate from, @NonNull LocalDate to, @NonNull Integer employeeId) {
+    public Set<WorkInfo> getAllUnitsByDateAndEmployee(@NonNull LocalDate from, @NonNull LocalDate to, @NonNull Integer employeeId) {
         return workUnitRepository.getAllByDateBetweenAndEmployeeId(from, to, employeeId);
     }
 
     @Override
-    public Set<WorkUnit> getAllUnitsByDateAndProject(@NonNull LocalDate from, @NonNull LocalDate to, @NonNull Integer projectId) {
+    public Set<WorkInfo> getAllUnitsByDateAndProject(@NonNull LocalDate from, @NonNull LocalDate to, @NonNull Integer projectId) {
         return workUnitRepository.getAllByDateBetweenAndProjectId(from, to, projectId);
     }
 
     @Override
-    public Set<WorkUnit> getAllUnitsByDateAndEmployeeAndProject(@NonNull LocalDate from, @NonNull LocalDate to, @NonNull Integer employeeId, @NonNull Integer projectId) {
+    public Set<WorkInfo> getAllUnitsByDateAndEmployeeAndProject(@NonNull LocalDate from, @NonNull LocalDate to, @NonNull Integer employeeId, @NonNull Integer projectId) {
         return workUnitRepository.getAllByDateBetweenAndEmployeeIdAndProjectId(from, to, employeeId, projectId);
     }
 }
