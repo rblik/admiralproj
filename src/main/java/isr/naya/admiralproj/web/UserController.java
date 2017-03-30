@@ -33,7 +33,7 @@ public class UserController {
         return employeeService.get(AuthorizedUser.id());
     }
 
-    @PostMapping(value = "/units/{workAgreementId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/agreements/{workAgreementId}/units", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity saveUnit(@PathVariable("workAgreementId") Integer id,
                                    @Valid @RequestBody WorkUnit unit) {
 
