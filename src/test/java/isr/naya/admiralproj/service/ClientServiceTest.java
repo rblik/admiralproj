@@ -1,5 +1,6 @@
 package isr.naya.admiralproj.service;
 
+import isr.naya.admiralproj.exception.NotFoundException;
 import isr.naya.admiralproj.model.Client;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +11,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.validation.ConstraintViolationException;
-import java.util.List;
 
 import static com.google.common.collect.ImmutableSet.of;
 import static java.util.Collections.emptySet;
@@ -33,6 +33,17 @@ public class ClientServiceTest {
         assertThat(client, hasProperty("name", is("Another Comp.")));
     }
 
+    @Test
+    public void testGet() {
+        Client client = service.get(1);
+        assertThat(client, notNullValue());
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void testGetWithWrongId() {
+        service.get(-1);
+    }
+
     @Test(expected = ConstraintViolationException.class)
     public void testSaveWrong() {
         service.save(Client.builder().companyNumber(321123321).build());
@@ -41,12 +52,5 @@ public class ClientServiceTest {
     @Test
     public void testGetAll() {
         assertThat(service.getAll(), hasSize(6));
-    }
-
-    @Test
-    public void testGetAllWithProjects() {
-        List<Client> allWithProjects = service.getAllWithProjects();
-        assertThat(allWithProjects, hasSize(6));
-        assertThat(allWithProjects, hasItem(hasProperty("projects", hasSize(2))));
     }
 }

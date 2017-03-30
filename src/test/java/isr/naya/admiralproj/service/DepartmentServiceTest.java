@@ -10,10 +10,9 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.validation.ConstraintViolationException;
-import java.util.List;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
@@ -37,12 +36,5 @@ public class DepartmentServiceTest {
     @Test
     public void testGetAll() {
         assertThat(service.getAll(), hasSize(9));
-    }
-
-    @Test
-    public void testGetAllWithEmployees() {
-        List<Department> departments = service.getAllWithEmployees();
-        assertThat(departments, hasSize(9));
-        assertThat(departments, hasItem(allOf(hasProperty("employees", hasSize(1)), hasProperty("name", is("Java")))));
     }
 }

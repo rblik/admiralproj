@@ -29,11 +29,6 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public List<Department> getAllWithEmployees() {
-        return departmentRepository.getAllWithEmployees();
-    }
-
-    @Override
     public Department get(@NonNull Integer id) {
         return checkNotFound(departmentRepository.findOne(id), id, Department.class);
     }

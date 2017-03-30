@@ -2,7 +2,9 @@ package isr.naya.admiralproj.model;
 
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 
@@ -29,8 +31,4 @@ public class Address extends BaseEntity{
 
     @Column(name = "house_number")
     private String houseNumber;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false)
-    private Client client;
 }

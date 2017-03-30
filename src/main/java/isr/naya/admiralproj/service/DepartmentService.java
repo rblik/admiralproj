@@ -10,7 +10,5 @@ public interface DepartmentService {
 
     List<Department> getAll();
 
-    List<Department> getAllWithEmployees();
-
     Department get(Integer id);
 }

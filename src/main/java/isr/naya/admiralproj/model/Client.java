@@ -29,7 +29,8 @@ public class Client extends BaseEntity{
     @Column(name = "phone")
     private Set<String> phones;
 
-    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany
+    @JoinColumn(name = "client_id")
     private Set<Address> addresses;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)

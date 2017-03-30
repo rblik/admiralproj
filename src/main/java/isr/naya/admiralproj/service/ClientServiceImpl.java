@@ -25,16 +25,11 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public List<Client> getAll() {
-        return clientRepository.findAll();
-    }
-
-    @Override
-    public List<Client> getAllWithProjects() {
-        return clientRepository.getAllWithProjects();
+        return clientRepository.getAllWithAddressesAndPhones();
     }
 
     @Override
     public Client get(@NonNull Integer id) {
-        return checkNotFound(clientRepository.findOne(id), id, Client.class);
+        return checkNotFound(clientRepository.getWithAddressesAndPhones(id), id, Client.class);
     }
 }
