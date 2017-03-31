@@ -161,7 +161,7 @@ public class AdminController {
         workUnitService.delete(employeeId, unitId);
     }
 
-    @GetMapping(value = "/report/pivotal/pdf")
+    @GetMapping(value = "/pdf/pivotal")
     @SneakyThrows
     public void getFullReport(@RequestParam("from") LocalDate from,
                               @RequestParam("to") LocalDate to,
@@ -172,7 +172,7 @@ public class AdminController {
         sendPdf(response, bytes);
     }
 
-    @GetMapping(value = "/report/partial/pdf")
+    @GetMapping(value = "/pdf/partial")
     public void getPartialReport(@RequestParam(value = "from") LocalDate from,
                                  @RequestParam("to") LocalDate to,
                                  @RequestParam("limit") Integer limit,
@@ -181,7 +181,7 @@ public class AdminController {
         sendPdf(response, bytes);
     }
 
-    @GetMapping(value = "/report/missing/pdf")
+    @GetMapping(value = "/pdf/missing")
     public void getMissingReport(@RequestParam("from") LocalDate from,
                                  @RequestParam("to") LocalDate to,
                                  HttpServletResponse response) {

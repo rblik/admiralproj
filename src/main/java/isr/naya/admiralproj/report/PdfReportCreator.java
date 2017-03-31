@@ -1,6 +1,7 @@
 package isr.naya.admiralproj.report;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import com.google.common.primitives.Floats;
 import com.google.common.primitives.Ints;
 import com.itextpdf.text.*;
@@ -14,19 +15,19 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.IntStream;
 
 import static isr.naya.admiralproj.report.ReportType.*;
 
 @Component
 @Slf4j
-public class PdfReportCreator implements ReportCreator{
+public class PdfReportCreator implements ReportCreator {
 
     @Override
     public byte[] create(@NonNull List<WorkInfo> infoList, @NonNull ReportType reportType) {
         ByteArrayOutputStream os;
         try {
+            List<List<WorkInfo>> partition = Lists.partition(infoList, 35);
             os = new ByteArrayOutputStream();
             Document document = new Document(PageSize.A4);
             PdfWriter writer = PdfWriter.getInstance(document, os);
@@ -34,12 +35,15 @@ public class PdfReportCreator implements ReportCreator{
 //            fonts
             BaseFont bf = BaseFont.createFont("NotoSansHebrew-Regular.ttf", BaseFont.IDENTITY_H, true);
 //            render
-            ColumnText column = createColumn(writer.getDirectContent());
-            column.addElement(createTitle(bf));
-            column.addElement(createImage());
-            column.addElement(createTable(infoList, bf, reportType));
+            for (List<WorkInfo> infos : partition) {
+                ColumnText column = createColumn(writer.getDirectContent());
+                column.addElement(createTitle(bf));
+                column.addElement(createImage());
+                column.addElement(createTable(infos, bf, reportType));
 //            close
-            column.go();
+                column.go();
+                document.newPage();
+            }
             document.close();
         } catch (Exception e) {
             log.error("An error occurred while creating report. {}", e.getLocalizedMessage());
@@ -50,7 +54,7 @@ public class PdfReportCreator implements ReportCreator{
     }
 
     private PdfPTable createTable(List<WorkInfo> infoList, BaseFont bf, ReportType reportType) throws DocumentException {
-        int colNumber = Objects.equals(reportType, PIVOTAL) ? 11 : 4;
+        int colNumber = (PIVOTAL == reportType) ? 11 : 4;
         PdfPTable table = new PdfPTable(colNumber);
         int[] doubles = IntStream.generate(() -> 50).limit(colNumber).toArray();
         table.setTotalWidth(Floats.toArray(Ints.asList(doubles)));
@@ -58,22 +62,22 @@ public class PdfReportCreator implements ReportCreator{
         table.setHorizontalAlignment(Element.ALIGN_CENTER);
         populate(infoList, bf, table, reportType);
 
-
         return table;
     }
 
     private void populate(List<WorkInfo> infoList, BaseFont bf, PdfPTable table, ReportType reportType) {
-        if (PIVOTAL.equals(reportType)) {
+        Font font = new Font(bf, 10);
+        if (PIVOTAL == reportType) {
             ImmutableList.of("תאור", "משך", "עד-", "מ-", "חופשה", "תעריך", "לקוח", "פרויקט", "צוות", "שם משפחה", "שם")
-                    .forEach(s -> table.addCell(createCell(s, new Font(bf, 8))));
+                    .forEach(s -> table.addCell(createCell(s, font, true)));
             infoList.forEach(workInfo -> addFullRow(table, workInfo));
-        } else if (PARTIAL.equals(reportType)){
+        } else if (PARTIAL == reportType) {
             ImmutableList.of("משך", "תעריך", "שם משפחה", "שם")
-                    .forEach(s -> table.addCell(createCell(s, new Font(bf, 8))));
+                    .forEach(s -> table.addCell(createCell(s, font, true)));
             infoList.forEach(workInfo -> addPartialRow(table, workInfo));
-        } else if (EMPTY.equals(reportType)) {
+        } else if (EMPTY == reportType) {
             ImmutableList.of("תעריך", "צוות", "שם משפחה", "שם")
-                    .forEach(s -> table.addCell(createCell(s, new Font(bf, 8))));
+                    .forEach(s -> table.addCell(createCell(s, font, true)));
             infoList.forEach(workInfo -> addMissedRow(table, workInfo));
         } else {
             log.error("Not compatible report type");
@@ -109,14 +113,14 @@ public class PdfReportCreator implements ReportCreator{
     }
 
     private PdfPCell createCell(String description) {
-        return createCell(description, null);
+        return createCell(description, null, false);
     }
 
-    private PdfPCell createCell(String description, Font font) {
+    private PdfPCell createCell(String description, Font font, boolean isHeader) {
         PdfPCell cell;
         try {
-            cell = new PdfPCell(font == null ? new Phrase(description, new Font(BaseFont.createFont(BaseFont.COURIER, "utf-8", true), 6)) : new Phrase(description, font));
-            cell.setFixedHeight(15);
+            cell = new PdfPCell(font == null ? new Phrase(description, new Font(BaseFont.createFont(BaseFont.COURIER, "utf-8", true), 7)) : new Phrase(description, font));
+            cell.setFixedHeight(isHeader ? 25 : 15);
             cell.setColspan(1);
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
             cell.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
@@ -143,7 +147,7 @@ public class PdfReportCreator implements ReportCreator{
 
     private Image createImage() throws BadElementException, IOException {
         Image image = Image.getInstance("reports/pic.png");
-        image.scaleAbsolute(100, 100);
+        image.scaleAbsolute(50, 50);
         image.setAlignment(Element.ALIGN_CENTER);
         image.setSpacingAfter(25);
         return image;
