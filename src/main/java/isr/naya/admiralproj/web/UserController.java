@@ -30,11 +30,11 @@ public class UserController {
 
     @GetMapping("/profile")
     public Employee getProfile() {
-        return employeeService.get(AuthorizedUser.id());
+        return employeeService.getWithDepartment(AuthorizedUser.id());
     }
 
-    @PostMapping(value = "/agreements/{workAgreementId}/units", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity saveWorkUnit(@PathVariable("workAgreementId") Integer id,
+    @PostMapping(value = "/units", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<WorkUnit> saveWorkUnit(@MatrixVariable Integer id,
                                    @Valid @RequestBody WorkUnit unit) {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(workUnitService.save(AuthorizedUser.id(), id, unit));
