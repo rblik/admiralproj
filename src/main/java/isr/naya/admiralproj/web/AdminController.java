@@ -133,7 +133,7 @@ public class AdminController {
         return projectService.getWithClient(projectId);
     }
 
-    @PostMapping(value = "/agreements/{args}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/agreements", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WorkAgreement> saveWorkAgreement(@Valid @RequestBody WorkAgreement workAgreement,
                                                            @PathVariable("employeeId") Integer employeeId,
                                                            @PathVariable("projectId") Integer projectId) {
@@ -149,7 +149,7 @@ public class AdminController {
                 workAgreementService.getAllForEmployee(employeeId);
     }
 
-    @PostMapping(value = "/units/{args}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/units", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WorkUnit> saveWorkUnit(@Valid @RequestBody WorkUnit workUnit,
                                                  @PathVariable("employeeId") Integer employeeId,
                                                  @PathVariable("agreementId") Integer agreementId) {
