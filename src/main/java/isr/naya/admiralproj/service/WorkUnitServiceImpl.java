@@ -26,4 +26,10 @@ public class WorkUnitServiceImpl implements WorkUnitService {
         return checkTimeOverlap(workUnitRepository.countExistedByDateTimeRange(employeeId, workAgreementId, workUnit.getDate(), workUnit.getStart(), workUnit.getFinish())) ?
                 workUnitRepository.save(workUnit) : null;
     }
+
+    @Override
+    @Transactional
+    public void delete(Integer employeeId, Integer workUnitId) {
+        checkNotFound(workUnitRepository.delete(employeeId, workUnitId), workUnitId, WorkUnit.class);
+    }
 }

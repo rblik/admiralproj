@@ -34,10 +34,15 @@ public class UserController {
     }
 
     @PostMapping(value = "/agreements/{workAgreementId}/units", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity saveUnit(@PathVariable("workAgreementId") Integer id,
+    public ResponseEntity saveWorkUnit(@PathVariable("workAgreementId") Integer id,
                                    @Valid @RequestBody WorkUnit unit) {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(workUnitService.save(AuthorizedUser.id(), id, unit));
+    }
+
+    @DeleteMapping("/units/{id}")
+    public void deleteWorkUnit(@PathVariable("id") Integer id) {
+        workUnitService.delete(AuthorizedUser.id(), id);
     }
 
     @GetMapping("/agreements")

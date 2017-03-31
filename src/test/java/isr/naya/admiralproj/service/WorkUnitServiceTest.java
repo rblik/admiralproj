@@ -4,6 +4,7 @@ package isr.naya.admiralproj.service;
 import isr.naya.admiralproj.exception.NotFoundException;
 import isr.naya.admiralproj.exception.TimeOverlappingException;
 import isr.naya.admiralproj.model.WorkUnit;
+import isr.naya.admiralproj.repo.WorkUnitRepository;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -17,8 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -29,6 +29,8 @@ public class WorkUnitServiceTest {
 
     @Autowired
     private WorkUnitService service;
+    @Autowired
+    private WorkUnitRepository repository;
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -40,6 +42,21 @@ public class WorkUnitServiceTest {
                         start(LocalTime.of(10, 0)).
                         finish(LocalTime.of(12, 0)).build());
         assertThat(save, hasProperty("id", is(32)));
+    }
+
+    @Test
+    public void testDeleteNotFound() {
+        thrown.expect(NotFoundException.class);
+        thrown.expectMessage("Not found work unit");
+        service.delete(1,-1);
+    }
+
+    @Test
+    public void testDelete() {
+        long count1 = repository.count();
+        service.delete(1, 1);
+        long count2 = repository.count();
+        assertThat(count2, not(count1));
     }
 
     @Test

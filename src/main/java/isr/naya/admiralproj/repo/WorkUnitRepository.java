@@ -3,6 +3,7 @@ package isr.naya.admiralproj.repo;
 import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.model.WorkUnit;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
@@ -15,6 +16,10 @@ public interface WorkUnitRepository extends JpaRepository<WorkUnit, Integer> {
 
     @Query("select count(wu) from WorkUnit wu where wu.workAgreement.employee.id = ?1 and wu.workAgreement.id = ?2 and wu.date = ?3 and not ((wu.start < ?4 and wu.finish < ?5) or (wu.start > ?4 and wu.finish > ?5))")
     Integer countExistedByDateTimeRange(Integer employeeId, Integer workAgreementId, LocalDate date, LocalTime starts, LocalTime ends);
+
+    @Modifying
+    @Query("delete from WorkUnit wu where wu.id in (select wut.id from WorkUnit wut join wut.workAgreement wat join wat.employee emp where wut.id =?2 and emp.id =?1)")
+    int delete(Integer employeeId, Integer workUnitId);
 
     @Query("select new isr.naya.admiralproj.dto.WorkInfo(e.id, e.name, e.surname, wu.date, sum (wu.duration)) from WorkUnit wu join wu.workAgreement wa join wa.employee e where wa.id = wu.workAgreement.id and e.id = wa.employee.id and wu.date>=?1 and wu.date<?2 group by e.id, wu.date having sum(wu.duration)<60*?3")
     List<WorkInfo> getAllPartialBetweenDates(LocalDate from, LocalDate to, Integer maxHours);
