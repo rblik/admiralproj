@@ -1,6 +1,7 @@
 package isr.naya.admiralproj.service;
 
 import isr.naya.admiralproj.dto.WorkInfo;
+import isr.naya.admiralproj.util.pdf.FullReportSender;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -26,6 +27,8 @@ public class ReportServiceTest {
 
     @Autowired
     private WorkInfoService service;
+    @Autowired
+    private FullReportSender sender;
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -56,6 +59,12 @@ public class ReportServiceTest {
     public void testGetAllUnitsByDate() {
         List<WorkInfo> workUnits = service.getAllUnitsByDate(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1));
         assertThat(workUnits, hasSize(26));
+    }
+
+    @Test
+    public void testGetAllUnitsByDateAndSaveToPdf() {
+        List<WorkInfo> workUnits = service.getAllUnitsByDate(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1));
+        sender.send(workUnits);
     }
 
     @Test
