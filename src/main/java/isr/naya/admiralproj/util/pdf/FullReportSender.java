@@ -33,7 +33,7 @@ public class FullReportSender {
             column.go();
             document.close();
         } catch (Exception e) {
-            log.error("An error occurred while creating report");
+            log.error("An error occurred while creating report. {}", e.getLocalizedMessage());
             throw new RuntimeException(e);
         }
 
@@ -81,7 +81,7 @@ public class FullReportSender {
             cell.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
             cell.setBorder(Rectangle.NO_BORDER);
         } catch (Exception e) {
-            log.error("An error occurred while creating cell");
+            log.error("An error occurred while creating cell. {}", e.getLocalizedMessage());
             throw new RuntimeException(e);
         }
         return cell;
