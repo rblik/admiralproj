@@ -19,7 +19,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import static isr.naya.admiralproj.report.PdfCreator.*;
+import static isr.naya.admiralproj.report.ReportType.*;
 
 @RestController
 @RequestMapping("/admin")

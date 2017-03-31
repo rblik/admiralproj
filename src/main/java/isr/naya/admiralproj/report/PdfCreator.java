@@ -17,14 +17,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
+import static isr.naya.admiralproj.report.ReportType.*;
+
 @Component
 @Slf4j
 public class PdfCreator {
-    public static final String PIVOTAL = "pivotal";
-    public static final String PARTIAL = "partial";
-    public static final String EMPTY = "empty";
 
-    public byte[] create(@NonNull List<WorkInfo> infoList, @NonNull String reportType) {
+    public byte[] create(@NonNull List<WorkInfo> infoList, @NonNull ReportType reportType) {
         ByteArrayOutputStream os;
         try {
             os = new ByteArrayOutputStream();
@@ -49,7 +48,7 @@ public class PdfCreator {
 
     }
 
-    private PdfPTable createTable(List<WorkInfo> infoList, BaseFont bf, String reportType) throws DocumentException {
+    private PdfPTable createTable(List<WorkInfo> infoList, BaseFont bf, ReportType reportType) throws DocumentException {
         int colNumber = Objects.equals(reportType, PIVOTAL) ? 11 : 4;
         PdfPTable table = new PdfPTable(colNumber);
         int[] doubles = IntStream.generate(() -> 50).limit(colNumber).toArray();
@@ -62,7 +61,7 @@ public class PdfCreator {
         return table;
     }
 
-    private void populate(List<WorkInfo> infoList, BaseFont bf, PdfPTable table, String reportType) {
+    private void populate(List<WorkInfo> infoList, BaseFont bf, PdfPTable table, ReportType reportType) {
         if (PIVOTAL.equals(reportType)) {
             ImmutableList.of("תאור", "משך", "עד-", "מ-", "חופשה", "תעריך", "לקוח", "פרויקט", "צוות", "שם משפחה", "שם")
                     .forEach(s -> table.addCell(createCell(s, new Font(bf, 8))));
