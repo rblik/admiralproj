@@ -65,7 +65,7 @@ public class AdminController {
         return workInfoService.getAllWorkUnitsForEmployee(employeeId, from, to);
     }
 
-    @PostMapping(name = "/clients", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/clients", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Client> saveClient(@Valid @RequestBody Client client) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -82,7 +82,7 @@ public class AdminController {
         return clientService.get(clientId);
     }
 
-    @PostMapping(name = "/departments", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/departments", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Department> saveDepartment(@Valid @RequestBody Department department) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -99,24 +99,24 @@ public class AdminController {
         return departmentService.get(departmentId);
     }
 
-    @PostMapping(name = "/employees", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/employees/{departmentId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Employee> saveEmployee(@Valid @RequestBody Employee employee, @MatrixVariable Integer departmentId) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(employeeService.save(departmentId, employee));
     }
 
-    @GetMapping("/employees")
+    @GetMapping(value = "/employees")
     public List<Employee> getAllEmployees() {
         return employeeService.getAllWithDepartments();
     }
 
-    @GetMapping("/employees/{employeeId}")
+    @GetMapping(value = "/employees/{employeeId}")
     public Employee getEmployee(@PathVariable("employeeId") Integer employeeId) {
         return employeeService.getWithDepartment(employeeId);
     }
 
-    @PostMapping(name = "/projects", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/projects/{clientId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Project> saveProject(@Valid @RequestBody Project project, @MatrixVariable Integer clientId) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -133,24 +133,21 @@ public class AdminController {
         return projectService.getWithClient(projectId);
     }
 
-    @PostMapping(name = "/agreements", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/agreements/{args}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WorkAgreement> saveWorkAgreement(@Valid @RequestBody WorkAgreement workAgreement, @MatrixVariable Integer employeeId, @MatrixVariable Integer projectId) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(workAgreementService.save(employeeId, projectId, workAgreement));
     }
 
-    @GetMapping("/agreements")
-    public List<AgreementDto> getAllAgreements() {
-        return workAgreementService.getAgreementsGraph();
+    @GetMapping(value = "/agreements/{employeeId}")
+    public List<AgreementDto> getAllAgreements(@MatrixVariable(required = false) Integer employeeId) {
+        return employeeId == null ?
+                workAgreementService.getAgreementsGraph() :
+                workAgreementService.getAllForEmployee(employeeId);
     }
 
-    @GetMapping("/agreements")
-    public List<AgreementDto> getAgreementsForEmployee(@MatrixVariable Integer employeeId) {
-        return workAgreementService.getAllForEmployee(employeeId);
-    }
-
-    @PostMapping(name = "/units", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/units/{args}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WorkUnit> saveWorkUnit(@Valid @RequestBody WorkUnit workUnit, @MatrixVariable Integer employeeId, @MatrixVariable Integer agreementId) {
         return new ResponseEntity<>(workUnitService.save(employeeId, agreementId, workUnit), HttpStatus.CREATED);
     }
