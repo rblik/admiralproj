@@ -3,18 +3,23 @@ package isr.naya.admiralproj.web;
 import isr.naya.admiralproj.dto.AgreementDto;
 import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.model.*;
+import isr.naya.admiralproj.report.PdfCreator;
 import isr.naya.admiralproj.service.*;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+
+import static isr.naya.admiralproj.report.PdfCreator.*;
 
 @RestController
 @RequestMapping("/admin")
@@ -28,6 +33,7 @@ public class AdminController {
     private ProjectService projectService;
     private WorkAgreementService workAgreementService;
     private WorkUnitService workUnitService;
+    private PdfCreator pdfCreator;
 
     @GetMapping("/info/partial")
     public List<WorkInfo> getPartialDaysReport(@RequestParam(value = "from") LocalDate from,
@@ -37,7 +43,7 @@ public class AdminController {
     }
 
     @GetMapping("/info/missing")
-    public Set<WorkInfo> getMissingDaysReport(@RequestParam("from") LocalDate from,
+    public List<WorkInfo> getMissingDaysReport(@RequestParam("from") LocalDate from,
                                               @RequestParam("to") LocalDate to) {
         return workInfoService.getMissingDays(from, to);
     }
@@ -47,15 +53,7 @@ public class AdminController {
                                            @RequestParam("to") LocalDate to,
                                            @RequestParam("employeeId") Optional<Integer> employeeId,
                                            @RequestParam("projectId") Optional<Integer> projectId) {
-
-        if (employeeId.isPresent() && projectId.isPresent())
-            return workInfoService.getAllUnitsByDateAndEmployeeAndProject(from, to, employeeId.get(), projectId.get());
-        else if (employeeId.isPresent())
-            return workInfoService.getAllUnitsByDateAndEmployee(from, to, employeeId.get());
-        else if (projectId.isPresent())
-            return workInfoService.getAllUnitsByDateAndProject(from, to, projectId.get());
-        else
-            return workInfoService.getAllUnitsByDate(from, to);
+        return getWorkInfos(from, to, employeeId, projectId);
     }
 
     @GetMapping("/units")
@@ -155,5 +153,60 @@ public class AdminController {
     @DeleteMapping("/units/{id}")
     public void deleteWorkUnit(@MatrixVariable Integer employeeId, @MatrixVariable Integer unitId) {
         workUnitService.delete(employeeId, unitId);
+    }
+
+    @GetMapping(value = "/report/full/pdf")
+    @SneakyThrows
+    public void getFullReport(@RequestParam("from") LocalDate from,
+                              @RequestParam("to") LocalDate to,
+                              @RequestParam("employeeId") Optional<Integer> employeeId,
+                              @RequestParam("projectId") Optional<Integer> projectId,
+                              HttpServletResponse response) {
+        byte[] bytes = pdfCreator.create(getWorkInfos(from, to, employeeId, projectId), FULL);
+        sendPdf(response, bytes);
+    }
+
+    @GetMapping(value = "/report/partial/pdf")
+    public void getPartialReport(@RequestParam(value = "from") LocalDate from,
+                                 @RequestParam("to") LocalDate to,
+                                 @RequestParam("limit") Integer limit,
+                                 HttpServletResponse response) {
+        byte[] bytes = pdfCreator.create(workInfoService.getPartialDays(from, to, limit), PARTIAL);
+        sendPdf(response, bytes);
+    }
+
+    @GetMapping(value = "/report/missed/pdf")
+    public void getMissingReport(@RequestParam("from") LocalDate from,
+                                 @RequestParam("to") LocalDate to,
+                                 HttpServletResponse response) {
+        byte[] bytes = pdfCreator.create(workInfoService.getMissingDays(from, to), EMPTY);
+        sendPdf(response, bytes);
+    }
+
+    @SneakyThrows
+    private void sendPdf(HttpServletResponse response, byte[] bytes) {
+        response.setHeader("Cache-Control", "no-store");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
+        response.setContentType(MediaType.APPLICATION_PDF_VALUE);
+        ServletOutputStream stream = response.getOutputStream();
+        stream.write(bytes);
+        stream.flush();
+        stream.close();
+    }
+
+    private List<WorkInfo> getWorkInfos(LocalDate from, LocalDate to,
+                                        Optional<Integer> employeeId,
+                                        Optional<Integer> projectId) {
+        List<WorkInfo> workInfos;
+        if (employeeId.isPresent() && projectId.isPresent()) {
+            workInfos = workInfoService.getAllUnitsByDateAndEmployeeAndProject(from, to, employeeId.get(), projectId.get());
+        } else if (employeeId.isPresent())
+            workInfos = workInfoService.getAllUnitsByDateAndEmployee(from, to, employeeId.get());
+        else if (projectId.isPresent())
+            workInfos = workInfoService.getAllUnitsByDateAndProject(from, to, projectId.get());
+        else
+            workInfos = workInfoService.getAllUnitsByDate(from, to);
+        return workInfos;
     }
 }

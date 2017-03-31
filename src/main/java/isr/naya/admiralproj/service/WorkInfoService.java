@@ -4,7 +4,6 @@ import isr.naya.admiralproj.dto.WorkInfo;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 public interface WorkInfoService {
 
@@ -12,7 +11,7 @@ public interface WorkInfoService {
 
     List<WorkInfo> getAllWorkUnitsForEmployee(Integer id, LocalDate from, LocalDate to);
 
-    Set<WorkInfo> getMissingDays(LocalDate from, LocalDate to);
+    List<WorkInfo> getMissingDays(LocalDate from, LocalDate to);
 
     // Pivotal Report Block
     List<WorkInfo> getAllUnitsByDate(LocalDate from, LocalDate to);

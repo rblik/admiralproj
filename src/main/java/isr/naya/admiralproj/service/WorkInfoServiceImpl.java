@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 import static isr.naya.admiralproj.util.MappingUtil.generate;
 
@@ -32,7 +31,7 @@ public class WorkInfoServiceImpl implements WorkInfoService {
     }
 
     @Override
-    public Set<WorkInfo> getMissingDays(@NonNull LocalDate from, @NonNull LocalDate to) {
+    public List<WorkInfo> getMissingDays(@NonNull LocalDate from, @NonNull LocalDate to) {
         List<Employee> employees = employeeRepository.getAllWithDepartments();
         return generate(workUnitRepository.getAllNonEmptyDaysBetweenDates(from, to), from, to, employees);
     }

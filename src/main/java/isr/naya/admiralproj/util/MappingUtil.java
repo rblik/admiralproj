@@ -4,20 +4,23 @@ import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.model.Employee;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.assertj.core.util.Lists;
 import org.assertj.core.util.Sets;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.time.temporal.ChronoUnit.DAYS;
+import static java.util.Comparator.comparing;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MappingUtil {
 
-    public static Set<WorkInfo> generate(Set<WorkInfo> days, LocalDate from, LocalDate to, List<Employee> employees) {
+    public static List<WorkInfo> generate(Set<WorkInfo> days, LocalDate from, LocalDate to, List<Employee> employees) {
         Set<WorkInfo> result = Sets.newHashSet();
         employees.forEach(e -> {
             Set<WorkInfo> collect = Stream.iterate(
@@ -26,6 +29,8 @@ public class MappingUtil {
             result.addAll(collect);
         });
         result.removeAll(days);
-        return result;
+        ArrayList<WorkInfo> infos = Lists.newArrayList(result);
+        infos.sort(comparing(WorkInfo::getDate).reversed());
+        return infos;
     }
 }

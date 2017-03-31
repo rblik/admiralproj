@@ -1,7 +1,6 @@
 package isr.naya.admiralproj.service;
 
 import isr.naya.admiralproj.dto.WorkInfo;
-import isr.naya.admiralproj.util.pdf.FullReportSender;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -14,7 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
@@ -27,8 +25,6 @@ public class ReportServiceTest {
 
     @Autowired
     private WorkInfoService service;
-    @Autowired
-    private FullReportSender sender;
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -50,7 +46,7 @@ public class ReportServiceTest {
 
     @Test
     public void testGetAllForMissing() {
-        Set<WorkInfo> days = service.getMissingDays(LocalDate.of(2017, 3, 19), LocalDate.of(2017, 3, 24));
+        List<WorkInfo> days = service.getMissingDays(LocalDate.of(2017, 3, 19), LocalDate.of(2017, 3, 24));
         assertThat(days, hasSize(0));
     }
 
@@ -59,12 +55,6 @@ public class ReportServiceTest {
     public void testGetAllUnitsByDate() {
         List<WorkInfo> workUnits = service.getAllUnitsByDate(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1));
         assertThat(workUnits, hasSize(26));
-    }
-
-    @Test
-    public void testGetAllUnitsByDateAndSaveToPdf() {
-        List<WorkInfo> workUnits = service.getAllUnitsByDate(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1));
-        sender.send(workUnits);
     }
 
     @Test
