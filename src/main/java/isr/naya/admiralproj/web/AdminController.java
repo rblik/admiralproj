@@ -3,7 +3,7 @@ package isr.naya.admiralproj.web;
 import isr.naya.admiralproj.dto.AgreementDto;
 import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.model.*;
-import isr.naya.admiralproj.report.PdfCreator;
+import isr.naya.admiralproj.report.ReportCreator;
 import isr.naya.admiralproj.service.*;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -33,7 +33,7 @@ public class AdminController {
     private ProjectService projectService;
     private WorkAgreementService workAgreementService;
     private WorkUnitService workUnitService;
-    private PdfCreator pdfCreator;
+    private ReportCreator pdfCreator;
 
     @GetMapping("/info/partial")
     public List<WorkInfo> getPartialDaysReport(@RequestParam(value = "from") LocalDate from,

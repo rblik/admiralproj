@@ -21,8 +21,9 @@ import static isr.naya.admiralproj.report.ReportType.*;
 
 @Component
 @Slf4j
-public class PdfCreator {
+public class PdfReportCreator implements ReportCreator{
 
+    @Override
     public byte[] create(@NonNull List<WorkInfo> infoList, @NonNull ReportType reportType) {
         ByteArrayOutputStream os;
         try {
