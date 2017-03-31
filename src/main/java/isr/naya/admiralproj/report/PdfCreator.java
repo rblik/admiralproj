@@ -20,7 +20,7 @@ import java.util.stream.IntStream;
 @Component
 @Slf4j
 public class PdfCreator {
-    public static final String FULL = "full";
+    public static final String PIVOTAL = "pivotal";
     public static final String PARTIAL = "partial";
     public static final String EMPTY = "empty";
 
@@ -50,7 +50,7 @@ public class PdfCreator {
     }
 
     private PdfPTable createTable(List<WorkInfo> infoList, BaseFont bf, String reportType) throws DocumentException {
-        int colNumber = Objects.equals(reportType, FULL) ? 11 : 4;
+        int colNumber = Objects.equals(reportType, PIVOTAL) ? 11 : 4;
         PdfPTable table = new PdfPTable(colNumber);
         int[] doubles = IntStream.generate(() -> 50).limit(colNumber).toArray();
         table.setTotalWidth(Floats.toArray(Ints.asList(doubles)));
@@ -63,7 +63,7 @@ public class PdfCreator {
     }
 
     private void populate(List<WorkInfo> infoList, BaseFont bf, PdfPTable table, String reportType) {
-        if (FULL.equals(reportType)) {
+        if (PIVOTAL.equals(reportType)) {
             ImmutableList.of("תאור", "משך", "עד-", "מ-", "חופשה", "תעריך", "לקוח", "פרויקט", "צוות", "שם משפחה", "שם")
                     .forEach(s -> table.addCell(createCell(s, new Font(bf, 8))));
             infoList.forEach(workInfo -> addFullRow(table, workInfo));

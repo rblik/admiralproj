@@ -155,14 +155,14 @@ public class AdminController {
         workUnitService.delete(employeeId, unitId);
     }
 
-    @GetMapping(value = "/report/full/pdf")
+    @GetMapping(value = "/report/pivotal/pdf")
     @SneakyThrows
     public void getFullReport(@RequestParam("from") LocalDate from,
                               @RequestParam("to") LocalDate to,
                               @RequestParam("employeeId") Optional<Integer> employeeId,
                               @RequestParam("projectId") Optional<Integer> projectId,
                               HttpServletResponse response) {
-        byte[] bytes = pdfCreator.create(getWorkInfos(from, to, employeeId, projectId), FULL);
+        byte[] bytes = pdfCreator.create(getWorkInfos(from, to, employeeId, projectId), PIVOTAL);
         sendPdf(response, bytes);
     }
 
@@ -175,7 +175,7 @@ public class AdminController {
         sendPdf(response, bytes);
     }
 
-    @GetMapping(value = "/report/missed/pdf")
+    @GetMapping(value = "/report/missing/pdf")
     public void getMissingReport(@RequestParam("from") LocalDate from,
                                  @RequestParam("to") LocalDate to,
                                  HttpServletResponse response) {
