@@ -1,5 +1,6 @@
 package isr.naya.admiralproj.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.validator.constraints.Email;
 
@@ -55,6 +56,7 @@ public class Employee extends BaseEntity{
      * https://github.com/srinath4ever/JavaTest/blob/master/JavaTest/src/com/core/regex/RegExDemo.java
      */
     @NotNull
+    @JsonIgnore
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{6,20}$")
     @Column(name = "password", nullable = false)
     private String password;

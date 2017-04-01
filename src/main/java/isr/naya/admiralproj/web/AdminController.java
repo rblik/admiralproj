@@ -1,10 +1,12 @@
 package isr.naya.admiralproj.web;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import isr.naya.admiralproj.dto.AgreementDto;
 import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.model.*;
 import isr.naya.admiralproj.report.ReportCreator;
 import isr.naya.admiralproj.service.*;
+import isr.naya.admiralproj.util.JsonUtil.AdminView;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
@@ -44,7 +46,7 @@ public class AdminController {
 
     @GetMapping("/info/missing")
     public List<WorkInfo> getMissingDaysReport(@RequestParam("from") LocalDate from,
-                                              @RequestParam("to") LocalDate to) {
+                                               @RequestParam("to") LocalDate to) {
         return workInfoService.getMissingDays(from, to);
     }
 
@@ -97,9 +99,9 @@ public class AdminController {
         return departmentService.get(departmentId);
     }
 
-    @PostMapping(value = "/employees/{departmentId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/employees", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Employee> saveEmployee(@Valid @RequestBody Employee employee,
-                                                 @PathVariable("departmentId") Integer departmentId) {
+                                                 @RequestParam("departmentId") Integer departmentId) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(employeeService.save(departmentId, employee));
@@ -110,14 +112,15 @@ public class AdminController {
         return employeeService.getAllWithDepartments();
     }
 
+    @JsonView(AdminView.class)
     @GetMapping(value = "/employees/{employeeId}")
     public Employee getEmployee(@PathVariable("employeeId") Integer employeeId) {
         return employeeService.getWithDepartment(employeeId);
     }
 
-    @PostMapping(value = "/projects/{clientId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/projects", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Project> saveProject(@Valid @RequestBody Project project,
-                                               @PathVariable("clientId") Integer clientId) {
+                                               @RequestParam("clientId") Integer clientId) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(projectService.save(clientId, project));
@@ -135,15 +138,15 @@ public class AdminController {
 
     @PostMapping(value = "/agreements", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WorkAgreement> saveWorkAgreement(@Valid @RequestBody WorkAgreement workAgreement,
-                                                           @PathVariable("employeeId") Integer employeeId,
-                                                           @PathVariable("projectId") Integer projectId) {
+                                                           @RequestParam("employeeId") Integer employeeId,
+                                                           @RequestParam("projectId") Integer projectId) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(workAgreementService.save(employeeId, projectId, workAgreement));
     }
 
-    @GetMapping(value = "/agreements/{employeeId}")
-    public List<AgreementDto> getAllAgreements(@PathVariable(value = "employeeId", required = false) Integer employeeId) {
+    @GetMapping(value = "/agreements")
+    public List<AgreementDto> getAllAgreements(@RequestParam(value = "employeeId", required = false) Integer employeeId) {
         return employeeId == null ?
                 workAgreementService.getAgreementsGraph() :
                 workAgreementService.getAllForEmployee(employeeId);
@@ -151,13 +154,14 @@ public class AdminController {
 
     @PostMapping(value = "/units", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WorkUnit> saveWorkUnit(@Valid @RequestBody WorkUnit workUnit,
-                                                 @PathVariable("employeeId") Integer employeeId,
-                                                 @PathVariable("agreementId") Integer agreementId) {
+                                                 @RequestParam("employeeId") Integer employeeId,
+                                                 @RequestParam("agreementId") Integer agreementId) {
         return new ResponseEntity<>(workUnitService.save(employeeId, agreementId, workUnit), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/units/{id}")
-    public void deleteWorkUnit(@PathVariable("employeeId") Integer employeeId, @PathVariable("unitId") Integer unitId) {
+    @DeleteMapping("/units/{unitId}")
+    public void deleteWorkUnit(@PathVariable("unitId") Integer unitId,
+                               @RequestParam("employeeId") Integer employeeId) {
         workUnitService.delete(employeeId, unitId);
     }
 

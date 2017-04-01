@@ -30,4 +30,7 @@ public class JsonUtil {
 
         return mapper;
     }
+
+    public static class UserView {}
+    public static class AdminView {}
 }

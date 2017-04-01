@@ -1,5 +1,6 @@
 package isr.naya.admiralproj.web;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import isr.naya.admiralproj.AuthorizedUser;
 import isr.naya.admiralproj.dto.AgreementDto;
 import isr.naya.admiralproj.dto.WorkInfo;
@@ -9,6 +10,7 @@ import isr.naya.admiralproj.service.EmployeeService;
 import isr.naya.admiralproj.service.WorkAgreementService;
 import isr.naya.admiralproj.service.WorkInfoService;
 import isr.naya.admiralproj.service.WorkUnitService;
+import isr.naya.admiralproj.util.JsonUtil.UserView;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,6 +30,7 @@ public class UserController {
     private WorkAgreementService workAgreementService;
     private WorkInfoService workInfoService;
 
+    @JsonView(UserView.class)
     @GetMapping("/profile")
     public Employee getProfile() {
         return employeeService.getWithDepartment(AuthorizedUser.id());
