@@ -14,8 +14,8 @@ import java.util.Set;
 @SuppressWarnings({"JpaQlInspection", "SpringDataRepositoryMethodReturnTypeInspection"})
 public interface WorkUnitRepository extends JpaRepository<WorkUnit, Integer> {
 
-    @Query("select count(wu) from WorkUnit wu where wu.workAgreement.employee.id = ?1 and wu.workAgreement.id = ?2 and wu.date = ?3 and not ((wu.start < ?4 and wu.finish < ?5) or (wu.start > ?4 and wu.finish > ?5))")
-    Integer countExistedByDateTimeRange(Integer employeeId, Integer workAgreementId, LocalDate date, LocalTime starts, LocalTime ends);
+    @Query("select count(wu) from WorkUnit wu where wu.workAgreement.employee.id = ?1 and wu.workAgreement.id = ?2 and wu.id <>?3 and wu.date = ?4 and not ((wu.start < ?5 and wu.finish < ?6) or (wu.start > ?5 and wu.finish > ?6))")
+    Integer countExistedByDateTimeRange(Integer employeeId, Integer workAgreementId, Integer workUnitId, LocalDate date, LocalTime starts, LocalTime ends);
 
     @Modifying
     @Query("delete from WorkUnit wu where wu.id in (select wut.id from WorkUnit wut join wut.workAgreement wat join wat.employee emp where wut.id =?2 and emp.id =?1)")

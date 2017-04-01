@@ -46,6 +46,7 @@ public class WorkUnit extends BaseEntity {
     private WorkAgreement workAgreement;
 
     @PrePersist
+    @PreUpdate
     public void calculateDuration() {
         this.duration = ChronoUnit.MINUTES.between(this.start, this.finish);
     }
