@@ -40,8 +40,14 @@ public class ReportServiceTest {
 
     @Test
     public void testGetAllWorkUnitsForEmployee() {
-        List<WorkInfo> workInfos = service.getAllWorkUnitsForEmployee(1, LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1));
-        assertThat(workInfos, hasSize(6));
+        List<WorkInfo> workInfos = service.getAllForEmployee(1, LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1));
+        assertThat(workInfos, hasSize(5));
+    }
+
+    @Test
+    public void testGetAllWorkUnitsForEmployeeByDateAndWorkAgreement() {
+        List<WorkInfo> workInfos = service.getAllForEmployeeByDate(1, 1, LocalDate.of(2017, 3, 20));
+        assertThat(workInfos, hasSize(1));
     }
 
     @Test

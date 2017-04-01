@@ -9,7 +9,9 @@ public interface WorkInfoService {
 
     List<WorkInfo> getPartialDays(LocalDate from, LocalDate to, Integer maxHours);
 
-    List<WorkInfo> getAllWorkUnitsForEmployee(Integer id, LocalDate from, LocalDate to);
+    List<WorkInfo> getAllForEmployee(Integer id, LocalDate from, LocalDate to);
+
+    List<WorkInfo> getAllForEmployeeByDate(Integer employeeId, Integer workAgreementId, LocalDate date);
 
     List<WorkInfo> getMissingDays(LocalDate from, LocalDate to);
 

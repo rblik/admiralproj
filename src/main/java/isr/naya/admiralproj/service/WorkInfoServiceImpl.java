@@ -26,8 +26,13 @@ public class WorkInfoServiceImpl implements WorkInfoService {
     }
 
     @Override
-    public List<WorkInfo> getAllWorkUnitsForEmployee(@NonNull Integer employeeId, @NonNull LocalDate from, @NonNull LocalDate to) {
+    public List<WorkInfo> getAllForEmployee(@NonNull Integer employeeId, @NonNull LocalDate from, @NonNull LocalDate to) {
         return workUnitRepository.getAllForEmployeeBetweenDates(employeeId, from, to);
+    }
+
+    @Override
+    public List<WorkInfo> getAllForEmployeeByDate(@NonNull Integer employeeId, @NonNull Integer workAgreementId, @NonNull LocalDate date) {
+        return workUnitRepository.getAllForEmployeeByDay(employeeId, workAgreementId, date);
     }
 
     @Override

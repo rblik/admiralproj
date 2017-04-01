@@ -45,6 +45,10 @@ public class WorkInfo {
         this(null, employeeId, employeeName, employeeSurname, departmentName, null, null, null, null, date, null,null, null, null, null);
     }
 
+    public WorkInfo(Integer agreementId, LocalDate date, Long duration) {
+        this(agreementId, null, null, null, null, null, null, null, null, date, null, null, null, duration, null);
+    }
+
     public WorkInfo(Integer agreementId, Integer employeeId, String employeeName, String employeeSurname, String departmentName, Integer projectId, String projectName, Integer clientId, String clientName, LocalDate date) {
         this(agreementId, employeeId, employeeName, employeeSurname, departmentName, projectId, projectName, clientId, clientName, date, null, null, null, null, null);
     }

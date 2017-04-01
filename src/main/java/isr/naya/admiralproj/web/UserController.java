@@ -35,7 +35,7 @@ public class UserController {
 
     @PostMapping(value = "/units", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WorkUnit> saveWorkUnit(@MatrixVariable Integer id,
-                                   @Valid @RequestBody WorkUnit unit) {
+                                                 @Valid @RequestBody WorkUnit unit) {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(workUnitService.save(AuthorizedUser.id(), id, unit));
     }
@@ -53,6 +53,12 @@ public class UserController {
     @GetMapping("/units")
     public List<WorkInfo> getWorkUnits(@RequestParam("from") LocalDate from,
                                        @RequestParam("to") LocalDate to) {
-        return workInfoService.getAllWorkUnitsForEmployee(AuthorizedUser.id(), from, to);
+        return workInfoService.getAllForEmployee(AuthorizedUser.id(), from, to);
+    }
+
+    @GetMapping("/units/{date}")
+    public List<WorkInfo> getWorkUnitsForDay(@PathVariable("date") LocalDate date,
+                                             @RequestParam("agreementId") Integer agreementId) {
+        return workInfoService.getAllForEmployeeByDate(AuthorizedUser.id(), agreementId, date);
     }
 }

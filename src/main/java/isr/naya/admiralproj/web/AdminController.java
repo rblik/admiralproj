@@ -60,7 +60,7 @@ public class AdminController {
     public List<WorkInfo> getWorkUnits(@RequestParam("from") LocalDate from,
                                        @RequestParam("to") LocalDate to,
                                        @RequestParam("employeeId") Integer employeeId) {
-        return workInfoService.getAllWorkUnitsForEmployee(employeeId, from, to);
+        return workInfoService.getAllForEmployee(employeeId, from, to);
     }
 
     @PostMapping(value = "/clients", consumes = MediaType.APPLICATION_JSON_VALUE)
