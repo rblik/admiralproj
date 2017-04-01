@@ -9,6 +9,7 @@ import com.itextpdf.text.pdf.*;
 import isr.naya.admiralproj.dto.WorkInfo;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;
@@ -21,6 +22,7 @@ import static isr.naya.admiralproj.report.ReportType.*;
 
 @Component
 @Slf4j
+@Qualifier("PDF")
 public class PdfReportCreator implements ReportCreator {
 
     @Override

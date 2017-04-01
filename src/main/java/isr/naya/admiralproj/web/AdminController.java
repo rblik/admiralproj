@@ -7,8 +7,9 @@ import isr.naya.admiralproj.model.*;
 import isr.naya.admiralproj.report.ReportCreator;
 import isr.naya.admiralproj.service.*;
 import isr.naya.admiralproj.util.JsonUtil.AdminView;
-import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,36 +26,50 @@ import static isr.naya.admiralproj.report.ReportType.*;
 
 @RestController
 @RequestMapping("/admin")
-@AllArgsConstructor
 public class AdminController {
 
+    private static final String PDF_TYPE = "application/pdf";
+    private static final String XLS_TYPE = "application/vnd.ms-excel";
+
+    @Autowired
     private WorkInfoService workInfoService;
+    @Autowired
     private ClientService clientService;
+    @Autowired
     private DepartmentService departmentService;
+    @Autowired
     private EmployeeService employeeService;
+    @Autowired
     private ProjectService projectService;
+    @Autowired
     private WorkAgreementService workAgreementService;
+    @Autowired
     private WorkUnitService workUnitService;
+    @Qualifier("PDF")
+    @Autowired
     private ReportCreator pdfCreator;
+    @Qualifier("XLS")
+    @Autowired
+    private ReportCreator xlsCreator;
 
     @GetMapping("/info/partial")
-    public List<WorkInfo> getPartialDaysReport(@RequestParam(value = "from") LocalDate from,
-                                               @RequestParam("to") LocalDate to,
-                                               @RequestParam("limit") Integer limit) {
+    public List<WorkInfo> getJsonPartialDaysReport(@RequestParam(value = "from") LocalDate from,
+                                                   @RequestParam("to") LocalDate to,
+                                                   @RequestParam("limit") Integer limit) {
         return workInfoService.getPartialDays(from, to, limit);
     }
 
     @GetMapping("/info/missing")
-    public List<WorkInfo> getMissingDaysReport(@RequestParam("from") LocalDate from,
-                                               @RequestParam("to") LocalDate to) {
+    public List<WorkInfo> getJsonMissingDaysReport(@RequestParam("from") LocalDate from,
+                                                   @RequestParam("to") LocalDate to) {
         return workInfoService.getMissingDays(from, to);
     }
 
     @GetMapping("/info/pivotal")
-    public List<WorkInfo> getPivotalReport(@RequestParam("from") LocalDate from,
-                                           @RequestParam("to") LocalDate to,
-                                           @RequestParam("employeeId") Optional<Integer> employeeId,
-                                           @RequestParam("projectId") Optional<Integer> projectId) {
+    public List<WorkInfo> getJsonPivotalReport(@RequestParam("from") LocalDate from,
+                                               @RequestParam("to") LocalDate to,
+                                               @RequestParam("employeeId") Optional<Integer> employeeId,
+                                               @RequestParam("projectId") Optional<Integer> projectId) {
         return getWorkInfos(from, to, employeeId, projectId);
     }
 
@@ -166,39 +181,65 @@ public class AdminController {
     }
 
     @GetMapping(value = "/pdf/pivotal")
-    @SneakyThrows
-    public void getFullReport(@RequestParam("from") LocalDate from,
-                              @RequestParam("to") LocalDate to,
-                              @RequestParam("employeeId") Optional<Integer> employeeId,
-                              @RequestParam("projectId") Optional<Integer> projectId,
-                              HttpServletResponse response) {
+    public void getPDFPivotalReport(@RequestParam("from") LocalDate from,
+                                    @RequestParam("to") LocalDate to,
+                                    @RequestParam("employeeId") Optional<Integer> employeeId,
+                                    @RequestParam("projectId") Optional<Integer> projectId,
+                                    HttpServletResponse response) {
         byte[] bytes = pdfCreator.create(getWorkInfos(from, to, employeeId, projectId), PIVOTAL);
-        sendPdf(response, bytes);
+        sendReport(response, bytes, PDF_TYPE);
     }
 
     @GetMapping(value = "/pdf/partial")
-    public void getPartialReport(@RequestParam(value = "from") LocalDate from,
-                                 @RequestParam("to") LocalDate to,
-                                 @RequestParam("limit") Integer limit,
-                                 HttpServletResponse response) {
+    public void getPDFPartialDaysReport(@RequestParam(value = "from") LocalDate from,
+                                        @RequestParam("to") LocalDate to,
+                                        @RequestParam("limit") Integer limit,
+                                        HttpServletResponse response) {
         byte[] bytes = pdfCreator.create(workInfoService.getPartialDays(from, to, limit), PARTIAL);
-        sendPdf(response, bytes);
+        sendReport(response, bytes, PDF_TYPE);
     }
 
     @GetMapping(value = "/pdf/missing")
-    public void getMissingReport(@RequestParam("from") LocalDate from,
-                                 @RequestParam("to") LocalDate to,
-                                 HttpServletResponse response) {
+    public void getPDFMissingDaysReport(@RequestParam("from") LocalDate from,
+                                        @RequestParam("to") LocalDate to,
+                                        HttpServletResponse response) {
         byte[] bytes = pdfCreator.create(workInfoService.getMissingDays(from, to), EMPTY);
-        sendPdf(response, bytes);
+        sendReport(response, bytes, PDF_TYPE);
+    }
+
+    @GetMapping(value = "/xls/pivotal")
+    public void getXLSPivotalReport(@RequestParam("from") LocalDate from,
+                                    @RequestParam("to") LocalDate to,
+                                    @RequestParam("employeeId") Optional<Integer> employeeId,
+                                    @RequestParam("projectId") Optional<Integer> projectId,
+                                    HttpServletResponse response) {
+        byte[] bytes = xlsCreator.create(getWorkInfos(from, to, employeeId, projectId), PIVOTAL);
+        sendReport(response, bytes, XLS_TYPE);
+    }
+
+    @GetMapping(value = "/xls/partial")
+    public void getXLSPartialDaysReport(@RequestParam(value = "from") LocalDate from,
+                                        @RequestParam("to") LocalDate to,
+                                        @RequestParam("limit") Integer limit,
+                                        HttpServletResponse response) {
+        byte[] bytes = xlsCreator.create(workInfoService.getPartialDays(from, to, limit), PARTIAL);
+        sendReport(response, bytes, XLS_TYPE);
+    }
+
+    @GetMapping(value = "/xls/missing")
+    public void getXLSMissingDaysReport(@RequestParam("from") LocalDate from,
+                                        @RequestParam("to") LocalDate to,
+                                        HttpServletResponse response) {
+        byte[] bytes = xlsCreator.create(workInfoService.getMissingDays(from, to), EMPTY);
+        sendReport(response, bytes, XLS_TYPE);
     }
 
     @SneakyThrows
-    private void sendPdf(HttpServletResponse response, byte[] bytes) {
+    private void sendReport(HttpServletResponse response, byte[] bytes, String returnType) {
         response.setHeader("Cache-Control", "no-store");
         response.setHeader("Pragma", "no-cache");
         response.setDateHeader("Expires", 0);
-        response.setContentType(MediaType.APPLICATION_PDF_VALUE);
+        response.setContentType(returnType);
         ServletOutputStream stream = response.getOutputStream();
         stream.write(bytes);
         stream.flush();

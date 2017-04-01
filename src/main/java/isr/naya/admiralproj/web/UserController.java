@@ -37,10 +37,10 @@ public class UserController {
     }
 
     @PostMapping(value = "/units", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<WorkUnit> saveWorkUnit(@MatrixVariable Integer id,
+    public ResponseEntity<WorkUnit> saveWorkUnit(@RequestParam("agreementId") Integer agreementId,
                                                  @Valid @RequestBody WorkUnit unit) {
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(workUnitService.save(AuthorizedUser.id(), id, unit));
+        return ResponseEntity.status(HttpStatus.CREATED).body(workUnitService.save(AuthorizedUser.id(), agreementId, unit));
     }
 
     @DeleteMapping("/units/{id}")
