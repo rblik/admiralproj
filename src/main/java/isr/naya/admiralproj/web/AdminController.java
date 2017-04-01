@@ -29,7 +29,7 @@ import static isr.naya.admiralproj.report.ReportType.*;
 public class AdminController {
 
     private static final String PDF_TYPE = "application/pdf";
-    private static final String XLS_TYPE = "application/vnd.ms-excel";
+    private static final String XLS_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
     @Autowired
     private WorkInfoService workInfoService;
