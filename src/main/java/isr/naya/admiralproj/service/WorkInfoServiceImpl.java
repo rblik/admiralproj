@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static isr.naya.admiralproj.util.MappingUtil.generate;
 
@@ -60,5 +61,20 @@ public class WorkInfoServiceImpl implements WorkInfoService {
     @Override
     public List<WorkInfo> getAllUnitsByDateAndEmployeeAndProject(@NonNull LocalDate from, @NonNull LocalDate to, @NonNull Integer employeeId, @NonNull Integer projectId) {
         return workUnitRepository.getAllByDateBetweenAndEmployeeIdAndProjectId(from, to, employeeId, projectId);
+    }
+
+    public List<WorkInfo> getWorkInfos(LocalDate from, LocalDate to,
+                                       Optional<Integer> employeeId,
+                                       Optional<Integer> projectId) {
+        List<WorkInfo> workInfos;
+        if (employeeId.isPresent() && projectId.isPresent()) {
+            workInfos = getAllUnitsByDateAndEmployeeAndProject(from, to, employeeId.get(), projectId.get());
+        } else if (employeeId.isPresent())
+            workInfos = getAllUnitsByDateAndEmployee(from, to, employeeId.get());
+        else if (projectId.isPresent())
+            workInfos = getAllUnitsByDateAndProject(from, to, projectId.get());
+        else
+            workInfos = getAllUnitsByDate(from, to);
+        return workInfos;
     }
 }

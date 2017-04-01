@@ -4,6 +4,7 @@ import isr.naya.admiralproj.dto.WorkInfo;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface WorkInfoService {
 
@@ -23,4 +24,6 @@ public interface WorkInfoService {
     List<WorkInfo> getAllUnitsByDateAndProject(LocalDate from, LocalDate to, Integer projectId);
 
     List<WorkInfo> getAllUnitsByDateAndEmployeeAndProject(LocalDate from, LocalDate to, Integer employeeId, Integer projectId);
+
+    List<WorkInfo> getWorkInfos(LocalDate from, LocalDate to, Optional<Integer> employeeId, Optional<Integer> projectId);
 }
