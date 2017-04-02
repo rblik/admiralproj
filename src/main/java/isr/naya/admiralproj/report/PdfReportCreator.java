@@ -7,6 +7,7 @@ import com.google.common.primitives.Ints;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import isr.naya.admiralproj.dto.WorkInfo;
+import isr.naya.admiralproj.util.DayMap;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -34,15 +35,15 @@ public class PdfReportCreator implements ReportCreator {
             Document document = new Document(PageSize.A4);
             PdfWriter writer = PdfWriter.getInstance(document, os);
             document.open();
-//            fonts
-            BaseFont bf = BaseFont.createFont("NotoSansHebrew-Regular.ttf", BaseFont.IDENTITY_H, true);
-//            render
+            //            fonts
+            BaseFont bf = BaseFont.createFont("DejaVuSans.ttf", BaseFont.IDENTITY_H, true);
+            //            render
             for (List<WorkInfo> infos : partition) {
                 ColumnText column = createColumn(writer.getDirectContent());
-                column.addElement(createTitle(bf));
-                column.addElement(createImage());
+                column.addElement(createTitle(bf, reportType));
+                column.addElement(createImage(reportType));
                 column.addElement(createTable(infos, bf, reportType));
-//            close
+                //            close
                 column.go();
                 document.newPage();
             }
@@ -56,7 +57,7 @@ public class PdfReportCreator implements ReportCreator {
     }
 
     private PdfPTable createTable(List<WorkInfo> infoList, BaseFont bf, ReportType reportType) throws DocumentException {
-        int colNumber = (PIVOTAL == reportType) ? 11 : 4;
+        int colNumber = (PIVOTAL == reportType) ? 12 : 4;
         PdfPTable table = new PdfPTable(colNumber);
         int[] doubles = IntStream.generate(() -> 50).limit(colNumber).toArray();
         table.setTotalWidth(Floats.toArray(Ints.asList(doubles)));
@@ -68,54 +69,58 @@ public class PdfReportCreator implements ReportCreator {
     }
 
     private void populate(List<WorkInfo> infoList, BaseFont bf, PdfPTable table, ReportType reportType) {
-        Font font = new Font(bf, 10);
+        Font font10 = new Font(bf, 10);
+        Font font8 = new Font(bf, 8);
+
         if (PIVOTAL == reportType) {
-            ImmutableList.of("תאור", "משך", "עד-", "מ-", "חופשה", "תעריך", "לקוח", "פרויקט", "צוות", "שם משפחה", "שם")
-                    .forEach(s -> table.addCell(createCell(s, font, true)));
-            infoList.forEach(workInfo -> addFullRow(table, workInfo));
+            ImmutableList.of("תאור", "משך", "עד-", "מ-", "יום", "חופשה", "תעריך", "לקוח", "פרויקט", "צוות", "שם משפחה", "שם")
+                    .forEach(s -> table.addCell(createCell(s, font10, true)));
+            infoList.forEach(workInfo -> addFullRow(table, workInfo, font8));
         } else if (PARTIAL == reportType) {
             ImmutableList.of("משך", "תעריך", "שם משפחה", "שם")
-                    .forEach(s -> table.addCell(createCell(s, font, true)));
-            infoList.forEach(workInfo -> addPartialRow(table, workInfo));
+                    .forEach(s -> table.addCell(createCell(s, font10, true)));
+            infoList.forEach(workInfo -> addPartialRow(table, workInfo, font8));
         } else if (EMPTY == reportType) {
             ImmutableList.of("תעריך", "צוות", "שם משפחה", "שם")
-                    .forEach(s -> table.addCell(createCell(s, font, true)));
-            infoList.forEach(workInfo -> addMissedRow(table, workInfo));
+                    .forEach(s -> table.addCell(createCell(s, font10, true)));
+            infoList.forEach(workInfo -> addMissedRow(table, workInfo, font8));
         } else {
             log.error("Not compatible report type");
         }
     }
 
-    private void addFullRow(PdfPTable table, WorkInfo workInfo) {
-        table.addCell(createCell(workInfo.getComment()));
-        table.addCell(createCell(workInfo.getDuration().toString()));
-        table.addCell(createCell(workInfo.getTo() != null ? workInfo.getTo().truncatedTo(ChronoUnit.MINUTES).toString() : null));
-        table.addCell(createCell(workInfo.getFrom() != null ? workInfo.getFrom().truncatedTo(ChronoUnit.MINUTES).toString() : null));
-        table.addCell(createCell(workInfo.getAbsenceType() != null ? workInfo.getAbsenceType().toString() : null));
-        table.addCell(createCell(workInfo.getDate() != null ? workInfo.getDate().toString() : null));
-        table.addCell(createCell(workInfo.getClientName()));
-        table.addCell(createCell(workInfo.getProjectName()));
-        table.addCell(createCell(workInfo.getDepartmentName()));
-        table.addCell(createCell(workInfo.getEmployeeSurname()));
-        table.addCell(createCell(workInfo.getEmployeeName()));
+    private void addFullRow(PdfPTable table, WorkInfo workInfo, Font font) {
+
+        table.addCell(createCell(workInfo.getComment(), font));
+        table.addCell(createCell(workInfo.getDuration().toString(), font));
+        table.addCell(createCell(workInfo.getTo() != null ? workInfo.getTo().truncatedTo(ChronoUnit.MINUTES).toString() : null, font));
+        table.addCell(createCell(workInfo.getFrom() != null ? workInfo.getFrom().truncatedTo(ChronoUnit.MINUTES).toString() : null, font));
+        table.addCell(createCell(workInfo.getDate() != null ? DayMap.getDay(workInfo.getDate().getDayOfWeek().getValue()) : null, font));
+        table.addCell(createCell(workInfo.getAbsenceType() != null ? workInfo.getAbsenceType().toString() : null, font));
+        table.addCell(createCell(workInfo.getDate() != null ? workInfo.getDate().toString() : null, font));
+        table.addCell(createCell(workInfo.getClientName(), font));
+        table.addCell(createCell(workInfo.getProjectName(), font));
+        table.addCell(createCell(workInfo.getDepartmentName(), font));
+        table.addCell(createCell(workInfo.getEmployeeSurname(), font));
+        table.addCell(createCell(workInfo.getEmployeeName(), font));
     }
 
-    private void addMissedRow(PdfPTable table, WorkInfo workInfo) {
-        table.addCell(createCell(workInfo.getDate() != null ? workInfo.getDate().toString() : null));
-        table.addCell(createCell(workInfo.getDepartmentName()));
-        table.addCell(createCell(workInfo.getEmployeeSurname()));
-        table.addCell(createCell(workInfo.getEmployeeName()));
+    private void addMissedRow(PdfPTable table, WorkInfo workInfo, Font font) {
+        table.addCell(createCell(workInfo.getDate() != null ? workInfo.getDate().toString() : null, font));
+        table.addCell(createCell(workInfo.getDepartmentName(), font));
+        table.addCell(createCell(workInfo.getEmployeeSurname(), font));
+        table.addCell(createCell(workInfo.getEmployeeName(), font));
     }
 
-    private void addPartialRow(PdfPTable table, WorkInfo workInfo) {
-        table.addCell(createCell(workInfo.getDuration().toString()));
-        table.addCell(createCell(workInfo.getDate() != null ? workInfo.getDate().toString() : null));
-        table.addCell(createCell(workInfo.getEmployeeSurname()));
-        table.addCell(createCell(workInfo.getEmployeeName()));
+    private void addPartialRow(PdfPTable table, WorkInfo workInfo, Font font) {
+        table.addCell(createCell(workInfo.getDuration().toString(), font));
+        table.addCell(createCell(workInfo.getDate() != null ? workInfo.getDate().toString() : null, font));
+        table.addCell(createCell(workInfo.getEmployeeSurname(), font));
+        table.addCell(createCell(workInfo.getEmployeeName(), font));
     }
 
-    private PdfPCell createCell(String description) {
-        return createCell(description, null, false);
+    private PdfPCell createCell(String description, Font font) {
+        return createCell(description, font, false);
     }
 
     private PdfPCell createCell(String description, Font font, boolean isHeader) {
@@ -141,13 +146,24 @@ public class PdfReportCreator implements ReportCreator {
         return column;
     }
 
-    private Paragraph createTitle(BaseFont bf) {
-        Paragraph paragraph = new Paragraph("שעות גולמי", new Font(bf, 14));
+    private Paragraph createTitle(BaseFont bf, ReportType reportType) {
+
+        String title = "";
+        if (PIVOTAL == reportType)
+            title = "שעות גולמי";
+        else if (PARTIAL == reportType)
+            title = "ימים חלקיים";
+        else if (EMPTY == reportType)
+            title = "ימים חסרים";
+        else
+            log.error("Not compatible report type");
+
+        Paragraph paragraph = new Paragraph(title, new Font(bf, 14));
         paragraph.setAlignment(Element.ALIGN_CENTER);
         return paragraph;
     }
 
-    private Image createImage() throws BadElementException, IOException {
+    private Image createImage(ReportType reportType) throws BadElementException, IOException {
         Image image = Image.getInstance("reports/pic.png");
         image.scaleAbsolute(50, 50);
         image.setAlignment(Element.ALIGN_CENTER);

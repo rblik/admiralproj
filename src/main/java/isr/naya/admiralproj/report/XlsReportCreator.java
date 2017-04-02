@@ -2,6 +2,7 @@ package isr.naya.admiralproj.report;
 
 
 import isr.naya.admiralproj.dto.WorkInfo;
+import isr.naya.admiralproj.util.DayMap;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Row;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collections;
@@ -27,7 +29,7 @@ public class XlsReportCreator implements ReportCreator {
     public byte[] create(@NonNull List<WorkInfo> infoList, @NonNull ReportType reportType) {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         XSSFWorkbook workbook = new XSSFWorkbook();
-        XSSFSheet sheet = workbook.createSheet(reportType.name());
+        XSSFSheet sheet = workbook.createSheet(reportType.name() + LocalDate.now());
 
         Row row = sheet.createRow(0);
         populateTitle(row, reportType);
@@ -60,7 +62,7 @@ public class XlsReportCreator implements ReportCreator {
 
         List<String> titles;
         if (PIVOTAL == reportType) {
-            titles = Arrays.asList("תאור", "משך", "עד-", "מ-", "חופשה", "תעריך", "לקוח", "פרויקט", "צוות", "שם משפחה", "שם");
+            titles = Arrays.asList("תאור", "משך", "עד-", "מ-", "יום", "חופשה", "תעריך", "לקוח", "פרויקט", "צוות", "שם משפחה", "שם");
         } else if (PARTIAL == reportType) {
             titles = Arrays.asList("משך", "תעריך", "שם משפחה", "שם");
         } else if (EMPTY == reportType) {
@@ -79,13 +81,14 @@ public class XlsReportCreator implements ReportCreator {
         row.createCell(1).setCellValue(workInfo.getDuration().toString());
         row.createCell(2).setCellValue(workInfo.getTo() != null ? workInfo.getTo().truncatedTo(ChronoUnit.MINUTES).toString() : null);
         row.createCell(3).setCellValue(workInfo.getFrom() != null ? workInfo.getFrom().truncatedTo(ChronoUnit.MINUTES).toString() : null);
-        row.createCell(4).setCellValue(workInfo.getAbsenceType() != null ? workInfo.getAbsenceType().toString() : null);
-        row.createCell(5).setCellValue(workInfo.getDate() != null ? workInfo.getDate().toString() : null);
-        row.createCell(6).setCellValue(workInfo.getClientName());
-        row.createCell(7).setCellValue(workInfo.getProjectName());
-        row.createCell(8).setCellValue(workInfo.getDepartmentName());
-        row.createCell(9).setCellValue(workInfo.getEmployeeSurname());
-        row.createCell(10).setCellValue(workInfo.getEmployeeName());
+        row.createCell(4).setCellValue(workInfo.getDate() != null ? DayMap.getDay(workInfo.getDate().getDayOfWeek().getValue()) : null);
+        row.createCell(5).setCellValue(workInfo.getAbsenceType() != null ? workInfo.getAbsenceType().toString() : null);
+        row.createCell(6).setCellValue(workInfo.getDate() != null ? workInfo.getDate().toString() : null);
+        row.createCell(7).setCellValue(workInfo.getClientName());
+        row.createCell(8).setCellValue(workInfo.getProjectName());
+        row.createCell(9).setCellValue(workInfo.getDepartmentName());
+        row.createCell(10).setCellValue(workInfo.getEmployeeSurname());
+        row.createCell(11).setCellValue(workInfo.getEmployeeName());
     }
 
     private void addMissedRow(Row row, WorkInfo workInfo) {
