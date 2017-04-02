@@ -2,12 +2,10 @@ package isr.naya.admiralproj.report;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.google.common.primitives.Floats;
-import com.google.common.primitives.Ints;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import isr.naya.admiralproj.dto.WorkInfo;
-import isr.naya.admiralproj.util.DayMap;
+import isr.naya.admiralproj.util.MappingUtil;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,7 +15,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.stream.IntStream;
 
 import static isr.naya.admiralproj.report.ReportType.*;
 
@@ -59,8 +56,19 @@ public class PdfReportCreator implements ReportCreator {
     private PdfPTable createTable(List<WorkInfo> infoList, BaseFont bf, ReportType reportType) throws DocumentException {
         int colNumber = (PIVOTAL == reportType) ? 12 : 4;
         PdfPTable table = new PdfPTable(colNumber);
-        int[] doubles = IntStream.generate(() -> 50).limit(colNumber).toArray();
-        table.setTotalWidth(Floats.toArray(Ints.asList(doubles)));
+        //int[] doubles = IntStream.generate(() -> 50).limit(colNumber).toArray();
+
+        if (PIVOTAL == reportType) {
+            float cols[] = {50, 30, 30, 30, 20, 30, 60, 50, 50, 40, 100, 100};
+            table.setTotalWidth(cols);
+        } else if (PARTIAL == reportType) {
+            float cols[] = {40, 70, 100, 100};
+            table.setTotalWidth(cols);
+        } else if (EMPTY == reportType) {
+            float cols[] = {70, 40, 100, 100};
+            table.setTotalWidth(cols);
+        }
+        //table.setTotalWidth(Floats.toArray(Ints.asList(doubles)));
         table.setLockedWidth(true);
         table.setHorizontalAlignment(Element.ALIGN_CENTER);
         populate(infoList, bf, table, reportType);
@@ -92,11 +100,11 @@ public class PdfReportCreator implements ReportCreator {
     private void addFullRow(PdfPTable table, WorkInfo workInfo, Font font) {
 
         table.addCell(createCell(workInfo.getComment(), font));
-        table.addCell(createCell(workInfo.getDuration().toString(), font));
+        table.addCell(createCell(String.valueOf((float) workInfo.getDuration() / 60), font));
         table.addCell(createCell(workInfo.getTo() != null ? workInfo.getTo().truncatedTo(ChronoUnit.MINUTES).toString() : null, font));
         table.addCell(createCell(workInfo.getFrom() != null ? workInfo.getFrom().truncatedTo(ChronoUnit.MINUTES).toString() : null, font));
-        table.addCell(createCell(workInfo.getDate() != null ? DayMap.getDay(workInfo.getDate().getDayOfWeek().getValue()) : null, font));
-        table.addCell(createCell(workInfo.getAbsenceType() != null ? workInfo.getAbsenceType().toString() : null, font));
+        table.addCell(createCell(workInfo.getDate() != null ? MappingUtil.getDay(workInfo.getDate().getDayOfWeek().getValue()) : null, font));
+        table.addCell(createCell(workInfo.getAbsenceType() != null ? workInfo.getAbsenceType().getTranslation() : null, font));
         table.addCell(createCell(workInfo.getDate() != null ? workInfo.getDate().toString() : null, font));
         table.addCell(createCell(workInfo.getClientName(), font));
         table.addCell(createCell(workInfo.getProjectName(), font));
@@ -113,7 +121,7 @@ public class PdfReportCreator implements ReportCreator {
     }
 
     private void addPartialRow(PdfPTable table, WorkInfo workInfo, Font font) {
-        table.addCell(createCell(workInfo.getDuration().toString(), font));
+        table.addCell(createCell(String.valueOf((float) workInfo.getDuration() / 60), font));
         table.addCell(createCell(workInfo.getDate() != null ? workInfo.getDate().toString() : null, font));
         table.addCell(createCell(workInfo.getEmployeeSurname(), font));
         table.addCell(createCell(workInfo.getEmployeeName(), font));

@@ -2,7 +2,7 @@ package isr.naya.admiralproj.report;
 
 
 import isr.naya.admiralproj.dto.WorkInfo;
-import isr.naya.admiralproj.util.DayMap;
+import isr.naya.admiralproj.util.MappingUtil;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Row;
@@ -78,11 +78,11 @@ public class XlsReportCreator implements ReportCreator {
     private void addFullRow(Row row, WorkInfo workInfo) {
 
         row.createCell(0).setCellValue(workInfo.getComment());
-        row.createCell(1).setCellValue(workInfo.getDuration().toString());
+        row.createCell(1).setCellValue(String.valueOf((float) workInfo.getDuration() / 60));
         row.createCell(2).setCellValue(workInfo.getTo() != null ? workInfo.getTo().truncatedTo(ChronoUnit.MINUTES).toString() : null);
         row.createCell(3).setCellValue(workInfo.getFrom() != null ? workInfo.getFrom().truncatedTo(ChronoUnit.MINUTES).toString() : null);
-        row.createCell(4).setCellValue(workInfo.getDate() != null ? DayMap.getDay(workInfo.getDate().getDayOfWeek().getValue()) : null);
-        row.createCell(5).setCellValue(workInfo.getAbsenceType() != null ? workInfo.getAbsenceType().toString() : null);
+        row.createCell(4).setCellValue(workInfo.getDate() != null ? MappingUtil.getDay(workInfo.getDate().getDayOfWeek().getValue()) : null);
+        row.createCell(5).setCellValue(workInfo.getAbsenceType() != null ? workInfo.getAbsenceType().getTranslation() : null);
         row.createCell(6).setCellValue(workInfo.getDate() != null ? workInfo.getDate().toString() : null);
         row.createCell(7).setCellValue(workInfo.getClientName());
         row.createCell(8).setCellValue(workInfo.getProjectName());
@@ -101,7 +101,7 @@ public class XlsReportCreator implements ReportCreator {
 
     private void addPartialRow(Row row, WorkInfo workInfo) {
 
-        row.createCell(0).setCellValue(workInfo.getDuration().toString());
+        row.createCell(0).setCellValue(String.valueOf((float) workInfo.getDuration() / 60));
         row.createCell(1).setCellValue(workInfo.getDate() != null ? workInfo.getDate().toString() : null);
         row.createCell(2).setCellValue(workInfo.getEmployeeSurname());
         row.createCell(3).setCellValue(workInfo.getEmployeeName());
