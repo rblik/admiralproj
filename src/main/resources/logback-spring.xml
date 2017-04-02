@@ -8,6 +8,8 @@
         </encoder>
     </appender>
 
+    <logger name="isr.naya.admiralproj.web" level="info" />
+
     <root level="info">
         <appender-ref ref="console"/>
     </root>
