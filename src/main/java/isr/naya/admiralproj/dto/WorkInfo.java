@@ -12,6 +12,7 @@ import java.time.LocalTime;
 @EqualsAndHashCode(of = {"employeeId", "date", "from", "to"})
 public class WorkInfo {
 
+    private Integer unitId;
     private Integer agreementId;
     private Integer employeeId;
     private String employeeName;
@@ -29,26 +30,26 @@ public class WorkInfo {
     private String comment;
 
     public WorkInfo(Integer employeeId, String employeeName, String employeeSurname, LocalDate date, Long duration) {
-        this(null, employeeId, employeeName, employeeSurname, null, null, null, null, null, date, null,null, null, duration, null);
+        this(null, null, employeeId, employeeName, employeeSurname, null, null, null, null, null, date, null,null, null, duration, null);
     }
 
     public WorkInfo(Integer employeeId, LocalDate date) {
-        this(null, employeeId, null, null, null, null, null, null, null, date, null,null, null, null, null);
+        this(null, null, employeeId, null, null, null, null, null, null, null, date, null,null, null, null, null);
     }
 
-    public WorkInfo(Integer agreementId, LocalDate date, LocalTime from, LocalTime to, Long duration, AbsenceType absenceType, String comment) {
-        this(agreementId, null, null, null, null, null, null, null, null, date, absenceType, from, to, duration, comment);
+    public WorkInfo(Integer unitId, Integer agreementId, LocalDate date, LocalTime from, LocalTime to, Long duration, AbsenceType absenceType, String comment) {
+        this(unitId, agreementId, null, null, null, null, null, null, null, null, date, absenceType, from, to, duration, comment);
     }
 
     public WorkInfo(Integer employeeId, String employeeName, String employeeSurname, String departmentName, LocalDate date) {
-        this(null, employeeId, employeeName, employeeSurname, departmentName, null, null, null, null, date, null,null, null, null, null);
+        this(null, null, employeeId, employeeName, employeeSurname, departmentName, null, null, null, null, date, null,null, null, null, null);
     }
 
     public WorkInfo(Integer agreementId, LocalDate date, Long duration) {
-        this(agreementId, null, null, null, null, null, null, null, null, date, null, null, null, duration, null);
+        this(null, agreementId, null, null, null, null, null, null, null, null, date, null, null, null, duration, null);
     }
 
     public WorkInfo(Integer agreementId, Integer employeeId, String employeeName, String employeeSurname, String departmentName, Integer projectId, String projectName, Integer clientId, String clientName, LocalDate date) {
-        this(agreementId, employeeId, employeeName, employeeSurname, departmentName, projectId, projectName, clientId, clientName, date, null, null, null, null, null);
+        this(null, agreementId, employeeId, employeeName, employeeSurname, departmentName, projectId, projectName, clientId, clientName, date, null, null, null, null, null);
     }
 }
