@@ -1,6 +1,6 @@
 package isr.naya.admiralproj;
 
-import isr.naya.admiralproj.model.AbsenceType;
+import isr.naya.admiralproj.dto.AbsenceType;
 import isr.naya.admiralproj.model.WorkUnit;
 
 import java.time.LocalTime;

@@ -1,6 +1,5 @@
 package isr.naya.admiralproj.dto;
 
-import isr.naya.admiralproj.model.AbsenceType;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Value;

@@ -2,8 +2,8 @@ package isr.naya.admiralproj.service;
 
 import isr.naya.admiralproj.model.Department;
 import isr.naya.admiralproj.model.Employee;
-import isr.naya.admiralproj.repo.DepartmentRepository;
-import isr.naya.admiralproj.repo.EmployeeRepository;
+import isr.naya.admiralproj.repository.DepartmentRepository;
+import isr.naya.admiralproj.repository.EmployeeRepository;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;

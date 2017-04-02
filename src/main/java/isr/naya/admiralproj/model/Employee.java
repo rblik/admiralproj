@@ -1,6 +1,7 @@
 package isr.naya.admiralproj.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import isr.naya.admiralproj.dto.Role;
 import lombok.*;
 import org.hibernate.validator.constraints.Email;
 

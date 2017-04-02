@@ -2,8 +2,8 @@ package isr.naya.admiralproj.service;
 
 import isr.naya.admiralproj.model.WorkAgreement;
 import isr.naya.admiralproj.model.WorkUnit;
-import isr.naya.admiralproj.repo.WorkAgreementRepository;
-import isr.naya.admiralproj.repo.WorkUnitRepository;
+import isr.naya.admiralproj.repository.WorkAgreementRepository;
+import isr.naya.admiralproj.repository.WorkUnitRepository;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;

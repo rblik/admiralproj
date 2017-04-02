@@ -1,4 +1,4 @@
-package isr.naya.admiralproj.repo;
+package isr.naya.admiralproj.repository;
 
 import isr.naya.admiralproj.model.Project;
 import org.springframework.data.jpa.repository.JpaRepository;

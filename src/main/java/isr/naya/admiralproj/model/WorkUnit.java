@@ -1,5 +1,6 @@
 package isr.naya.admiralproj.model;
 
+import isr.naya.admiralproj.dto.AbsenceType;
 import lombok.*;
 
 import javax.persistence.*;

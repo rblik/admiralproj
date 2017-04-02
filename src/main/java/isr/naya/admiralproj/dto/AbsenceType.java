@@ -1,4 +1,4 @@
-package isr.naya.admiralproj.model;
+package isr.naya.admiralproj.dto;
 
 
 import lombok.AllArgsConstructor;

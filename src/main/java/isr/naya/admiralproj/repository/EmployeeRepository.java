@@ -1,9 +1,9 @@
-package isr.naya.admiralproj.repo;
+package isr.naya.admiralproj.repository;
 
 
 import isr.naya.admiralproj.model.Employee;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 

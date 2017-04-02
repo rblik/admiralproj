@@ -1,8 +1,8 @@
 package isr.naya.admiralproj.util;
 
+import isr.naya.admiralproj.dto.Day;
 import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.exception.NotFoundException;
-import isr.naya.admiralproj.model.Day;
 import isr.naya.admiralproj.model.Employee;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

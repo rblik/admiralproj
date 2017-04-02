@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static isr.naya.admiralproj.report.ReportType.*;
+import static org.apache.poi.ss.util.WorkbookUtil.createSafeSheetName;
 
 @Component
 @Slf4j
@@ -29,7 +30,7 @@ public class XlsReportCreator implements ReportCreator {
     public byte[] create(@NonNull List<WorkInfo> infoList, @NonNull ReportType reportType) {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         XSSFWorkbook workbook = new XSSFWorkbook();
-        XSSFSheet sheet = workbook.createSheet(reportType.name() + LocalDate.now());
+        XSSFSheet sheet = workbook.createSheet(createSafeSheetName(reportType.name() + LocalDate.now().toString()));
 
         Row row = sheet.createRow(0);
         populateTitle(row, reportType);

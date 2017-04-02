@@ -4,7 +4,7 @@ package isr.naya.admiralproj.service;
 import isr.naya.admiralproj.exception.NotFoundException;
 import isr.naya.admiralproj.exception.TimeOverlappingException;
 import isr.naya.admiralproj.model.WorkUnit;
-import isr.naya.admiralproj.repo.WorkUnitRepository;
+import isr.naya.admiralproj.repository.WorkUnitRepository;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;

@@ -16,6 +16,7 @@ import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class JsonUtil {
+
     public static ObjectMapper getMapper() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());

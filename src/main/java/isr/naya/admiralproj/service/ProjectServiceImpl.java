@@ -2,8 +2,8 @@ package isr.naya.admiralproj.service;
 
 import isr.naya.admiralproj.model.Client;
 import isr.naya.admiralproj.model.Project;
-import isr.naya.admiralproj.repo.ClientRepository;
-import isr.naya.admiralproj.repo.ProjectRepository;
+import isr.naya.admiralproj.repository.ClientRepository;
+import isr.naya.admiralproj.repository.ProjectRepository;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;

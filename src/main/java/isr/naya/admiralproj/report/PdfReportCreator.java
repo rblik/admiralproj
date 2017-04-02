@@ -25,18 +25,29 @@ public class PdfReportCreator implements ReportCreator {
 
     @Override
     public byte[] create(@NonNull List<WorkInfo> infoList, @NonNull ReportType reportType) {
+
         ByteArrayOutputStream os;
         try {
-            List<List<WorkInfo>> partition = Lists.partition(infoList, 35);
+            Rectangle orientation;
+            int partitionSize;
+            if (PIVOTAL == reportType) {
+                orientation = PageSize.A4.rotate();
+                partitionSize = 26;
+            } else {
+                orientation = PageSize.A4;
+                partitionSize = 35;
+            }
+            Document document = new Document(orientation);
+            List<List<WorkInfo>> partition = Lists.partition(infoList, partitionSize);
             os = new ByteArrayOutputStream();
-            Document document = new Document(PageSize.A4);
+
             PdfWriter writer = PdfWriter.getInstance(document, os);
             document.open();
             //            fonts
             BaseFont bf = BaseFont.createFont("DejaVuSans.ttf", BaseFont.IDENTITY_H, true);
             //            render
             for (List<WorkInfo> infos : partition) {
-                ColumnText column = createColumn(writer.getDirectContent());
+                ColumnText column = createColumn(writer.getDirectContent(), reportType);
                 column.addElement(createTitle(bf, reportType));
                 column.addElement(createImage(reportType));
                 column.addElement(createTable(infos, bf, reportType));
@@ -54,21 +65,21 @@ public class PdfReportCreator implements ReportCreator {
     }
 
     private PdfPTable createTable(List<WorkInfo> infoList, BaseFont bf, ReportType reportType) throws DocumentException {
+
         int colNumber = (PIVOTAL == reportType) ? 12 : 4;
         PdfPTable table = new PdfPTable(colNumber);
-        //int[] doubles = IntStream.generate(() -> 50).limit(colNumber).toArray();
 
         if (PIVOTAL == reportType) {
-            float cols[] = {50, 30, 30, 30, 20, 30, 60, 50, 50, 40, 100, 100};
+            float cols[] = {200, 30, 30, 30, 20, 40, 70, 50, 50, 50, 120, 120};
             table.setTotalWidth(cols);
         } else if (PARTIAL == reportType) {
-            float cols[] = {40, 70, 100, 100};
+            float cols[] = {50, 70, 120, 120};
             table.setTotalWidth(cols);
         } else if (EMPTY == reportType) {
-            float cols[] = {70, 40, 100, 100};
+            float cols[] = {70, 50, 120, 120};
             table.setTotalWidth(cols);
         }
-        //table.setTotalWidth(Floats.toArray(Ints.asList(doubles)));
+
         table.setLockedWidth(true);
         table.setHorizontalAlignment(Element.ALIGN_CENTER);
         populate(infoList, bf, table, reportType);
@@ -147,9 +158,12 @@ public class PdfReportCreator implements ReportCreator {
         return cell;
     }
 
-    private ColumnText createColumn(PdfContentByte content) {
+    private ColumnText createColumn(PdfContentByte content, ReportType reportType) {
         ColumnText column = new ColumnText(content);
-        column.setSimpleColumn(36, 770, 569, 36);
+        if (PIVOTAL == reportType)
+            column.setSimpleColumn(36, 569, 770, 36);
+        else
+            column.setSimpleColumn(36, 770, 569, 36);
         column.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
         return column;
     }
