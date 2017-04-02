@@ -36,8 +36,8 @@ public class WorkInfo {
         this(null, employeeId, null, null, null, null, null, null, null, date, null,null, null, null, null);
     }
 
-    public WorkInfo(Integer agreementId, LocalDate date, LocalTime from, LocalTime to, Long duration, String comment) {
-        this(agreementId, null, null, null, null, null, null, null, null, date, null, from, to, duration, comment);
+    public WorkInfo(Integer agreementId, LocalDate date, LocalTime from, LocalTime to, Long duration, AbsenceType absenceType, String comment) {
+        this(agreementId, null, null, null, null, null, null, null, null, date, absenceType, from, to, duration, comment);
     }
 
     public WorkInfo(Integer employeeId, String employeeName, String employeeSurname, String departmentName, LocalDate date) {
