@@ -1,7 +1,9 @@
 package isr.naya.admiralproj.web;
 
+import isr.naya.admiralproj.AuthorizedUser;
 import isr.naya.admiralproj.report.ReportCreator;
 import isr.naya.admiralproj.service.WorkInfoService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +18,7 @@ import java.util.Optional;
 import static isr.naya.admiralproj.report.ReportType.*;
 import static isr.naya.admiralproj.web.util.ReportSender.sendReport;
 
-
+@Slf4j
 @RestController
 @RequestMapping("/admin/pdf")
 public class PDFReportController {
@@ -39,6 +41,9 @@ public class PDFReportController {
                                  @RequestParam("projectId") Optional<Integer> projectId,
                                  HttpServletResponse response) {
         byte[] bytes = reportCreator.create(workInfoService.getWorkInfos(from, to, employeeId, projectId), PIVOTAL);
+        log.info("Admin {} is creating pdf pivotal report from {} to {}" +
+                (employeeId.isPresent() ? "for employee (id = {})" : "") +
+                (projectId.isPresent() ? "and project (id = {})" : ""), AuthorizedUser.fullName(), from, to);
         sendReport(response, bytes, PDF_TYPE);
     }
 
@@ -48,6 +53,7 @@ public class PDFReportController {
                                      @RequestParam("limit") Integer limit,
                                      HttpServletResponse response) {
         byte[] bytes = reportCreator.create(workInfoService.getPartialDays(from, to, limit), PARTIAL);
+        log.info("Admin {} is creating pdf partial report from {} to {}", AuthorizedUser.fullName(), from, to);
         sendReport(response, bytes, PDF_TYPE);
     }
 
@@ -56,6 +62,7 @@ public class PDFReportController {
                                      @RequestParam("to") LocalDate to,
                                      HttpServletResponse response) {
         byte[] bytes = reportCreator.create(workInfoService.getMissingDays(from, to), EMPTY);
+        log.info("Admin {} is creating pdf missing report from {} to {}", AuthorizedUser.fullName(), from, to);
         sendReport(response, bytes, PDF_TYPE);
     }
 }

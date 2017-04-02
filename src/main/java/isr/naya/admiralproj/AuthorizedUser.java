@@ -5,4 +5,7 @@ public class AuthorizedUser {
     public static Integer id() {
         return 5;
     }
+    public static String fullName() {
+        return "Name1 Surname1";
+    }
 }

@@ -1,12 +1,14 @@
 package isr.naya.admiralproj.web;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import isr.naya.admiralproj.AuthorizedUser;
 import isr.naya.admiralproj.dto.AgreementDto;
 import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.model.*;
 import isr.naya.admiralproj.service.*;
 import isr.naya.admiralproj.util.JsonUtil.AdminView;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/admin")
 @AllArgsConstructor
@@ -33,87 +36,105 @@ public class AdminController {
     public List<WorkInfo> getWorkUnits(@RequestParam("from") LocalDate from,
                                        @RequestParam("to") LocalDate to,
                                        @RequestParam("employeeId") Integer employeeId) {
-        return workInfoService.getAllForEmployee(employeeId, from, to);
+        List<WorkInfo> infos = workInfoService.getAllForEmployee(employeeId, from, to);
+        log.info("Admin {} is retrieving all work info for employee (id = {}) from {} to {}", AuthorizedUser.fullName(), employeeId, from, to);
+        return infos;
     }
 
     @PostMapping(value = "/clients", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Client> saveClient(@Valid @RequestBody Client client) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(clientService.save(client));
+        Client saved = clientService.save(client);
+        log.info("Admin {} saved a new client {} with id = {}", AuthorizedUser.fullName(), saved.getName(), saved.getId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @GetMapping("/clients")
     public List<Client> getAllClients() {
-        return clientService.getAll();
+        List<Client> clients = clientService.getAll();
+        log.info("Admin {} is retrieving all clients", AuthorizedUser.fullName());
+        return clients;
     }
 
     @GetMapping("/clients/{clientId}")
     public Client getClient(@PathVariable("clientId") Integer clientId) {
-        return clientService.get(clientId);
+        Client client = clientService.get(clientId);
+        log.info("Admin {} is retrieving client with id = {}", AuthorizedUser.fullName(), clientId);
+        return client;
     }
 
     @PostMapping(value = "/departments", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Department> saveDepartment(@Valid @RequestBody Department department) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(departmentService.save(department));
+        Department saved = departmentService.save(department);
+        log.info("Admin {} saved a new department {} with id = {}", AuthorizedUser.fullName(), saved.getName(), saved.getId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @GetMapping("/departments")
     public List<Department> getAllDepartments() {
-        return departmentService.getAll();
+        List<Department> departments = departmentService.getAll();
+        log.info("Admin {} is retrieving all departments", AuthorizedUser.fullName());
+        return departments;
     }
 
     @GetMapping("/departments/{departmentId}")
     public Department getDepartment(@PathVariable("departmentId") Integer departmentId) {
-        return departmentService.get(departmentId);
+        Department department = departmentService.get(departmentId);
+        log.info("Admin {} is retrieving department with id = {}", AuthorizedUser.fullName(), departmentId);
+        return department;
     }
 
     @PostMapping(value = "/employees", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Employee> saveEmployee(@Valid @RequestBody Employee employee,
                                                  @RequestParam("departmentId") Integer departmentId) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(employeeService.save(departmentId, employee));
+        Employee saved = employeeService.save(departmentId, employee);
+        log.info("Admin {} saved a new employee {} with id = {} for department (id = {})", AuthorizedUser.fullName(), saved.getName() + saved.getSurname(), saved.getId(), departmentId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @GetMapping(value = "/employees")
     public List<Employee> getAllEmployees() {
-        return employeeService.getAllWithDepartments();
+        List<Employee> employees = employeeService.getAllWithDepartments();
+        log.info("Admin {} is retrieving all employees", AuthorizedUser.fullName());
+        return employees;
     }
 
     @JsonView(AdminView.class)
     @GetMapping(value = "/employees/{employeeId}")
     public Employee getEmployee(@PathVariable("employeeId") Integer employeeId) {
-        return employeeService.getWithDepartment(employeeId);
+        Employee employee = employeeService.getWithDepartment(employeeId);
+        log.info("Admin {} is retrieving employee with id = {}", AuthorizedUser.fullName(), employeeId);
+        return employee;
     }
 
     @PostMapping(value = "/projects", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Project> saveProject(@Valid @RequestBody Project project,
                                                @RequestParam("clientId") Integer clientId) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(projectService.save(clientId, project));
+        Project saved = projectService.save(clientId, project);
+        log.info("Admin {} saved a new project {} with id = {} for client (id = {})", AuthorizedUser.fullName(), saved.getName(), saved.getId(), clientId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @GetMapping("/projects")
     public List<Project> getAllProjects() {
-        return projectService.getAllWithClients();
+        List<Project> projects = projectService.getAllWithClients();
+        log.info("Admin {} is retrieving all projects", AuthorizedUser.fullName());
+        return projects;
     }
 
     @GetMapping("/projects/{projectId}")
     public Project getProject(@PathVariable("projectId") Integer projectId) {
-        return projectService.getWithClient(projectId);
+        Project project = projectService.getWithClient(projectId);
+        log.info("Admin {} is retrieving project with id = {}", AuthorizedUser.fullName(), projectId);
+        return project;
     }
 
     @PostMapping(value = "/agreements", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WorkAgreement> saveWorkAgreement(@Valid @RequestBody WorkAgreement workAgreement,
                                                            @RequestParam("employeeId") Integer employeeId,
                                                            @RequestParam("projectId") Integer projectId) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(workAgreementService.save(employeeId, projectId, workAgreement));
+        WorkAgreement saved = workAgreementService.save(employeeId, projectId, workAgreement);
+        log.info("Admin {} saved a new work agreement with id = {} for employee (id = {}) and project (id = {})", AuthorizedUser.fullName(), saved.getId(), employeeId, projectId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @GetMapping(value = "/agreements")
@@ -127,12 +148,15 @@ public class AdminController {
     public ResponseEntity<WorkUnit> saveWorkUnit(@Valid @RequestBody WorkUnit workUnit,
                                                  @RequestParam("employeeId") Integer employeeId,
                                                  @RequestParam("agreementId") Integer agreementId) {
-        return new ResponseEntity<>(workUnitService.save(employeeId, agreementId, workUnit), HttpStatus.CREATED);
+        WorkUnit saved = workUnitService.save(employeeId, agreementId, workUnit);
+        log.info("Admin {} saved a new work unit (id = {}) for employee (id = {}) and agreement (id = {})", AuthorizedUser.fullName(), saved.getId(), employeeId, agreementId);
+        return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/units/{unitId}")
     public void deleteWorkUnit(@PathVariable("unitId") Integer unitId,
                                @RequestParam("employeeId") Integer employeeId) {
         workUnitService.delete(employeeId, unitId);
+        log.info("Admin {} removed work unit with id = {}", AuthorizedUser.fullName(), unitId);
     }
 }
