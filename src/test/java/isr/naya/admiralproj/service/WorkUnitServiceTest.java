@@ -76,9 +76,8 @@ public class WorkUnitServiceTest {
         thrown.expect(TimeOverlappingException.class);
         thrown.expectMessage("There is already a record");
         WorkUnit save = service.save(1, 1,
-                WorkUnit.builder().date(LocalDate.of(2017, 3, 19)).
-                        start(LocalTime.of(10, 0)).
-                        finish(LocalTime.of(14, 0)).build());
-        assertThat(save, hasProperty("id", is(31)));
+                WorkUnit.builder().date(LocalDate.of(2017, 3, 20)).
+                        start(LocalTime.of(14, 0)).
+                        finish(LocalTime.of(15, 0)).build());
     }
 }

@@ -30,6 +30,6 @@ public class WorkUnitServiceImpl implements WorkUnitService {
     @Override
     @Transactional
     public void delete(Integer employeeId, Integer workUnitId) {
-        checkNotFound(workUnitRepository.delete(employeeId, workUnitId), workUnitId, WorkUnit.class);
+        checkNotFound(workUnitRepository.delete(employeeId, workUnitId), workUnitId, employeeId, WorkUnit.class);
     }
 }

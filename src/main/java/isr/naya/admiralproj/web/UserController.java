@@ -42,9 +42,9 @@ public class UserController {
     @PostMapping(value = "/units", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WorkUnit> saveWorkUnit(@RequestParam("agreementId") Integer agreementId,
                                                  @Valid @RequestBody WorkUnit unit) {
-
+        boolean aNew = unit.isNew();
         WorkUnit save = workUnitService.save(AuthorizedUser.id(), agreementId, unit);
-        log.info("Employee {} saved new unit of work (id = {})", AuthorizedUser.fullName(), save.getId());
+        log.info("Employee {} {} new unit of work (id = {})", AuthorizedUser.fullName(), aNew? "saved": "updated", save.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(save);
     }
 

@@ -17,6 +17,10 @@ public class ValidationUtil {
             return true;
     }
 
+    public static <T> void checkNotFound(Integer obj, Integer id, Integer employeeId, Class<T> clazz) {
+        checkNotFound(obj != 0, clazz.getSimpleName().replaceAll("([a-z])([A-Z])", "$1 $2").toLowerCase() + " with ID " + id + " for user with ID " + employeeId);
+    }
+
     public static <T> void checkNotFound(Integer obj, Integer id, Class<T> clazz) {
         checkNotFound(obj != 0, clazz.getSimpleName().replaceAll("([a-z])([A-Z])", "$1 $2").toLowerCase() + " with ID " + id + " for this user");
     }
