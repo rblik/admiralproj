@@ -9,8 +9,7 @@ import lombok.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static isr.naya.admiralproj.util.ValidationUtil.checkNotFound;
-import static isr.naya.admiralproj.util.ValidationUtil.checkTimeOverlap;
+import static isr.naya.admiralproj.util.ValidationUtil.*;
 
 @Service
 @AllArgsConstructor
@@ -22,7 +21,7 @@ public class WorkUnitServiceImpl implements WorkUnitService {
     @Override
     @Transactional
     public WorkUnit save(@NonNull Integer employeeId, @NonNull Integer workAgreementId, @NonNull WorkUnit workUnit) {
-        workUnit.setWorkAgreement(checkNotFound(workAgreementRepository.findFirstByIdAndEmployeeId(workAgreementId, employeeId), workAgreementId, WorkAgreement.class));
+        checkTimeRange(workUnit).setWorkAgreement(checkNotFound(workAgreementRepository.findFirstByIdAndEmployeeId(workAgreementId, employeeId), workAgreementId, WorkAgreement.class));
         return checkTimeOverlap(workUnitRepository.countExistedByDateTimeRange(employeeId, workAgreementId, workUnit.isNew() ? -1 : workUnit.getId(), workUnit.getDate(), workUnit.getStart(), workUnit.getFinish())) ?
                 workUnitRepository.save(workUnit) : null;
     }

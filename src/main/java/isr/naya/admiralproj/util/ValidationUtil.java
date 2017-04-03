@@ -2,12 +2,21 @@ package isr.naya.admiralproj.util;
 
 import isr.naya.admiralproj.exception.NotFoundException;
 import isr.naya.admiralproj.exception.TimeOverlappingException;
+import isr.naya.admiralproj.exception.TimeRangeException;
+import isr.naya.admiralproj.model.WorkUnit;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ValidationUtil {
+
+    public static WorkUnit checkTimeRange(WorkUnit workUnit){
+        if (workUnit.getStart().isAfter(workUnit.getFinish())) {
+            throw new TimeRangeException("Start has to be before finish");
+        }
+        return workUnit;
+    }
 
     public static boolean checkTimeOverlap(@NonNull Integer count) {
 

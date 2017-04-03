@@ -3,6 +3,7 @@ package isr.naya.admiralproj.service;
 
 import isr.naya.admiralproj.exception.NotFoundException;
 import isr.naya.admiralproj.exception.TimeOverlappingException;
+import isr.naya.admiralproj.exception.TimeRangeException;
 import isr.naya.admiralproj.model.WorkUnit;
 import isr.naya.admiralproj.repository.WorkUnitRepository;
 import org.junit.Rule;
@@ -48,7 +49,7 @@ public class WorkUnitServiceTest {
     public void testDeleteNotFound() {
         thrown.expect(NotFoundException.class);
         thrown.expectMessage("Not found work unit");
-        service.delete(1,-1);
+        service.delete(1, -1);
     }
 
     @Test
@@ -79,5 +80,13 @@ public class WorkUnitServiceTest {
                 WorkUnit.builder().date(LocalDate.of(2017, 3, 20)).
                         start(LocalTime.of(14, 0)).
                         finish(LocalTime.of(15, 0)).build());
+    }
+
+    @Test(expected = TimeRangeException.class)
+    public void testTimeRange() {
+        WorkUnit save = service.save(1, 1,
+                WorkUnit.builder().date(LocalDate.of(2017, 4, 20)).
+                        start(LocalTime.of(14, 0)).
+                        finish(LocalTime.of(13, 0)).build());
     }
 }

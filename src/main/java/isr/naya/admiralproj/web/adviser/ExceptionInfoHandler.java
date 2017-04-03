@@ -2,6 +2,7 @@ package isr.naya.admiralproj.web.adviser;
 
 import isr.naya.admiralproj.exception.NotFoundException;
 import isr.naya.admiralproj.exception.TimeOverlappingException;
+import isr.naya.admiralproj.exception.TimeRangeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -35,6 +36,14 @@ public class ExceptionInfoHandler {
     public ErrorInfoDTO conflict(HttpServletRequest req, DataIntegrityViolationException e) {
         return logAndGetErrorInfo(req, e, false);
     }
+
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST) // 400
+    @ExceptionHandler(TimeRangeException.class)
+    @Order(Ordered.HIGHEST_PRECEDENCE + 1)
+    public ErrorInfoDTO timeRangeError(HttpServletRequest req, TimeRangeException e) {
+        return logAndGetErrorInfo(req, e, false);
+    }
+
 
     @ResponseStatus(value = HttpStatus.CONFLICT) // 409
     @ExceptionHandler(TimeOverlappingException.class)
