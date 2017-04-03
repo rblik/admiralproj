@@ -1,11 +1,41 @@
 package isr.naya.admiralproj;
 
-public class AuthorizedUser {
-//    mock
+import isr.naya.admiralproj.model.Employee;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import static java.util.Objects.requireNonNull;
+
+public class AuthorizedUser extends org.springframework.security.core.userdetails.User {
+
+    private Integer id;
+    private String name;
+
+    public AuthorizedUser(Employee employee) {
+        super(employee.getName(), employee.getPassword(), employee.getRoles());
+        this.id = employee.getId();
+        this.name = employee.getName();
+    }
+
+    public static AuthorizedUser safeGet() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null) {
+            return null;
+        }
+        Object principal = auth.getPrincipal();
+        return (principal instanceof AuthorizedUser) ? (AuthorizedUser) principal : null;
+    }
+
+    public static AuthorizedUser get() {
+        AuthorizedUser user = safeGet();
+        requireNonNull(user, "No authorized user found");
+        return user;
+    }
+
     public static Integer id() {
-        return 5;
+        return get().id;
     }
     public static String fullName() {
-        return "Name1 Surname1";
+        return get().name;
     }
 }
