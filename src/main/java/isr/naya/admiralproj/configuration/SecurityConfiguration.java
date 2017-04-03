@@ -1,6 +1,7 @@
 package isr.naya.admiralproj.configuration;
 
 import isr.naya.admiralproj.service.EmployeeServiceImpl;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -14,16 +15,14 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 
 @Configuration
 @EnableWebSecurity
+@AllArgsConstructor
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Autowired
     private EmployeeServiceImpl service;
+
     @Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(service);
-
-        /*inMemoryAuthentication().withUser("user").password("password").roles("USER").and()
-        .withUser("admin").password("admin").roles("ADMIN");*/
     }
 
     @Override
@@ -33,6 +32,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and().csrf().disable().exceptionHandling()
                 .and().authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/**").hasAnyRole("USER", "ADMIN");
     }
 }

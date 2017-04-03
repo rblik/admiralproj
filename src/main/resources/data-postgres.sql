@@ -22,7 +22,7 @@ INSERT INTO employee_roles (employee_id, role) VALUES
   (1, 'ROLE_USER'),
   (2, 'ROLE_USER'),
   (3, 'ROLE_USER'),
-  (3, 'ROLE_ADMIN'),
+  (5, 'ROLE_ADMIN'),
   (4, 'ROLE_USER'),
   (5, 'ROLE_USER');
 
