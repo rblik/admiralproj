@@ -13,11 +13,12 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Maps.newHashMap;
 
 @Slf4j
 @Component
-public class JwtTokenUtil implements Serializable{
+public class JwtTokenUtil implements Serializable {
     private static final long serialVersionUID = -3301605591108950415L;
 
     static final String CLAIM_KEY_EMAIL = "sub";
@@ -50,14 +51,18 @@ public class JwtTokenUtil implements Serializable{
     }
 
     private Claims getClaimsFromToken(String token) {
-
-        Claims claims;
-        try {
-            claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
-        } catch (Exception e) {
-            claims = null;
-            log.warn("Could not parse token for claims");
+        if (isNullOrEmpty(token)) {
+            log.warn("Authorization token is empty");
+            return null;
+        } else {
+            Claims claims;
+            try {
+                claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+            } catch (Exception e) {
+                claims = null;
+                log.warn("Could not parse token for claims");
+            }
+            return claims;
         }
-        return claims;
     }
 }
