@@ -10,6 +10,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -29,6 +31,8 @@ public class EmployeeServiceTest {
     private EmployeeService service;
     @Autowired
     private EmployeeRepository repository;
+    @Autowired
+    private UserDetailsService userDetailsService;
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -66,6 +70,12 @@ public class EmployeeServiceTest {
     @Test
     public void testGetWithRoles() {
         Employee employee = repository.getByEmailWithRoles("name1@gmail.com");
+        assertThat(employee, notNullValue());
+    }
+
+    @Test
+    public void testGetUserDetails() {
+        UserDetails employee = userDetailsService.loadUserByUsername("name1@gmail.com");
         assertThat(employee, notNullValue());
     }
 }
