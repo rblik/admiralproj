@@ -1,5 +1,6 @@
 package isr.naya.admiralproj.web.adviser;
 
+import com.itextpdf.text.ExceptionConverter;
 import isr.naya.admiralproj.exception.NotFoundException;
 import isr.naya.admiralproj.exception.TimeOverlappingException;
 import isr.naya.admiralproj.exception.TimeRangeException;
@@ -44,6 +45,12 @@ public class ExceptionInfoHandler {
         return logAndGetErrorInfo(req, e, false);
     }
 
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST) // 400
+    @ExceptionHandler(ExceptionConverter.class)
+    @Order(Ordered.HIGHEST_PRECEDENCE + 1)
+    public ErrorInfoDTO pdfError(HttpServletRequest req, ExceptionConverter e) {
+        return logAndGetErrorInfo(req, e, false);
+    }
 
     @ResponseStatus(value = HttpStatus.CONFLICT) // 409
     @ExceptionHandler(TimeOverlappingException.class)

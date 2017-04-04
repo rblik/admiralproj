@@ -60,7 +60,7 @@ public class PdfReportCreator implements ReportCreator {
             document.close();
         } catch (Exception e) {
             log.error("An error occurred while creating report. {}", e.getLocalizedMessage());
-            throw new RuntimeException(e);
+            throw new ExceptionConverter(e);
         }
         return os.toByteArray();
 
