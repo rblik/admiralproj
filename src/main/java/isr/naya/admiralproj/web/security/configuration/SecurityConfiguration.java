@@ -1,4 +1,4 @@
-package isr.naya.admiralproj.configuration;
+package isr.naya.admiralproj.web.security.configuration;
 
 import isr.naya.admiralproj.service.EmployeeServiceImpl;
 import isr.naya.admiralproj.web.security.JwtAuthTokenFilter;

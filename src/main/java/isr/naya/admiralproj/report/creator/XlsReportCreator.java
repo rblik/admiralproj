@@ -1,7 +1,9 @@
-package isr.naya.admiralproj.report;
+package isr.naya.admiralproj.report.creator;
 
 
 import isr.naya.admiralproj.dto.WorkInfo;
+import isr.naya.admiralproj.report.ReportCreator;
+import isr.naya.admiralproj.report.ReportType;
 import isr.naya.admiralproj.util.MappingUtil;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
