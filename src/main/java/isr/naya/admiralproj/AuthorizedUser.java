@@ -10,11 +10,13 @@ public class AuthorizedUser extends org.springframework.security.core.userdetail
 
     private Integer id;
     private String name;
+    private String surname;
 
     public AuthorizedUser(Employee employee) {
-        super(employee.getName(), employee.getPassword(), employee.getRoles());
+        super(employee.getEmail(), employee.getPassword(), employee.getRoles());
         this.id = employee.getId();
         this.name = employee.getName();
+        this.surname = employee.getSurname();
     }
 
     public static AuthorizedUser safeGet() {
@@ -35,7 +37,13 @@ public class AuthorizedUser extends org.springframework.security.core.userdetail
     public static Integer id() {
         return get().id;
     }
+
     public static String fullName() {
-        return get().name;
+        AuthorizedUser user = get();
+        return user.getFullName();
+    }
+
+    public String getFullName() {
+        return String.format("%s %s", this.name, this.surname);
     }
 }

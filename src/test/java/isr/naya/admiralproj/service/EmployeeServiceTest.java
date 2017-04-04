@@ -2,6 +2,7 @@ package isr.naya.admiralproj.service;
 
 import isr.naya.admiralproj.exception.NotFoundException;
 import isr.naya.admiralproj.model.Employee;
+import isr.naya.admiralproj.repository.EmployeeRepository;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -17,7 +18,7 @@ import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
@@ -26,6 +27,8 @@ import static org.junit.Assert.*;
 public class EmployeeServiceTest {
     @Autowired
     private EmployeeService service;
+    @Autowired
+    private EmployeeRepository repository;
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -58,5 +61,11 @@ public class EmployeeServiceTest {
     @Test(expected = DataIntegrityViolationException.class)
     public void testSaveWithDuplicateEmail() {
         service.save(1, Employee.builder().name("AnotherN").surname("AnotherS").passportId("999999999").password("123123Aa").email("name1@gmail.com").build());
+    }
+
+    @Test
+    public void testGetWithRoles() {
+        Employee employee = repository.getByEmailWithRoles("name1@gmail.com");
+        assertThat(employee, notNullValue());
     }
 }
