@@ -52,7 +52,7 @@ public class JwtTokenUtil implements Serializable {
 
     private Claims getClaimsFromToken(String token) {
         if (isNullOrEmpty(token)) {
-            log.warn("Authorization token is empty");
+            log.info("Authorization token is empty");
             return null;
         } else {
             Claims claims;
@@ -60,7 +60,7 @@ public class JwtTokenUtil implements Serializable {
                 claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
             } catch (Exception e) {
                 claims = null;
-                log.warn("Could not parse token for claims");
+                log.info("Could not parse token for claims");
             }
             return claims;
         }
