@@ -6,6 +6,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import isr.naya.admiralproj.AuthorizedUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,7 @@ import static com.google.common.collect.Maps.newHashMap;
 
 @Slf4j
 @Component
+@PropertySource("classpath:jwt.properties")
 public class JwtTokenUtil implements Serializable {
     private static final long serialVersionUID = -3301605591108950415L;
 
