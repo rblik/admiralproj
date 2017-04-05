@@ -1,6 +1,7 @@
 package isr.naya.admiralproj.service;
 
 import isr.naya.admiralproj.model.Department;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,11 @@ import static org.junit.Assert.assertThat;
 public class DepartmentServiceTest {
     @Autowired
     private DepartmentService service;
+
+    @After
+    public void evictCache() {
+        service.evictCache();
+    }
 
     @Test
     public void testSave() {

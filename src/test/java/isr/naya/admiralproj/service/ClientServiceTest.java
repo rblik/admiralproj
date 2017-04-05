@@ -2,6 +2,7 @@ package isr.naya.admiralproj.service;
 
 import isr.naya.admiralproj.exception.NotFoundException;
 import isr.naya.admiralproj.model.Client;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,11 @@ public class ClientServiceTest {
 
     @Autowired
     private ClientService service;
+
+    @After
+    public void evictCache() {
+        service.evictCache();
+    }
 
     @Test
     public void testSave() {

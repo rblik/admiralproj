@@ -11,4 +11,6 @@ public interface ClientService {
     List<Client> getAll();
 
     Client get(Integer id);
+
+    void evictCache();
 }
