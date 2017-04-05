@@ -19,7 +19,7 @@ public class ClientServiceImpl implements ClientService {
 
     private ClientRepository clientRepository;
 
-    @CacheEvict(value = "clients", allEntries = true)
+    @CacheEvict(value = {"clients", "projects"}, allEntries = true)
     @Override
     @Transactional
     public Client save(@NonNull Client client) {
@@ -36,10 +36,5 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Client get(@NonNull Integer id) {
         return checkNotFound(clientRepository.getWithAddressesAndPhones(id), id, Client.class);
-    }
-
-    @CacheEvict(value = "clients", allEntries = true)
-    @Override
-    public void evictCache() {
     }
 }

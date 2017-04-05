@@ -7,7 +7,6 @@ import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
@@ -59,7 +58,7 @@ public class Employee extends BaseEntity{
      */
     @NotNull
     @JsonIgnore
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{6,20}$")
+//    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{6,20}$")
     @Column(name = "password", nullable = false)
     private String password;
 

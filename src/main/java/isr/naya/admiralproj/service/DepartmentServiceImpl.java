@@ -19,7 +19,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     private DepartmentRepository departmentRepository;
 
-    @CacheEvict(value = "departments", allEntries = true)
+    @CacheEvict(value = {"departments", "employees"}, allEntries = true)
     @Override
     @Transactional
     public Department save(@NonNull Department department) {
@@ -36,10 +36,5 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public Department get(@NonNull Integer id) {
         return checkNotFound(departmentRepository.findOne(id), id, Department.class);
-    }
-
-    @CacheEvict(value = "departments", allEntries = true)
-    @Override
-    public void evictCache() {
     }
 }

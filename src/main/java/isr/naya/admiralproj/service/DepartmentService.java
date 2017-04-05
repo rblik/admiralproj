@@ -11,6 +11,4 @@ public interface DepartmentService {
     List<Department> getAll();
 
     Department get(Integer id);
-
-    void evictCache();
 }

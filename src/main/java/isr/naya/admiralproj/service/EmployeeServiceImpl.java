@@ -7,6 +7,8 @@ import isr.naya.admiralproj.repository.DepartmentRepository;
 import isr.naya.admiralproj.repository.EmployeeRepository;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,6 +26,7 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
     private EmployeeRepository employeeRepository;
     private DepartmentRepository departmentRepository;
 
+    @CacheEvict(value = "employees", allEntries = true)
     @Override
     @Transactional
     public Employee save(@NonNull Integer departmentId, @NonNull Employee employee) {
@@ -31,6 +34,7 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
         return employeeRepository.save(employee);
     }
 
+    @Cacheable("employees")
     @Override
     public List<Employee> getAllWithDepartments() {
         return employeeRepository.getAllWithDepartments();
@@ -41,6 +45,7 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
         return checkNotFound(employeeRepository.findOne(id), id, Employee.class);
     }
 
+    @Cacheable("employees")
     @Override
     public Employee getWithDepartment(@NonNull Integer id) {
         return checkNotFound(employeeRepository.getOneWithDepartment(id), id, Employee.class);

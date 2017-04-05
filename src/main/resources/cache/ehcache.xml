@@ -9,8 +9,7 @@
            timeToIdleSeconds="300"
            timeToLiveSeconds="600"
            memoryStoreEvictionPolicy="LFU"
-           overflowToDisk="true"
-           transactionalMode="off">
+           overflowToDisk="true">
     </cache>
     <cache name="departments"
            maxElementsInMemory="1000"
@@ -19,7 +18,24 @@
            timeToIdleSeconds="300"
            timeToLiveSeconds="600"
            memoryStoreEvictionPolicy="LFU"
-           overflowToDisk="true"
-           transactionalMode="off">
+           overflowToDisk="true">
+    </cache>
+    <cache name="projects"
+           maxElementsInMemory="1000"
+           eternal="false"
+           diskSpoolBufferSizeMB="20"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LFU"
+           overflowToDisk="true">
+    </cache>
+    <cache name="employees"
+           maxElementsInMemory="1000"
+           eternal="false"
+           diskSpoolBufferSizeMB="20"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LFU"
+           overflowToDisk="true">
     </cache>
 </ehcache>

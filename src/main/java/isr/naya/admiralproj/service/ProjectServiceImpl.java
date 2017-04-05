@@ -6,6 +6,8 @@ import isr.naya.admiralproj.repository.ClientRepository;
 import isr.naya.admiralproj.repository.ProjectRepository;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +22,7 @@ public class ProjectServiceImpl implements ProjectService {
     private ProjectRepository projectRepository;
     private ClientRepository clientRepository;
 
+    @CacheEvict(value = "projects", allEntries = true)
     @Override
     @Transactional
     public Project save(@NonNull Integer clientId, @NonNull Project project) {
@@ -27,16 +30,19 @@ public class ProjectServiceImpl implements ProjectService {
         return projectRepository.save(project);
     }
 
+    @Cacheable("projects")
     @Override
     public List<Project> getAllWithClients() {
         return projectRepository.getAllWithClients();
     }
 
+    @Cacheable("projects")
     @Override
     public Project get(@NonNull Integer id) {
         return checkNotFound(projectRepository.findOne(id), id, Project.class);
     }
 
+    @Cacheable("projects")
     @Override
     public Project getWithClient(@NonNull Integer id) {
         return checkNotFound(projectRepository.getOneWithClient(id), id, Project.class);
