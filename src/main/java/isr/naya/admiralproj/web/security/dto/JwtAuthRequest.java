@@ -1,8 +1,10 @@
 package isr.naya.admiralproj.web.security.dto;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Value;
 
-@Data
+@AllArgsConstructor
+@Value
 public class JwtAuthRequest {
     private String email;
     private String password;

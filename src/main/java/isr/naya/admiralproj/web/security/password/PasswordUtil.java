@@ -9,7 +9,7 @@ import static org.springframework.util.StringUtils.isEmpty;
 
 public class PasswordUtil {
     private static final Pattern BCRYPT_PATTERN = Pattern.compile("\\A\\$2a?\\$\\d\\d\\$[./0-9A-Za-z]{53}");
-    public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
+    private static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     public static PasswordEncoder getPasswordEncoder() {
         return PASSWORD_ENCODER;
@@ -29,7 +29,7 @@ public class PasswordUtil {
         return PASSWORD_ENCODER.matches(rawPassword, password);
     }
 
-    public static boolean isEncoded(String newPassword) {
+    private static boolean isEncoded(String newPassword) {
         return BCRYPT_PATTERN.matcher(newPassword).matches();
     }
 
