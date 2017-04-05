@@ -19,11 +19,15 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import static isr.naya.admiralproj.constants.SpringProfiles.TEST;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
+/**
+ * Unit test for {@link WorkUnitService}
+ */
 @RunWith(SpringRunner.class)
-@ActiveProfiles("test")
+@ActiveProfiles(TEST)
 @SpringBootTest
 @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:data-postgres.sql")
 public class WorkUnitServiceTest {

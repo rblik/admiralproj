@@ -19,11 +19,15 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.validation.ConstraintViolationException;
 import java.util.List;
 
+import static isr.naya.admiralproj.constants.SpringProfiles.TEST;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
+/**
+ * Unit test for {@link EmployeeService}
+ */
 @RunWith(SpringRunner.class)
-@ActiveProfiles("test")
+@ActiveProfiles(TEST)
 @SpringBootTest
 @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:data-postgres.sql")
 public class EmployeeServiceTest {
