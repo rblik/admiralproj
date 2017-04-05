@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static isr.naya.admiralproj.web.security.password.PasswordUtil.getPasswordEncoder;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 
@@ -25,7 +26,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(service);
+        auth.userDetailsService(service).passwordEncoder(getPasswordEncoder());
     }
 
     @Bean

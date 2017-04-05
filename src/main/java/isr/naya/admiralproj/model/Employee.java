@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
+import static isr.naya.admiralproj.web.security.password.PasswordUtil.encode;
 
 @Data
 @Entity
@@ -74,4 +75,10 @@ public class Employee extends BaseEntity{
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.REMOVE)
     private List<WorkAgreement> workAgreements;
+
+    @PrePersist
+    @PreUpdate
+    public void encodePassword() {
+        this.password = encode(this.password);
+    }
 }
