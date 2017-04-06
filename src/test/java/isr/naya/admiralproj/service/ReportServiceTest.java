@@ -24,7 +24,7 @@ import static org.junit.Assert.assertThat;
 @RunWith(SpringRunner.class)
 @ActiveProfiles(TEST)
 @SpringBootTest
-@Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:data-postgres.sql")
+@Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:db/data-postgres.sql")
 public class ReportServiceTest {
 
     @Autowired

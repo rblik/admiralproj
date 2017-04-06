@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
-@PropertySource("classpath:jwt.properties")
+@PropertySource("classpath:jwt/jwt.properties")
 public class JwtAuthTokenFilter extends OncePerRequestFilter {
 
     @Autowired

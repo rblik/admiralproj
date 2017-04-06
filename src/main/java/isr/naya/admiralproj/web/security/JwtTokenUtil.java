@@ -19,7 +19,7 @@ import static com.google.common.collect.Maps.newHashMap;
 
 @Slf4j
 @Component
-@PropertySource("classpath:jwt.properties")
+@PropertySource("classpath:jwt/jwt.properties")
 public class JwtTokenUtil implements Serializable {
     private static final long serialVersionUID = -3301605591108950415L;
 
