@@ -9,11 +9,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.status;
 
 @RestController
 public class AuthController {
@@ -28,10 +33,15 @@ public class AuthController {
     @PostMapping(value = "/auth", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<JwtAuthResponse> createAuthToken(@RequestBody JwtAuthRequest request) {
 
-        final Authentication authentication = manager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        final Authentication authentication;
+        try {
+            authentication = manager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        } catch (AuthenticationException e) {
+            return status(UNAUTHORIZED).build();
+        }
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = tokenUtil.generateToken(service.loadUserByUsername(request.getEmail()));
 
-        return ResponseEntity.ok(new JwtAuthResponse(token));
+        return ok(new JwtAuthResponse(token));
     }
 }
