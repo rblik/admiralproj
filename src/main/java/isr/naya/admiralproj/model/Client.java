@@ -27,12 +27,15 @@ public class Client extends BaseEntity{
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "client_phones", joinColumns = @JoinColumn(name = "client_id"))
     @Column(name = "phone")
+    @Singular
     private Set<String> phones;
 
     @OneToMany
     @JoinColumn(name = "client_id")
+    @Singular
     private Set<Address> addresses;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    @Singular
     private List<Project> projects;
 }
