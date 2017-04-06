@@ -1,6 +1,7 @@
 package isr.naya.admiralproj.service;
 
 import isr.naya.admiralproj.exception.NotFoundException;
+import isr.naya.admiralproj.model.Address;
 import isr.naya.admiralproj.model.Client;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,9 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.validation.ConstraintViolationException;
 
-import static com.google.common.collect.ImmutableSet.of;
 import static isr.naya.admiralproj.constants.SpringProfiles.TEST;
-import static java.util.Collections.emptySet;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
@@ -32,7 +31,11 @@ public class ClientServiceTest {
 
     @Test
     public void testSave() {
-        Client save = service.save(Client.builder().addresses(emptySet()).name("Another Comp.").companyNumber(111111111).phones(of("055-5555555")).build());
+        Client save = service.save(Client.builder()
+                .address(new Address("Haifa", "Haifa","Yagur","10"))
+                .name("Another Comp.")
+                .companyNumber(111111111)
+                .phone("055-5555555").build());
         Client client = service.get(save.getId());
         assertThat(client, hasProperty("name", is("Another Comp.")));
     }
