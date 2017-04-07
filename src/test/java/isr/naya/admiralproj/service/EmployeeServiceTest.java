@@ -1,5 +1,6 @@
 package isr.naya.admiralproj.service;
 
+import isr.naya.admiralproj.dto.Role;
 import isr.naya.admiralproj.exception.NotFoundException;
 import isr.naya.admiralproj.model.Employee;
 import isr.naya.admiralproj.repository.EmployeeRepository;
@@ -49,7 +50,7 @@ public class EmployeeServiceTest {
 
     @Test
     public void testSave() {
-        Employee save = service.save(1, Employee.builder().name("AnotherN").surname("AnotherS").passportId("999999999").password("123123Aa").email("email@gg.com").build());
+        Employee save = service.save(1, Employee.builder().name("AnotherN").surname("AnotherS").passportId("999999999").password("123123Aa").email("email@gg.com").role(Role.ROLE_USER).build());
         Employee employee = service.getWithDepartment(save.getId());
         assertThat(employee, allOf(hasProperty("name", is("AnotherN")), hasProperty("surname", is("AnotherS")), hasProperty("department", hasProperty("name", is("Java")))));
     }

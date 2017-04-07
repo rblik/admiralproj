@@ -66,6 +66,7 @@ public class Employee extends BaseEntity{
     @CollectionTable(name = "employee_roles", joinColumns = @JoinColumn(name = "employee_id"))
     @Column(name = "role")
     @ElementCollection(fetch = FetchType.LAZY)
+    @Singular
     private Set<Role> roles = newHashSet(Role.ROLE_USER);
 
     @ManyToOne(fetch = FetchType.LAZY)
