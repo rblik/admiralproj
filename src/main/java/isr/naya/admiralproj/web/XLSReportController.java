@@ -6,10 +6,7 @@ import isr.naya.admiralproj.service.WorkInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
@@ -20,6 +17,7 @@ import static isr.naya.admiralproj.report.ReportType.*;
 import static isr.naya.admiralproj.web.util.ReportSender.sendReport;
 
 @Slf4j
+@CrossOrigin
 @RestController
 @RequestMapping("/admin/xlsx")
 public class XLSReportController {

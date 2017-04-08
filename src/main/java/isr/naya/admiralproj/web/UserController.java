@@ -23,6 +23,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Slf4j
+@CrossOrigin
 @RestController
 @AllArgsConstructor
 public class UserController {

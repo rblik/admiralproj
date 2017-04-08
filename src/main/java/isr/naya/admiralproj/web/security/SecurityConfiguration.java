@@ -1,7 +1,6 @@
-package isr.naya.admiralproj.web.security.configuration;
+package isr.naya.admiralproj.web.security;
 
 import isr.naya.admiralproj.service.EmployeeServiceImpl;
-import isr.naya.admiralproj.web.security.JwtAuthTokenFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

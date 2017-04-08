@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Slf4j
+@CrossOrigin
 @RestController
 @RequestMapping("/admin")
 @AllArgsConstructor
