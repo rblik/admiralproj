@@ -8,13 +8,17 @@ import java.util.Optional;
 
 public interface WorkInfoService {
 
-    List<WorkInfo> getPartialDays(LocalDate from, LocalDate to, Integer maxHours);
-
     List<WorkInfo> getAllForEmployee(Integer id, LocalDate from, LocalDate to);
 
     List<WorkInfo> getAllForEmployeeByDate(Integer employeeId, Integer workAgreementId, LocalDate date);
 
+    // Partial Report Block
+    List<WorkInfo> getPartialDays(LocalDate from, LocalDate to, Integer maxHours);
+
+    // Missing Report Block
     List<WorkInfo> getMissingDays(LocalDate from, LocalDate to);
+
+    List<WorkInfo> getMissingDaysByEmployee(LocalDate from, LocalDate to, Integer employeeId);
 
     // Pivotal Report Block
     List<WorkInfo> getAllUnitsByDate(LocalDate from, LocalDate to);

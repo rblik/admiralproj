@@ -2,7 +2,6 @@ package isr.naya.admiralproj.service;
 
 import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.model.Employee;
-import isr.naya.admiralproj.repository.EmployeeRepository;
 import isr.naya.admiralproj.repository.WorkUnitRepository;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -13,18 +12,14 @@ import java.util.List;
 import java.util.Optional;
 
 import static isr.naya.admiralproj.util.MappingUtil.generate;
+import static java.util.Collections.singletonList;
 
 @Service
 @AllArgsConstructor
 public class WorkInfoServiceImpl implements WorkInfoService {
 
     private WorkUnitRepository workUnitRepository;
-    private EmployeeRepository employeeRepository;
-
-    @Override
-    public List<WorkInfo> getPartialDays(@NonNull LocalDate from, @NonNull LocalDate to, @NonNull Integer maxHours) {
-        return workUnitRepository.getAllPartialBetweenDates(from, to, maxHours);
-    }
+    private EmployeeService employeeService;
 
     @Override
     public List<WorkInfo> getAllForEmployee(@NonNull Integer employeeId, @NonNull LocalDate from, @NonNull LocalDate to) {
@@ -36,10 +31,23 @@ public class WorkInfoServiceImpl implements WorkInfoService {
         return workUnitRepository.getAllForEmployeeByDay(employeeId, workAgreementId, date);
     }
 
+    // Partial Report Block
+    @Override
+    public List<WorkInfo> getPartialDays(@NonNull LocalDate from, @NonNull LocalDate to, @NonNull Integer maxHours) {
+        return workUnitRepository.getAllPartialBetweenDates(from, to, maxHours);
+    }
+
+    // Missing Report Block
     @Override
     public List<WorkInfo> getMissingDays(@NonNull LocalDate from, @NonNull LocalDate to) {
-        List<Employee> employees = employeeRepository.getAllWithDepartments();
+        List<Employee> employees = employeeService.getAllWithDepartments();
         return generate(workUnitRepository.getAllNonEmptyDaysBetweenDates(from, to), from, to, employees);
+    }
+
+    @Override
+    public List<WorkInfo> getMissingDaysByEmployee(@NonNull LocalDate from, @NonNull LocalDate to, @NonNull Integer employeeId) {
+        Employee employee = employeeService.getWithDepartment(employeeId);
+        return generate(workUnitRepository.getAllNonEmptyDaysByDateBetweenAndEmployeeId(from, to, employeeId), from, to, singletonList(employee));
     }
 
     // Pivotal Report Block

@@ -60,6 +60,11 @@ public class ReportServiceTest {
         assertThat(days, hasSize(0));
     }
 
+    @Test
+    public void testGetAllForMissingByEmployee() {
+        List<WorkInfo> days = service.getMissingDaysByEmployee(LocalDate.of(2017, 3, 19), LocalDate.of(2017, 3, 24), 1);
+        assertThat(days, hasSize(0));
+    }
 
     @Test
     public void testGetAllUnitsByDate() {
