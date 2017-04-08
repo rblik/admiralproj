@@ -17,7 +17,6 @@ import static isr.naya.admiralproj.report.ReportCreator.PDF;
 import static isr.naya.admiralproj.report.ReportType.INDIVIDUAL_EMPTY;
 import static java.time.LocalDateTime.now;
 import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
-import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 
 @Component
 public class MailAssistant {
@@ -38,7 +37,7 @@ public class MailAssistant {
 //    @Scheduled(cron = "${notifySchedule}")
     public void send() {
         if (now().toLocalDate().lengthOfMonth() != now().getDayOfMonth()) {
-            List<WorkInfo> missingDays = service.getMissingDays(LocalDate.now().with(firstDayOfMonth()), LocalDate.now().with(lastDayOfMonth()));
+            List<WorkInfo> missingDays = service.getMissingDays(LocalDate.now().with(firstDayOfMonth()), LocalDate.now().plusMonths(1).with(firstDayOfMonth()));
             Map<String, List<WorkInfo>> infos = missingDays.stream().collect(Collectors.groupingBy(WorkInfo::getEmployeeEmail));
             infos.forEach((email, infoList) -> {
                 byte[] pdfFile = creator.create(infoList, INDIVIDUAL_EMPTY);
