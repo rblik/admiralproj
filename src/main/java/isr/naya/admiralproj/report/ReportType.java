@@ -3,5 +3,6 @@ package isr.naya.admiralproj.report;
 public enum ReportType {
     PIVOTAL,
     PARTIAL,
-    EMPTY
+    EMPTY,
+    INDIVIDUAL_EMPTY
 }

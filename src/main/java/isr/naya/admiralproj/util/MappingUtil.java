@@ -27,8 +27,8 @@ public class MappingUtil {
         Set<WorkInfo> result = Sets.newHashSet();
         employees.forEach(e -> {
             Set<WorkInfo> collect = Stream.iterate(
-                    new WorkInfo(e.getId(), e.getName(), e.getSurname(), e.getDepartment().getName(), from),
-                    missingDay -> new WorkInfo(e.getId(), e.getName(), e.getSurname(), e.getDepartment().getName(), missingDay.getDate().plusDays(1))).limit(DAYS.between(from, to)).collect(Collectors.toSet());
+                    new WorkInfo(e.getId(), e.getName(), e.getSurname(), e.getEmail(), e.getDepartment().getName(), from),
+                    missingDay -> new WorkInfo(e.getId(), e.getName(), e.getSurname(), e.getEmail(), e.getDepartment().getName(), missingDay.getDate().plusDays(1))).limit(DAYS.between(from, to)).collect(Collectors.toSet());
             result.addAll(collect);
         });
         result.removeAll(days);

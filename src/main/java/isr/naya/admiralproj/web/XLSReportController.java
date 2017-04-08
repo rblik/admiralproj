@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import static isr.naya.admiralproj.report.ReportCreator.XLSX;
 import static isr.naya.admiralproj.report.ReportType.*;
 import static isr.naya.admiralproj.web.util.ReportSender.sendReport;
 
@@ -29,7 +30,7 @@ public class XLSReportController {
     private ReportCreator reportCreator;
 
     @Autowired
-    public XLSReportController(WorkInfoService workInfoService, @Qualifier("XLS") ReportCreator reportCreator) {
+    public XLSReportController(WorkInfoService workInfoService, @Qualifier(XLSX) ReportCreator reportCreator) {
         this.workInfoService = workInfoService;
         this.reportCreator = reportCreator;
     }

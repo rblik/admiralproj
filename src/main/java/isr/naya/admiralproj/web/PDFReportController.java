@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import static isr.naya.admiralproj.report.ReportCreator.PDF;
 import static isr.naya.admiralproj.report.ReportType.*;
 import static isr.naya.admiralproj.web.util.ReportSender.sendReport;
 
@@ -29,7 +30,7 @@ public class PDFReportController {
     private ReportCreator reportCreator;
 
     @Autowired
-    public PDFReportController(WorkInfoService workInfoService, @Qualifier("PDF") ReportCreator reportCreator) {
+    public PDFReportController(WorkInfoService workInfoService, @Qualifier(PDF) ReportCreator reportCreator) {
         this.workInfoService = workInfoService;
         this.reportCreator = reportCreator;
     }

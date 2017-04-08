@@ -1,4 +1,4 @@
-package isr.naya.admiralproj.constants;
+package isr.naya.admiralproj;
 
 public interface SpringProfiles {
     String HSQLDB = "hsqldb";

@@ -15,7 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
-import static isr.naya.admiralproj.constants.SpringProfiles.TEST;
+import static isr.naya.admiralproj.SpringProfiles.TEST;
 import static java.util.Collections.emptyList;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;

@@ -20,12 +20,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static isr.naya.admiralproj.report.ReportCreator.XLSX;
 import static isr.naya.admiralproj.report.ReportType.*;
 import static org.apache.poi.ss.util.WorkbookUtil.createSafeSheetName;
 
 @Component
 @Slf4j
-@Qualifier("XLS")
+@Qualifier(XLSX)
 public class XlsReportCreator implements ReportCreator {
 
     @Override

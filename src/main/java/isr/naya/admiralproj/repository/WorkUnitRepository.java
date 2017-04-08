@@ -21,7 +21,7 @@ public interface WorkUnitRepository extends JpaRepository<WorkUnit, Integer> {
     @Query("delete from WorkUnit wu where wu.id in (select wut.id from WorkUnit wut join wut.workAgreement wat join wat.employee emp where wut.id =?2 and emp.id =?1)")
     int delete(Integer employeeId, Integer workUnitId);
 
-    @Query("select new isr.naya.admiralproj.dto.WorkInfo(e.id, e.name, e.surname, wu.date, sum (wu.duration)) from WorkUnit wu join wu.workAgreement wa join wa.employee e where wa.id = wu.workAgreement.id and e.id = wa.employee.id and wu.date>=?1 and wu.date<?2 group by e.id, wu.date having sum(wu.duration)<60*?3 order by wu.date desc ")
+    @Query("select new isr.naya.admiralproj.dto.WorkInfo(e.id, e.name, e.surname, e.email, wu.date, sum (wu.duration)) from WorkUnit wu join wu.workAgreement wa join wa.employee e where wa.id = wu.workAgreement.id and e.id = wa.employee.id and wu.date>=?1 and wu.date<?2 group by e.id, wu.date having sum(wu.duration)<60*?3 order by wu.date desc ")
     List<WorkInfo> getAllPartialBetweenDates(LocalDate from, LocalDate to, Integer maxHours);
 
     @Query("select new isr.naya.admiralproj.dto.WorkInfo(e.id, wu.date) from WorkUnit wu join wu.workAgreement wa join wa.employee e where wa.id = wu.workAgreement.id and e.id = wa.employee.id and wu.date>=?1 and wu.date<?2 group by e.id, wu.date")
@@ -34,15 +34,15 @@ public interface WorkUnitRepository extends JpaRepository<WorkUnit, Integer> {
     List<WorkInfo> getAllForEmployeeBetweenDates(Integer employeeId, LocalDate from, LocalDate to);
 
     // Pivotal Report Block
-    @Query("select new isr.naya.admiralproj.dto.WorkInfo(wu.id, wa.id, e.id, e.name, e.surname, d.name, p.id, p.name, c.id, c.name, wu.date, wu.absenceType, wu.start, wu.finish, wu.duration, wu.comment) from WorkUnit wu join wu.workAgreement wa join wa.employee e join wa.project p join p.client c join e.department d where wu.date between ?1 and ?2 order by wu.date desc ")
+    @Query("select new isr.naya.admiralproj.dto.WorkInfo(wu.id, wa.id, e.id, e.name, e.surname, e.email, d.name, p.id, p.name, c.id, c.name, wu.date, wu.absenceType, wu.start, wu.finish, wu.duration, wu.comment) from WorkUnit wu join wu.workAgreement wa join wa.employee e join wa.project p join p.client c join e.department d where wu.date between ?1 and ?2 order by wu.date desc ")
     List<WorkInfo> getAllByDateBetween(LocalDate from, LocalDate to);
 
-    @Query("select new isr.naya.admiralproj.dto.WorkInfo(wu.id, wa.id, e.id, e.name, e.surname, d.name, p.id, p.name, c.id, c.name, wu.date, wu.absenceType, wu.start, wu.finish, wu.duration, wu.comment) from WorkUnit wu join wu.workAgreement wa join wa.employee e join wa.project p join p.client c join e.department d where e.id =?3 and wu.date between ?1 and ?2 order by wu.date desc ")
+    @Query("select new isr.naya.admiralproj.dto.WorkInfo(wu.id, wa.id, e.id, e.name, e.surname, e.email, d.name, p.id, p.name, c.id, c.name, wu.date, wu.absenceType, wu.start, wu.finish, wu.duration, wu.comment) from WorkUnit wu join wu.workAgreement wa join wa.employee e join wa.project p join p.client c join e.department d where e.id =?3 and wu.date between ?1 and ?2 order by wu.date desc ")
     List<WorkInfo> getAllByDateBetweenAndEmployeeId(LocalDate from, LocalDate to, Integer employeeId);
 
-    @Query("select new isr.naya.admiralproj.dto.WorkInfo(wu.id, wa.id, e.id, e.name, e.surname, d.name, p.id, p.name, c.id, c.name, wu.date, wu.absenceType, wu.start, wu.finish, wu.duration, wu.comment) from WorkUnit wu join wu.workAgreement wa join wa.employee e join wa.project p join p.client c join e.department d where p.id =?3 and wu.date between ?1 and ?2 order by wu.date desc ")
+    @Query("select new isr.naya.admiralproj.dto.WorkInfo(wu.id, wa.id, e.id, e.name, e.surname, e.email, d.name, p.id, p.name, c.id, c.name, wu.date, wu.absenceType, wu.start, wu.finish, wu.duration, wu.comment) from WorkUnit wu join wu.workAgreement wa join wa.employee e join wa.project p join p.client c join e.department d where p.id =?3 and wu.date between ?1 and ?2 order by wu.date desc ")
     List<WorkInfo> getAllByDateBetweenAndProjectId(LocalDate from, LocalDate to, Integer projectId);
 
-    @Query("select new isr.naya.admiralproj.dto.WorkInfo(wu.id, wa.id, e.id, e.name, e.surname, d.name, p.id, p.name, c.id, c.name, wu.date, wu.absenceType, wu.start, wu.finish, wu.duration, wu.comment) from WorkUnit wu join wu.workAgreement wa join wa.employee e join wa.project p join p.client c join e.department d where e.id =?3 and p.id=?4 and wu.date between ?1 and ?2 order by wu.date desc ")
+    @Query("select new isr.naya.admiralproj.dto.WorkInfo(wu.id, wa.id, e.id, e.name, e.surname, e.email, d.name, p.id, p.name, c.id, c.name, wu.date, wu.absenceType, wu.start, wu.finish, wu.duration, wu.comment) from WorkUnit wu join wu.workAgreement wa join wa.employee e join wa.project p join p.client c join e.department d where e.id =?3 and p.id=?4 and wu.date between ?1 and ?2 order by wu.date desc ")
     List<WorkInfo> getAllByDateBetweenAndEmployeeIdAndProjectId(LocalDate from, LocalDate to, Integer employeeId, Integer projectId);
 }
