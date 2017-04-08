@@ -42,7 +42,7 @@ public class MailAssistant {
             Map<String, List<WorkInfo>> infos = missingDays.stream().collect(Collectors.groupingBy(WorkInfo::getEmployeeEmail));
             infos.forEach((email, infoList) -> {
                 byte[] pdfFile = creator.create(infoList, INDIVIDUAL_EMPTY);
-                sender.sendEmail(email, "Empty days", message, pdfFile);
+                sender.sendEmail(email, "ימים חסרים", message, pdfFile);
             });
         }
     }
