@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -64,6 +65,13 @@ public class ExceptionInfoHandler {
     @Order(Ordered.HIGHEST_PRECEDENCE + 2)
     public ErrorInfoDTO bindValidationError(HttpServletRequest req, BindingResult result) {
         return logAndGetValidationErrorInfo(req, result);
+    }
+
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)  // 400
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    @Order(Ordered.HIGHEST_PRECEDENCE + 2)
+    public ErrorInfoDTO missingRequestParameterError(HttpServletRequest req, MissingServletRequestParameterException e) {
+        return logAndGetErrorInfo(req, e, false);
     }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)  // 400
