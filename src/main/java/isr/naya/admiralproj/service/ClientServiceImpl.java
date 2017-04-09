@@ -26,13 +26,13 @@ public class ClientServiceImpl implements ClientService {
         return clientRepository.save(client);
     }
 
-    @Cacheable("clients")
+    @Cacheable(value = "clients", key = "getMethodName()")
     @Override
     public List<Client> getAll() {
         return clientRepository.getAllWithAddressesAndPhones();
     }
 
-    @Cacheable("clients")
+    @Cacheable(value = "clients", key = "getMethodName() + #id")
     @Override
     public Client get(@NonNull Integer id) {
         return checkNotFound(clientRepository.getWithAddressesAndPhones(id), id, Client.class);

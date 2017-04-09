@@ -34,10 +34,16 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
         return employeeRepository.save(employee);
     }
 
-    @Cacheable("employees")
+    @Cacheable(value = "employees", key = "getMethodName()")
     @Override
     public List<Employee> getAllWithDepartments() {
         return employeeRepository.getAllWithDepartments();
+    }
+
+    @Cacheable(value = "employees", key = "getMethodName() + #departmentId")
+    @Override
+    public List<Employee> getAllByDepartment(@NonNull Integer departmentId) {
+        return employeeRepository.getAllByDepartment(departmentId);
     }
 
     @Override
@@ -45,7 +51,7 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
         return checkNotFound(employeeRepository.findOne(id), id, Employee.class);
     }
 
-    @Cacheable("employees")
+    @Cacheable(value = "employees", key = "getMethodName() + #id")
     @Override
     public Employee getWithDepartment(@NonNull Integer id) {
         return checkNotFound(employeeRepository.getOneWithDepartment(id), id, Employee.class);

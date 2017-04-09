@@ -49,6 +49,12 @@ public class EmployeeServiceTest {
     }
 
     @Test
+    public void testGetAllWithDepartment() {
+        List<Employee> allByDepartment = service.getAllByDepartment(5);
+        assertThat(allByDepartment, hasSize(2));
+    }
+
+    @Test
     public void testSave() {
         Employee save = service.save(1, Employee.builder().name("AnotherN").surname("AnotherS").passportId("999999999").password("123123Aa").email("email@gg.com").role(Role.ROLE_USER).build());
         Employee employee = service.getWithDepartment(save.getId());

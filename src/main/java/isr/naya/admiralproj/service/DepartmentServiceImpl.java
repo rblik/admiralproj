@@ -26,13 +26,13 @@ public class DepartmentServiceImpl implements DepartmentService {
         return departmentRepository.save(department);
     }
 
-    @Cacheable("departments")
+    @Cacheable(value = "departments", key = "getMethodName()")
     @Override
     public List<Department> getAll() {
         return departmentRepository.findAll();
     }
 
-    @Cacheable("departments")
+    @Cacheable(value = "departments", key = "getMethodName() + #id")
     @Override
     public Department get(@NonNull Integer id) {
         return checkNotFound(departmentRepository.findOne(id), id, Department.class);

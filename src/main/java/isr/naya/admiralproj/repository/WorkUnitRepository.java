@@ -38,6 +38,9 @@ public interface WorkUnitRepository extends JpaRepository<WorkUnit, Integer> {
     @Query("select new isr.naya.admiralproj.dto.WorkInfo(e.id, wu.date) from WorkUnit wu join wu.workAgreement wa join wa.employee e where wa.id = wu.workAgreement.id and e.id = wa.employee.id and e.id=?3 and wu.date>=?1 and wu.date<?2 group by e.id, wu.date")
     Set<WorkInfo> getAllNonEmptyDaysByDateBetweenAndEmployeeId(LocalDate from, LocalDate to, Integer employeeId);
 
+    @Query("select new isr.naya.admiralproj.dto.WorkInfo(e.id, wu.date) from WorkUnit wu join wu.workAgreement wa join wa.employee e join e.department d where wa.id = wu.workAgreement.id and e.id = wa.employee.id and d.id=?3 and wu.date>=?1 and wu.date<?2 group by e.id, wu.date")
+    Set<WorkInfo> getAllNonEmptyDaysByDateBetweenAndDepartmentId(LocalDate from, LocalDate to, Integer departmentId);
+
     // Pivotal Report Block
     @Query("select new isr.naya.admiralproj.dto.WorkInfo(wu.id, wa.id, e.id, e.name, e.surname, e.email, d.name, p.id, p.name, c.id, c.name, wu.date, wu.absenceType, wu.start, wu.finish, wu.duration, wu.comment) from WorkUnit wu join wu.workAgreement wa join wa.employee e join wa.project p join p.client c join e.department d where wu.date between ?1 and ?2 order by wu.date desc ")
     List<WorkInfo> getAllByDateBetween(LocalDate from, LocalDate to);

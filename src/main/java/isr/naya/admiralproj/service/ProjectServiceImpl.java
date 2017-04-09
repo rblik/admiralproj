@@ -30,19 +30,19 @@ public class ProjectServiceImpl implements ProjectService {
         return projectRepository.save(project);
     }
 
-    @Cacheable("projects")
+    @Cacheable(value = "projects", key = "getMethodName()")
     @Override
     public List<Project> getAllWithClients() {
         return projectRepository.getAllWithClients();
     }
 
-    @Cacheable("projects")
+    @Cacheable(value = "projects", key = "getMethodName() + #id")
     @Override
     public Project get(@NonNull Integer id) {
         return checkNotFound(projectRepository.findOne(id), id, Project.class);
     }
 
-    @Cacheable("projects")
+    @Cacheable(value = "projects", key = "getMethodName() + #id")
     @Override
     public Project getWithClient(@NonNull Integer id) {
         return checkNotFound(projectRepository.getOneWithClient(id), id, Project.class);

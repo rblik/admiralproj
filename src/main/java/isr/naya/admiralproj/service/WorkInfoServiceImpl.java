@@ -50,6 +50,12 @@ public class WorkInfoServiceImpl implements WorkInfoService {
         return generate(workUnitRepository.getAllNonEmptyDaysByDateBetweenAndEmployeeId(from, to, employeeId), from, to, singletonList(employee));
     }
 
+    @Override
+    public List<WorkInfo> getMissingDaysByDepartment(@NonNull LocalDate from, @NonNull LocalDate to, @NonNull Integer departmentId) {
+        List<Employee> employees = employeeService.getAllByDepartment(departmentId);
+        return generate(workUnitRepository.getAllNonEmptyDaysByDateBetweenAndEmployeeId(from, to, departmentId), from, to, employees);
+    }
+
     // Pivotal Report Block
     @Override
     public List<WorkInfo> getAllUnitsByDate(@NonNull LocalDate from, @NonNull LocalDate to) {
@@ -69,6 +75,21 @@ public class WorkInfoServiceImpl implements WorkInfoService {
     @Override
     public List<WorkInfo> getAllUnitsByDateAndEmployeeAndProject(@NonNull LocalDate from, @NonNull LocalDate to, @NonNull Integer employeeId, @NonNull Integer projectId) {
         return workUnitRepository.getAllByDateBetweenAndEmployeeIdAndProjectId(from, to, employeeId, projectId);
+    }
+
+    @Override
+    public List<WorkInfo> getMissingWorkInfos(LocalDate from, LocalDate to,
+                                              Optional<Integer> employeeId,
+                                              Optional<Integer> departmentId) {
+        List<WorkInfo> workInfos;
+        if (employeeId.isPresent()) {
+            workInfos = getMissingDaysByEmployee(from, to, employeeId.get());
+        } else if (departmentId.isPresent()) {
+            workInfos = getMissingDaysByDepartment(from, to, departmentId.get());
+        } else {
+            workInfos = getMissingDays(from, to);
+        }
+        return workInfos;
     }
 
     public List<WorkInfo> getWorkInfos(LocalDate from, LocalDate to,

@@ -32,12 +32,12 @@ public class JsonReportController {
     @GetMapping("/missing")
     public List<WorkInfo> getMissingDaysReport(@RequestParam("from") LocalDate from,
                                                @RequestParam("to") LocalDate to,
-                                               @RequestParam("employeeId") Optional<Integer> employeeId) {
-        List<WorkInfo> days = employeeId
-                .map(integer -> workInfoService.getMissingDaysByEmployee(from, to, integer))
-                .orElseGet(() -> workInfoService.getMissingDays(from, to));
-        log.info("Admin {} is creating json missing report from {} to {}" + (employeeId.isPresent() ? " for employee (id=" + employeeId + ")" : ""), AuthorizedUser.fullName(), from, to);
-        return days;
+                                               @RequestParam("employeeId") Optional<Integer> employeeId,
+                                               @RequestParam("departmentId") Optional<Integer> departmentId) {
+        log.info("Admin {} is creating json missing report from {} to {}" +
+                (employeeId.isPresent() ? "for employee (id = {})" : "") +
+                (departmentId.isPresent() ? "and department (id = {})" : ""), AuthorizedUser.fullName(), from, to);
+        return workInfoService.getMissingWorkInfos(from, to, employeeId, departmentId);
     }
 
     @GetMapping("/pivotal")

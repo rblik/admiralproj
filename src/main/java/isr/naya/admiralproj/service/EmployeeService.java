@@ -10,6 +10,8 @@ public interface EmployeeService {
 
     List<Employee> getAllWithDepartments();
 
+    List<Employee> getAllByDepartment(Integer departmentId);
+
     Employee get(Integer id);
 
     Employee getWithDepartment(Integer id);

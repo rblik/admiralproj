@@ -20,6 +20,8 @@ public interface WorkInfoService {
 
     List<WorkInfo> getMissingDaysByEmployee(LocalDate from, LocalDate to, Integer employeeId);
 
+    List<WorkInfo> getMissingDaysByDepartment(LocalDate from, LocalDate to, Integer departmentId);
+
     // Pivotal Report Block
     List<WorkInfo> getAllUnitsByDate(LocalDate from, LocalDate to);
 
@@ -28,6 +30,8 @@ public interface WorkInfoService {
     List<WorkInfo> getAllUnitsByDateAndProject(LocalDate from, LocalDate to, Integer projectId);
 
     List<WorkInfo> getAllUnitsByDateAndEmployeeAndProject(LocalDate from, LocalDate to, Integer employeeId, Integer projectId);
+
+    List<WorkInfo> getMissingWorkInfos(LocalDate from, LocalDate to, Optional<Integer> employeeId, Optional<Integer> departmentId);
 
     List<WorkInfo> getWorkInfos(LocalDate from, LocalDate to, Optional<Integer> employeeId, Optional<Integer> projectId);
 }
