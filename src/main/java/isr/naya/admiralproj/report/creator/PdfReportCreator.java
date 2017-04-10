@@ -72,14 +72,14 @@ public class PdfReportCreator implements ReportCreator {
 
     private PdfPTable createTable(List<WorkInfo> infoList, BaseFont bf, ReportType reportType) throws DocumentException {
 
-        int colNumber = (PIVOTAL == reportType) ? 12 : (INDIVIDUAL_EMPTY == reportType) ? 2 : 4;
+        int colNumber = (PIVOTAL == reportType) ? 12 : (INDIVIDUAL_EMPTY == reportType) ? 2 : (PARTIAL == reportType) ? 5 : 4;
         PdfPTable table = new PdfPTable(colNumber);
         float cols[] = new float[0];
 
         if (PIVOTAL == reportType) {
             cols = new float[]{200, 30, 30, 30, 20, 40, 70, 50, 50, 50, 120, 120};
         } else if (PARTIAL == reportType) {
-            cols = new float[]{50, 70, 120, 120};
+            cols = new float[]{50, 70, 120, 120, 120};
         } else if (EMPTY == reportType) {
             cols = new float[]{70, 50, 120, 120};
         } else if (INDIVIDUAL_EMPTY == reportType) {
@@ -103,7 +103,7 @@ public class PdfReportCreator implements ReportCreator {
                     .forEach(s -> table.addCell(createCell(s, font10, true)));
             infoList.forEach(workInfo -> addFullRow(table, workInfo, font8));
         } else if (PARTIAL == reportType) {
-            ImmutableList.of("משך", "תעריך", "שם משפחה", "שם")
+            ImmutableList.of("משך", "תעריך", "צוות", "שם משפחה", "שם")
                     .forEach(s -> table.addCell(createCell(s, font10, true)));
             infoList.forEach(workInfo -> addPartialRow(table, workInfo, font8));
         } else if (EMPTY == reportType) {
@@ -143,6 +143,7 @@ public class PdfReportCreator implements ReportCreator {
     private void addPartialRow(PdfPTable table, WorkInfo workInfo, Font font) {
         table.addCell(createCell(String.valueOf((float) workInfo.getDuration() / 60), font));
         table.addCell(createCell(workInfo.getDate() != null ? workInfo.getDate().toString() : null, font));
+        table.addCell(createCell(workInfo.getDepartmentName(), font));
         table.addCell(createCell(workInfo.getEmployeeSurname(), font));
         table.addCell(createCell(workInfo.getEmployeeName(), font));
     }

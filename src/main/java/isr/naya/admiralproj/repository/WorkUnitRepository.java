@@ -28,13 +28,13 @@ public interface WorkUnitRepository extends JpaRepository<WorkUnit, Integer> {
     List<WorkInfo> getAllForEmployeeBetweenDates(Integer employeeId, LocalDate from, LocalDate to);
 
     // Partial Report Block
-    @Query("select new isr.naya.admiralproj.dto.WorkInfo(e.id, e.name, e.surname, e.email, wu.date, sum (wu.duration)) from WorkUnit wu join wu.workAgreement wa join wa.employee e where wa.id = wu.workAgreement.id and e.id = wa.employee.id and wu.date>=?1 and wu.date<?2 group by e.id, wu.date having sum(wu.duration)<60*?3 order by wu.date desc ")
+    @Query("select new isr.naya.admiralproj.dto.WorkInfo(e.id, e.name, e.surname, e.email, d.name, wu.date, sum (wu.duration)) from WorkUnit wu join wu.workAgreement wa join wa.employee e join e.department d where wa.id = wu.workAgreement.id and e.id = wa.employee.id and d.id = e.department.id and wu.date>=?1 and wu.date<?2 group by e.id, wu.date, d.id having sum(wu.duration)<60*?3 order by wu.date desc ")
     List<WorkInfo> getAllPartialBetweenDates(LocalDate from, LocalDate to, Integer maxHours);
 
-    @Query("select new isr.naya.admiralproj.dto.WorkInfo(e.id, e.name, e.surname, e.email, wu.date, sum (wu.duration)) from WorkUnit wu join wu.workAgreement wa join wa.employee e where wa.id = wu.workAgreement.id and e.id = wa.employee.id and e.id=?4 and wu.date>=?1 and wu.date<?2 group by e.id, wu.date having sum(wu.duration)<60*?3 order by wu.date desc ")
+    @Query("select new isr.naya.admiralproj.dto.WorkInfo(e.id, e.name, e.surname, e.email, d.name, wu.date, sum (wu.duration)) from WorkUnit wu join wu.workAgreement wa join wa.employee e join e.department d where wa.id = wu.workAgreement.id and e.id = wa.employee.id and d.id = e.department.id and e.id=?4 and wu.date>=?1 and wu.date<?2 group by e.id, wu.date, d.id having sum(wu.duration)<60*?3 order by wu.date desc ")
     List<WorkInfo> getAllPartialBetweenDatesByEmployeeId(LocalDate from, LocalDate to, Integer maxHours, Integer employeeId);
 
-    @Query("select new isr.naya.admiralproj.dto.WorkInfo(e.id, e.name, e.surname, e.email, wu.date, sum (wu.duration)) from WorkUnit wu join wu.workAgreement wa join wa.employee e join e.department d where wa.id = wu.workAgreement.id and e.id = wa.employee.id and d.id = e.department.id and d.id=?4 and wu.date>=?1 and wu.date<?2 group by e.id, wu.date having sum(wu.duration)<60*?3 order by wu.date desc ")
+    @Query("select new isr.naya.admiralproj.dto.WorkInfo(e.id, e.name, e.surname, e.email, d.name, wu.date, sum (wu.duration)) from WorkUnit wu join wu.workAgreement wa join wa.employee e join e.department d where wa.id = wu.workAgreement.id and e.id = wa.employee.id and d.id = e.department.id and d.id=?4 and wu.date>=?1 and wu.date<?2 group by e.id, wu.date, d.id having sum(wu.duration)<60*?3 order by wu.date desc ")
     List<WorkInfo> getAllPartialBetweenDatesByDepartmentId(LocalDate from, LocalDate to, Integer maxHours, Integer departmentId);
 
     // Missing Report Block

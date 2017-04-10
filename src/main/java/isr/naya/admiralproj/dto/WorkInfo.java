@@ -30,8 +30,8 @@ public class WorkInfo {
     private Long duration;
     private String comment;
 
-    public WorkInfo(Integer employeeId, String employeeName, String employeeSurname, String employeeEmail, LocalDate date, Long duration) {
-        this(null, null, employeeId, employeeName, employeeSurname, employeeEmail, null, null, null, null, null, date, null,null, null, duration, null);
+    public WorkInfo(Integer employeeId, String employeeName, String employeeSurname, String employeeEmail, String departmentName, LocalDate date, Long duration) {
+        this(null, null, employeeId, employeeName, employeeSurname, employeeEmail, departmentName, null, null, null, null, date, null,null, null, duration, null);
     }
 
     public WorkInfo(Integer employeeId, LocalDate date) {

@@ -68,7 +68,7 @@ public class XlsReportCreator implements ReportCreator {
         if (PIVOTAL == reportType) {
             titles = Arrays.asList("תאור", "משך", "עד-", "מ-", "יום", "חופשה", "תעריך", "לקוח", "פרויקט", "צוות", "שם משפחה", "שם");
         } else if (PARTIAL == reportType) {
-            titles = Arrays.asList("משך", "תעריך", "שם משפחה", "שם");
+            titles = Arrays.asList("משך", "תעריך", "צוות", "שם משפחה", "שם");
         } else if (EMPTY == reportType) {
             titles = Arrays.asList("תעריך", "צוות", "שם משפחה", "שם");
         } else {
@@ -107,7 +107,8 @@ public class XlsReportCreator implements ReportCreator {
 
         row.createCell(0).setCellValue(String.valueOf((float) workInfo.getDuration() / 60));
         row.createCell(1).setCellValue(workInfo.getDate() != null ? workInfo.getDate().toString() : null);
-        row.createCell(2).setCellValue(workInfo.getEmployeeSurname());
-        row.createCell(3).setCellValue(workInfo.getEmployeeName());
+        row.createCell(2).setCellValue(workInfo.getDepartmentName());
+        row.createCell(3).setCellValue(workInfo.getEmployeeSurname());
+        row.createCell(4).setCellValue(workInfo.getEmployeeName());
     }
 }
