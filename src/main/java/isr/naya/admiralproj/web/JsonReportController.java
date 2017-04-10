@@ -21,12 +21,15 @@ public class JsonReportController {
     private WorkInfoService workInfoService;
 
     @GetMapping("/partial")
-    public List<WorkInfo> getPartialDaysReport(@RequestParam(value = "from") LocalDate from,
+    public List<WorkInfo> getPartialDaysReport(@RequestParam("from") LocalDate from,
                                                @RequestParam("to") LocalDate to,
-                                               @RequestParam("limit") Integer limit) {
-        List<WorkInfo> days = workInfoService.getPartialDays(from, to, limit);
-        log.info("Admin {} is creating json partial report from {} to {}", AuthorizedUser.fullName(), from, to);
-        return days;
+                                               @RequestParam("limit") Integer limit,
+                                               @RequestParam("employeeId") Optional<Integer> employeeId,
+                                               @RequestParam("departmentId") Optional<Integer> departmentId) {
+        log.info("Admin {} is creating json partial report from {} to {}" +
+                (employeeId.isPresent() ? " for employee (id = {})" : "") +
+                (departmentId.isPresent() ? " and department (id = {})" : ""), AuthorizedUser.fullName(), from, to);
+        return workInfoService.getPartialWorkInfos(from, to, limit, employeeId, departmentId);
     }
 
     @GetMapping("/missing")
@@ -35,8 +38,8 @@ public class JsonReportController {
                                                @RequestParam("employeeId") Optional<Integer> employeeId,
                                                @RequestParam("departmentId") Optional<Integer> departmentId) {
         log.info("Admin {} is creating json missing report from {} to {}" +
-                (employeeId.isPresent() ? "for employee (id = {})" : "") +
-                (departmentId.isPresent() ? "and department (id = {})" : ""), AuthorizedUser.fullName(), from, to);
+                (employeeId.isPresent() ? " for employee (id = {})" : "") +
+                (departmentId.isPresent() ? " and department (id = {})" : ""), AuthorizedUser.fullName(), from, to);
         return workInfoService.getMissingWorkInfos(from, to, employeeId, departmentId);
     }
 
@@ -46,8 +49,8 @@ public class JsonReportController {
                                            @RequestParam("employeeId") Optional<Integer> employeeId,
                                            @RequestParam("projectId") Optional<Integer> projectId) {
         log.info("Admin {} is creating json pivotal report from {} to {}" +
-                (employeeId.isPresent() ? "for employee (id = {})" : "") +
-                (projectId.isPresent() ? "and project (id = {})" : ""), AuthorizedUser.fullName(), from, to);
+                (employeeId.isPresent() ? " for employee (id = {})" : "") +
+                (projectId.isPresent() ? " and project (id = {})" : ""), AuthorizedUser.fullName(), from, to);
         return workInfoService.getWorkInfos(from, to, employeeId, projectId);
     }
 }

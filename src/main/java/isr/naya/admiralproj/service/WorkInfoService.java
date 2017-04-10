@@ -15,6 +15,10 @@ public interface WorkInfoService {
     // Partial Report Block
     List<WorkInfo> getPartialDays(LocalDate from, LocalDate to, Integer maxHours);
 
+    List<WorkInfo> getPartialDaysByEmployee(LocalDate from, LocalDate to, Integer maxHours, Integer employeeId);
+
+    List<WorkInfo> getPartialDaysByDepartment(LocalDate from, LocalDate to, Integer maxHours, Integer departmentId);
+
     // Missing Report Block
     List<WorkInfo> getMissingDays(LocalDate from, LocalDate to);
 
@@ -30,6 +34,9 @@ public interface WorkInfoService {
     List<WorkInfo> getAllUnitsByDateAndProject(LocalDate from, LocalDate to, Integer projectId);
 
     List<WorkInfo> getAllUnitsByDateAndEmployeeAndProject(LocalDate from, LocalDate to, Integer employeeId, Integer projectId);
+
+    // Delegating Block
+    List<WorkInfo> getPartialWorkInfos(LocalDate from, LocalDate to, Integer maxHours, Optional<Integer> employeeId, Optional<Integer> departmentId);
 
     List<WorkInfo> getMissingWorkInfos(LocalDate from, LocalDate to, Optional<Integer> employeeId, Optional<Integer> departmentId);
 

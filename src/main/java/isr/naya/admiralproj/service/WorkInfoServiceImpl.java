@@ -37,6 +37,16 @@ public class WorkInfoServiceImpl implements WorkInfoService {
         return workUnitRepository.getAllPartialBetweenDates(from, to, maxHours);
     }
 
+    @Override
+    public List<WorkInfo> getPartialDaysByEmployee(@NonNull LocalDate from, @NonNull LocalDate to, @NonNull Integer maxHours, Integer employeeId) {
+        return workUnitRepository.getAllPartialBetweenDatesByEmployeeId(from, to, maxHours, employeeId);
+    }
+
+    @Override
+    public List<WorkInfo> getPartialDaysByDepartment(@NonNull LocalDate from, @NonNull LocalDate to, @NonNull Integer maxHours, Integer departmentId) {
+        return workUnitRepository.getAllPartialBetweenDatesByDepartmentId(from, to, maxHours, departmentId);
+    }
+
     // Missing Report Block
     @Override
     public List<WorkInfo> getMissingDays(@NonNull LocalDate from, @NonNull LocalDate to) {
@@ -75,6 +85,23 @@ public class WorkInfoServiceImpl implements WorkInfoService {
     @Override
     public List<WorkInfo> getAllUnitsByDateAndEmployeeAndProject(@NonNull LocalDate from, @NonNull LocalDate to, @NonNull Integer employeeId, @NonNull Integer projectId) {
         return workUnitRepository.getAllByDateBetweenAndEmployeeIdAndProjectId(from, to, employeeId, projectId);
+    }
+
+    @Override
+    public List<WorkInfo> getPartialWorkInfos(LocalDate from, LocalDate to,
+                                              Integer maxHours,
+                                              Optional<Integer> employeeId,
+                                              Optional<Integer> departmentId) {
+
+        List<WorkInfo> workInfos;
+        if (employeeId.isPresent()) {
+            workInfos = getPartialDaysByEmployee(from, to, maxHours, employeeId.get());
+        } else if (departmentId.isPresent()) {
+            workInfos = getPartialDaysByDepartment(from, to, maxHours, departmentId.get());
+        } else {
+            workInfos = getPartialDays(from, to, maxHours);
+        }
+        return workInfos;
     }
 
     @Override

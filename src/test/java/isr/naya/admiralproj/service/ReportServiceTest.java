@@ -33,7 +33,19 @@ public class ReportServiceTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
-    public void testGetAllWithTimeSum() {
+    public void testGetAllForPartialByEmployee() {
+        List<WorkInfo> all = service.getPartialDaysByEmployee(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1), 5, 1);
+        assertThat(all, hasSize(1));
+    }
+
+    @Test
+    public void testGetAllForPartialByDepartment() {
+        List<WorkInfo> all = service.getPartialDaysByDepartment(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1), 5, 5);
+        assertThat(all, hasSize(3));
+    }
+
+    @Test
+    public void testGetAllForPartial() {
         List<WorkInfo> all = service.getPartialDays(LocalDate.of(2017, 3, 1), LocalDate.of(2017, 4, 1), 12);
         assertThat(all, hasItem(allOf(
                 hasProperty("employeeId", equalTo(1)),
