@@ -31,10 +31,10 @@ public class WorkInfoServiceImpl implements WorkInfoService {
     }
 
     @Override
-    public List<WorkInfo> getPartialWorkInfos(LocalDate from, LocalDate to,
-                                              Integer maxHours,
-                                              Optional<Integer> employeeId,
-                                              Optional<Integer> departmentId) {
+    public List<WorkInfo> getPartialWorkInfos(@NonNull LocalDate from, @NonNull LocalDate to,
+                                              @NonNull Integer maxHours,
+                                              @NonNull Optional<Integer> employeeId,
+                                              @NonNull Optional<Integer> departmentId) {
 
         if (employeeId.isPresent()) {
             return workUnitRepository.getAllPartialBetweenDatesByEmployeeId(from, to, maxHours, employeeId.get());
@@ -46,9 +46,9 @@ public class WorkInfoServiceImpl implements WorkInfoService {
     }
 
     @Override
-    public List<WorkInfo> getMissingWorkInfos(LocalDate from, LocalDate to,
-                                              Optional<Integer> employeeId,
-                                              Optional<Integer> departmentId) {
+    public List<WorkInfo> getMissingWorkInfos(@NonNull LocalDate from, @NonNull LocalDate to,
+                                              @NonNull Optional<Integer> employeeId,
+                                              @NonNull Optional<Integer> departmentId) {
         if (employeeId.isPresent()) {
             return generate(workUnitRepository.getAllNonEmptyDaysByDateBetweenAndEmployeeId(from, to, employeeId.get()), from, to, singletonList(employeeService.getWithDepartment(employeeId.get())));
         } else if (departmentId.isPresent()) {
@@ -58,11 +58,11 @@ public class WorkInfoServiceImpl implements WorkInfoService {
         }
     }
 
-    public List<WorkInfo> getWorkInfos(LocalDate from, LocalDate to,
-                                       Optional<Integer> employeeId,
-                                       Optional<Integer> departmentId,
-                                       Optional<Integer> projectId,
-                                       Optional<Integer> clientId) {
+    public List<WorkInfo> getWorkInfos(@NonNull LocalDate from, @NonNull LocalDate to,
+                                       @NonNull Optional<Integer> employeeId,
+                                       @NonNull Optional<Integer> departmentId,
+                                       @NonNull Optional<Integer> projectId,
+                                       @NonNull Optional<Integer> clientId) {
         if (employeeId.isPresent() && projectId.isPresent()) {
             return workUnitRepository.getAllByDateBetweenAndEmployeeIdAndProjectId(from, to, employeeId.get(), projectId.get());
         } else if (employeeId.isPresent()) {
