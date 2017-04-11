@@ -11,6 +11,7 @@ public class AgreementDto {
     private Integer employeeId;
     private String employeeName;
     private String employeeSurname;
+    private Integer departmentId;
     private String departmentName;
     private Integer projectId;
     private String projectName;
@@ -18,6 +19,6 @@ public class AgreementDto {
     private String clientName;
 
     public AgreementDto(Integer agreementId, Integer projectId, String projectName, Integer clientId, String clientName) {
-        this(agreementId, null, null, null, null, projectId, projectName, clientId, clientName);
+        this(agreementId, null, null, null, null, null, projectId, projectName, clientId, clientName);
     }
 }
