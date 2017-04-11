@@ -37,9 +37,11 @@ public class XLSReportController {
     public void getPivotalReport(@RequestParam("from") LocalDate from,
                                  @RequestParam("to") LocalDate to,
                                  @RequestParam("employeeId") Optional<Integer> employeeId,
+                                 @RequestParam("departmentId") Optional<Integer> departmentId,
                                  @RequestParam("projectId") Optional<Integer> projectId,
+                                 @RequestParam("clientId") Optional<Integer> clientId,
                                  HttpServletResponse response) {
-        byte[] bytes = reportCreator.create(workInfoService.getWorkInfos(from, to, employeeId, projectId), PIVOTAL);
+        byte[] bytes = reportCreator.create(workInfoService.getWorkInfos(from, to, employeeId, departmentId, projectId, clientId), PIVOTAL);
         log.info("Admin {} is creating xls pivotal report from {} to {}" +
                 (employeeId.isPresent() ? "for employee (id = {})" : "") +
                 (projectId.isPresent() ? "and project (id = {})" : ""), AuthorizedUser.fullName(), from, to);
@@ -50,18 +52,26 @@ public class XLSReportController {
     public void getPartialDaysReport(@RequestParam(value = "from") LocalDate from,
                                      @RequestParam("to") LocalDate to,
                                      @RequestParam("limit") Integer limit,
+                                     @RequestParam("employeeId") Optional<Integer> employeeId,
+                                     @RequestParam("departmentId") Optional<Integer> departmentId,
                                      HttpServletResponse response) {
-        byte[] bytes = reportCreator.create(workInfoService.getPartialDays(from, to, limit), PARTIAL);
-        log.info("Admin {} is creating xls partial report from {} to {}", AuthorizedUser.fullName(), from, to);
+        byte[] bytes = reportCreator.create(workInfoService.getPartialWorkInfos(from, to, limit, employeeId, departmentId), PARTIAL);
+        log.info("Admin {} is creating excel partial report from {} to {}" +
+                (employeeId.isPresent() ? " for employee (id = {})" : "") +
+                (departmentId.isPresent() ? " and department (id = {})" : ""), AuthorizedUser.fullName(), from, to);
         sendReport(response, bytes, XLS_TYPE);
     }
 
     @GetMapping(value = "/missing")
     public void getMissingDaysReport(@RequestParam("from") LocalDate from,
                                      @RequestParam("to") LocalDate to,
+                                     @RequestParam("employeeId") Optional<Integer> employeeId,
+                                     @RequestParam("departmentId") Optional<Integer> departmentId,
                                      HttpServletResponse response) {
-        byte[] bytes = reportCreator.create(workInfoService.getMissingDays(from, to), EMPTY);
-        log.info("Admin {} is creating xls missing report from {} to {}", AuthorizedUser.fullName(), from, to);
+        byte[] bytes = reportCreator.create(workInfoService.getMissingWorkInfos(from, to, employeeId, departmentId), EMPTY);
+        log.info("Admin {} is creating excel missing report from {} to {}" +
+                (employeeId.isPresent() ? " for employee (id = {})" : "") +
+                (departmentId.isPresent() ? " and department (id = {})" : ""), AuthorizedUser.fullName(), from, to);
         sendReport(response, bytes, XLS_TYPE);
     }
 }

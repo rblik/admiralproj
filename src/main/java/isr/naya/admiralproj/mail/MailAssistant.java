@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static isr.naya.admiralproj.report.ReportCreator.PDF;
@@ -37,7 +38,7 @@ public class MailAssistant {
 //    @Scheduled(cron = "${notifySchedule}")
     public void send() {
         if (now().toLocalDate().lengthOfMonth() != now().getDayOfMonth()) {
-            List<WorkInfo> missingDays = service.getMissingDays(LocalDate.now().with(firstDayOfMonth()), LocalDate.now().plusMonths(1).with(firstDayOfMonth()));
+            List<WorkInfo> missingDays = service.getMissingWorkInfos(LocalDate.now().with(firstDayOfMonth()), LocalDate.now().plusMonths(1).with(firstDayOfMonth()), Optional.empty(), Optional.empty());
             Map<String, List<WorkInfo>> infos = missingDays.stream().collect(Collectors.groupingBy(WorkInfo::getEmployeeEmail));
             infos.forEach((email, infoList) -> {
                 byte[] pdfFile = creator.create(infoList, INDIVIDUAL_EMPTY);

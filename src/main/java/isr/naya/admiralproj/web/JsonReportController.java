@@ -47,10 +47,12 @@ public class JsonReportController {
     public List<WorkInfo> getPivotalReport(@RequestParam("from") LocalDate from,
                                            @RequestParam("to") LocalDate to,
                                            @RequestParam("employeeId") Optional<Integer> employeeId,
-                                           @RequestParam("projectId") Optional<Integer> projectId) {
+                                           @RequestParam("departmentId") Optional<Integer> departmentId,
+                                           @RequestParam("projectId") Optional<Integer> projectId,
+                                           @RequestParam("clientId") Optional<Integer> clientId) {
         log.info("Admin {} is creating json pivotal report from {} to {}" +
                 (employeeId.isPresent() ? " for employee (id = {})" : "") +
                 (projectId.isPresent() ? " and project (id = {})" : ""), AuthorizedUser.fullName(), from, to);
-        return workInfoService.getWorkInfos(from, to, employeeId, projectId);
+        return workInfoService.getWorkInfos(from, to, employeeId, departmentId, projectId, clientId);
     }
 }
