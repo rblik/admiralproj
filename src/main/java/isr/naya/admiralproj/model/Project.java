@@ -15,6 +15,10 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Project extends BaseEntity{
+    public Project(Integer id, String name) {
+        super(id);
+        this.name = name;
+    }
 
     @NotNull
     @Column(name = "name", nullable = false)
