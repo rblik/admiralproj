@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "clients")
+@Table(name = "clients", uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
 @EqualsAndHashCode(callSuper = true, of = {})
 @Data
 @NoArgsConstructor
@@ -21,7 +21,7 @@ public class Client extends BaseEntity{
     private Integer companyNumber;
 
     @NotNull
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     @ElementCollection(fetch = FetchType.LAZY)
