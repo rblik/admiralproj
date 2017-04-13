@@ -5,11 +5,12 @@ import isr.naya.admiralproj.model.Client;
 import isr.naya.admiralproj.model.Project;
 import lombok.Value;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
 @Value
-public class ClientDto {
+public class ClientDto implements Serializable {
 
     public ClientDto(Client client, List<Project> projects) {
         this.companyNumber = client.getCompanyNumber();
