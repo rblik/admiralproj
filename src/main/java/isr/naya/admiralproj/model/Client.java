@@ -36,7 +36,7 @@ public class Client extends BaseEntity{
     private Set<Address> addresses;
 
     @Transient
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    //@OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     @Singular
     private List<Project> projects;
 }
