@@ -4,13 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Value
 @AllArgsConstructor
 @EqualsAndHashCode(of = {"employeeId", "date", "from", "to"})
-public class WorkInfo {
+public class WorkInfo implements Serializable {
 
     private Integer unitId;
     private Integer agreementId;

@@ -3,9 +3,11 @@ package isr.naya.admiralproj.dto;
 import lombok.AllArgsConstructor;
 import lombok.Value;
 
+import java.io.Serializable;
+
 @Value
 @AllArgsConstructor
-public class AgreementDto {
+public class AgreementDto implements Serializable {
 
     private Integer agreementId;
     private Integer employeeId;

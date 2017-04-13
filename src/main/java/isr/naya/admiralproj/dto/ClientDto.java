@@ -13,6 +13,7 @@ import java.util.Set;
 public class ClientDto implements Serializable {
 
     public ClientDto(Client client, List<Project> projects) {
+        this.id = client.getId();
         this.companyNumber = client.getCompanyNumber();
         this.name = client.getName();
         this.phones = client.getPhones();
@@ -20,6 +21,7 @@ public class ClientDto implements Serializable {
         this.projects = projects;
     }
 
+    private Integer id;
     private Integer companyNumber;
     private String name;
     private Set<String> phones;
