@@ -1,5 +1,6 @@
 package isr.naya.admiralproj.service;
 
+import isr.naya.admiralproj.dto.ClientDto;
 import isr.naya.admiralproj.exception.NotFoundException;
 import isr.naya.admiralproj.model.Address;
 import isr.naya.admiralproj.model.Client;
@@ -36,13 +37,13 @@ public class ClientServiceTest {
                 .name("Another Comp.")
                 .companyNumber(111111111)
                 .phone("055-5555555").build());
-        Client client = service.get(save.getId());
+        ClientDto client = service.get(save.getId());
         assertThat(client, hasProperty("name", is("Another Comp.")));
     }
 
     @Test
     public void testGet() {
-        Client client = service.get(1);
+        ClientDto client = service.get(1);
         assertThat(client, notNullValue());
     }
 

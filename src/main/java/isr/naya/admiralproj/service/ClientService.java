@@ -1,5 +1,6 @@
 package isr.naya.admiralproj.service;
 
+import isr.naya.admiralproj.dto.ClientDto;
 import isr.naya.admiralproj.model.Client;
 
 import java.util.List;
@@ -10,5 +11,5 @@ public interface ClientService {
 
     List<Client> getAll();
 
-    Client get(Integer id);
+    ClientDto get(Integer id);
 }

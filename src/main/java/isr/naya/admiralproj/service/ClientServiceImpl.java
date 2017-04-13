@@ -1,7 +1,9 @@
 package isr.naya.admiralproj.service;
 
+import isr.naya.admiralproj.dto.ClientDto;
 import isr.naya.admiralproj.model.Client;
 import isr.naya.admiralproj.repository.ClientRepository;
+import isr.naya.admiralproj.repository.ProjectRepository;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.cache.annotation.CacheEvict;
@@ -18,6 +20,7 @@ import static isr.naya.admiralproj.util.ValidationUtil.checkNotFound;
 public class ClientServiceImpl implements ClientService {
 
     private ClientRepository clientRepository;
+    private ProjectRepository projectRepository;
 
     @CacheEvict(value = {"clients", "projects"}, allEntries = true)
     @Override
@@ -34,7 +37,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Cacheable(value = "clients", key = "getMethodName() + #id")
     @Override
-    public Client get(@NonNull Integer id) {
-        return checkNotFound(clientRepository.getWithAddressesAndPhones(id), id, Client.class);
+    public ClientDto get(@NonNull Integer id) {
+        return new ClientDto(checkNotFound(clientRepository.getWithAddressesAndPhones(id), id, Client.class), projectRepository.findAllByClientId(id));
     }
 }

@@ -3,6 +3,7 @@ package isr.naya.admiralproj.web;
 import com.fasterxml.jackson.annotation.JsonView;
 import isr.naya.admiralproj.AuthorizedUser;
 import isr.naya.admiralproj.dto.AgreementDto;
+import isr.naya.admiralproj.dto.ClientDto;
 import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.model.*;
 import isr.naya.admiralproj.service.*;
@@ -57,8 +58,8 @@ public class AdminController {
     }
 
     @GetMapping("/clients/{clientId}")
-    public Client getClient(@PathVariable("clientId") Integer clientId) {
-        Client client = clientService.get(clientId);
+    public ClientDto getClient(@PathVariable("clientId") Integer clientId) {
+        ClientDto client = clientService.get(clientId);
         log.info("Admin {} is retrieving client with id = {}", AuthorizedUser.fullName(), clientId);
         return client;
     }
