@@ -37,5 +37,5 @@ public class Client extends BaseEntity{
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     @Singular
-    private List<Project> projects;
+    private transient List<Project> projects;
 }
