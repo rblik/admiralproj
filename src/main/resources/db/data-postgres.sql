@@ -12,11 +12,16 @@ INSERT INTO departments (name) VALUES
   ('Human Resources');
 
 INSERT INTO employees (name, surname, passport_id, birthday, email, private_phone, password, department_id) VALUES
-  ('Name1', 'Surname1', 234472323, '1980-07-11', 'name1@gmail.com', '050-1111111', '$2a$10$06yepwH2sNcTa5SgLkRkGe29hYxnEfEEotinv58au1JT.Ws/8O9Aa', 1),
-  ('Name2', 'Surname2', 321321222, '1977-10-11', 'name2@gmail.com', '041-3211412', '$2a$10$06yepwH2sNcTa5SgLkRkGe29hYxnEfEEotinv58au1JT.Ws/8O9Aa', 3),
-  ('Name3', 'Surname3', 224535323, '1987-03-21', 'name3@gmail.com', '053-1231232', '$2a$10$06yepwH2sNcTa5SgLkRkGe29hYxnEfEEotinv58au1JT.Ws/8O9Aa', 7),
-  ('Name4', 'Surname4', 133222888, '1982-11-02', 'name4@gmail.com', '055-7656222', '$2a$10$06yepwH2sNcTa5SgLkRkGe29hYxnEfEEotinv58au1JT.Ws/8O9Aa', 5),
-  ('Name5', 'Surname5', 125225322, '1981-08-25', 'name5@gmail.com', '053-0023341', '$2a$10$06yepwH2sNcTa5SgLkRkGe29hYxnEfEEotinv58au1JT.Ws/8O9Aa', 5);
+  ('Name1', 'Surname1', 234472323, '1980-07-11', 'name1@gmail.com', '050-1111111',
+   '$2a$10$zflDeCzgkCRgC0MgJlNGPOILOAYO6A1WbLFuhN6zjfQE0JF1/S3Vq', 1),
+  ('Name2', 'Surname2', 321321222, '1977-10-11', 'name2@gmail.com', '041-3211412',
+   '$2a$10$zflDeCzgkCRgC0MgJlNGPOILOAYO6A1WbLFuhN6zjfQE0JF1/S3Vq', 3),
+  ('Name3', 'Surname3', 224535323, '1987-03-21', 'name3@gmail.com', '053-1231232',
+   '$2a$10$zflDeCzgkCRgC0MgJlNGPOILOAYO6A1WbLFuhN6zjfQE0JF1/S3Vq', 7),
+  ('Name4', 'Surname4', 133222888, '1982-11-02', 'name4@gmail.com', '055-7656222',
+   '$2a$10$zflDeCzgkCRgC0MgJlNGPOILOAYO6A1WbLFuhN6zjfQE0JF1/S3Vq', 5),
+  ('Name5', 'Surname5', 125225322, '1981-08-25', 'name5@gmail.com', '053-0023341',
+   '$2a$10$zflDeCzgkCRgC0MgJlNGPOILOAYO6A1WbLFuhN6zjfQE0JF1/S3Vq', 5);
 
 INSERT INTO employee_roles (employee_id, role) VALUES
   (1, 'ROLE_USER'),
