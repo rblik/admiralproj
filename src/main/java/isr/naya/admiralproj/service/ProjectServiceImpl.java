@@ -22,7 +22,7 @@ public class ProjectServiceImpl implements ProjectService {
     private ProjectRepository projectRepository;
     private ClientRepository clientRepository;
 
-    @CacheEvict(value = "projects", allEntries = true)
+    @CacheEvict(value = {"projects", "clients"}, allEntries = true)
     @Override
     @Transactional
     public Project save(@NonNull Integer clientId, @NonNull Project project) {
