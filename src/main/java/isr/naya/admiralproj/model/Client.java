@@ -30,7 +30,7 @@ public class Client extends BaseEntity{
     @Singular
     private Set<String> phones;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "client_id", nullable = false)
     @Singular
     private Set<Address> addresses;
