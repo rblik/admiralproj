@@ -18,7 +18,9 @@ import static isr.naya.admiralproj.web.security.password.PasswordUtil.encode;
 
 @Data
 @Entity
-@Table(name = "employees")
+@Table(name = "employees", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"passport_id"}),
+        @UniqueConstraint(columnNames = {"email"})})
 @EqualsAndHashCode(callSuper = false, of = "passportId")
 @NoArgsConstructor
 @AllArgsConstructor

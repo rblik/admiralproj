@@ -36,7 +36,7 @@ public class ExceptionInfoHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     @Order(Ordered.HIGHEST_PRECEDENCE + 1)
     public ErrorInfoDTO conflict(HttpServletRequest req, DataIntegrityViolationException e) {
-        return logAndGetErrorInfo(req, e, false);
+        return logAndGetErrorInfo(req, (Exception) e.getCause().getCause(), false);
     }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST) // 400
