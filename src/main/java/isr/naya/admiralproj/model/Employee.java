@@ -1,17 +1,18 @@
 package isr.naya.admiralproj.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import isr.naya.admiralproj.dto.Role;
 import lombok.*;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
+import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 import static com.google.common.collect.Sets.newHashSet;
 import static isr.naya.admiralproj.web.security.password.PasswordUtil.encode;
 
@@ -44,11 +45,11 @@ public class Employee extends BaseEntity{
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Size(min = 10)
+//    @Size(min = 10)
     @Column(name = "private_phone")
     private String privatePhone;
 
-    @Size(min = 10)
+//    @Size(min = 10)
     @Column(name = "company_phone")
     private String companyPhone;
 
@@ -58,6 +59,7 @@ public class Employee extends BaseEntity{
      */
     @NotNull
     @JsonIgnore
+    @JsonProperty(access = WRITE_ONLY)
 //    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{6,20}$")
     @Column(name = "password", nullable = false)
     private String password;
