@@ -36,6 +36,12 @@ public class ProjectServiceImpl implements ProjectService {
         return projectRepository.getAllWithClients();
     }
 
+    @Cacheable(value = "projects", key = "getMethodName() + #employeeId")
+    @Override
+    public List<Project> getAllWithClientsByEmployee(@NonNull Integer employeeId) {
+        return projectRepository.getAllWithClientsByEmployeeId(employeeId);
+    }
+
     @Cacheable(value = "projects", key = "getMethodName() + #id")
     @Override
     public Project get(@NonNull Integer id) {

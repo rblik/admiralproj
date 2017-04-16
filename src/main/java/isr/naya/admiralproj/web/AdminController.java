@@ -123,6 +123,13 @@ public class AdminController {
         return projects;
     }
 
+    @GetMapping("/projects")
+    public List<Project> getAllProjects(@RequestParam("employeeId") Integer employeeId) {
+        List<Project> projects = projectService.getAllWithClientsByEmployee(employeeId);
+        log.info("Admin {} is retrieving all projects for employee (id = {})", AuthorizedUser.fullName(), employeeId);
+        return projects;
+    }
+
     @GetMapping("/projects/{projectId}")
     public Project getProject(@PathVariable("projectId") Integer projectId) {
         Project project = projectService.getWithClient(projectId);

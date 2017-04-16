@@ -10,6 +10,8 @@ public interface ProjectService {
 
     List<Project> getAllWithClients();
 
+    List<Project> getAllWithClientsByEmployee(Integer employeeId);
+
     Project get(Integer id);
 
     Project getWithClient(Integer id);
