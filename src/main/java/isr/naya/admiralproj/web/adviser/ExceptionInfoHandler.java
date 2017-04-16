@@ -9,6 +9,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -43,6 +44,13 @@ public class ExceptionInfoHandler {
     @ExceptionHandler(TimeRangeException.class)
     @Order(Ordered.HIGHEST_PRECEDENCE + 1)
     public ErrorInfoDTO timeRangeError(HttpServletRequest req, TimeRangeException e) {
+        return logAndGetErrorInfo(req, e, false);
+    }
+
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST) // 400
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @Order(Ordered.HIGHEST_PRECEDENCE + 1)
+    public ErrorInfoDTO timeRangeError(HttpServletRequest req, HttpMessageNotReadableException e) {
         return logAndGetErrorInfo(req, e, false);
     }
 
