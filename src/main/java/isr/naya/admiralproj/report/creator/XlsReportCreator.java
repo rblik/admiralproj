@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static isr.naya.admiralproj.report.ReportCreator.XLSX;
+import static isr.naya.admiralproj.report.ReportCreator.durationToTimeString;
 import static isr.naya.admiralproj.report.ReportType.*;
 import static org.apache.poi.ss.util.WorkbookUtil.createSafeSheetName;
 
@@ -82,7 +83,7 @@ public class XlsReportCreator implements ReportCreator {
     private void addFullRow(Row row, WorkInfo workInfo) {
 
         row.createCell(0).setCellValue(workInfo.getComment());
-        row.createCell(1).setCellValue(String.valueOf((float) workInfo.getDuration() / 60));
+        row.createCell(1).setCellValue(durationToTimeString(workInfo.getDuration()));
         row.createCell(2).setCellValue(workInfo.getTo() != null ? workInfo.getTo().truncatedTo(ChronoUnit.MINUTES).toString() : null);
         row.createCell(3).setCellValue(workInfo.getFrom() != null ? workInfo.getFrom().truncatedTo(ChronoUnit.MINUTES).toString() : null);
         row.createCell(4).setCellValue(workInfo.getDate() != null ? MappingUtil.getDay(workInfo.getDate().getDayOfWeek().getValue()) : null);

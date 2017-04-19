@@ -20,6 +20,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static isr.naya.admiralproj.report.ReportCreator.PDF;
+import static isr.naya.admiralproj.report.ReportCreator.durationToTimeString;
 import static isr.naya.admiralproj.report.ReportType.*;
 import static java.time.format.TextStyle.FULL;
 import static java.util.Locale.forLanguageTag;
@@ -77,7 +78,7 @@ public class PdfReportCreator implements ReportCreator {
         float cols[] = new float[0];
 
         if (PIVOTAL == reportType) {
-            cols = new float[]{200, 30, 30, 30, 20, 40, 70, 50, 50, 50, 120, 120};
+            cols = new float[]{180, 50, 30, 30, 20, 40, 70, 50, 50, 70, 120, 120};
         } else if (PARTIAL == reportType) {
             cols = new float[]{50, 70, 120, 120, 120};
         } else if (EMPTY == reportType) {
@@ -120,7 +121,7 @@ public class PdfReportCreator implements ReportCreator {
     private void addFullRow(PdfPTable table, WorkInfo workInfo, Font font) {
 
         table.addCell(createCell(workInfo.getComment(), font));
-        table.addCell(createCell(String.valueOf((float) workInfo.getDuration() / 60), font));
+        table.addCell(createCell(durationToTimeString(workInfo.getDuration()), font));
         table.addCell(createCell(workInfo.getTo() != null ? workInfo.getTo().truncatedTo(ChronoUnit.MINUTES).toString() : null, font));
         table.addCell(createCell(workInfo.getFrom() != null ? workInfo.getFrom().truncatedTo(ChronoUnit.MINUTES).toString() : null, font));
         table.addCell(createCell(workInfo.getDate() != null ? MappingUtil.getDay(workInfo.getDate().getDayOfWeek().getValue()) : null, font));
