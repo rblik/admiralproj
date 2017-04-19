@@ -67,16 +67,16 @@ INSERT INTO projects (name, client_id) VALUES
   ('Team management', 1),
   ('Courses', 1),
   ('Freescale Meetings', 1),
-  ('Consulting', 2),
-  ('Developing', 2),
-  ('Consulting', 3),
-  ('Developing', 3),
-  ('Consulting', 4),
-  ('Developing', 4),
-  ('Consulting', 5),
-  ('Developing', 5),
-  ('Consulting', 6),
-  ('Developing', 6);
+  ('Project1', 2),
+  ('Project2', 2),
+  ('Project1', 3),
+  ('Project2', 3),
+  ('Project1', 4),
+  ('Project2', 4),
+  ('Project1', 5),
+  ('Project2', 5),
+  ('Project1', 6),
+  ('Project2', 6);
 
 INSERT INTO work_agreements (employee_id, project_id) VALUES
   (1, 7),
