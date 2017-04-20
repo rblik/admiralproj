@@ -54,7 +54,7 @@ public class ProjectServiceTest {
     public void testGetAllWithClients() {
         List<Project> projects = service.getAllWithClients();
         assertThat(projects, hasSize(14));
-        assertThat(projects, hasItem(allOf(hasProperty("name", is("Developing")), hasProperty("client", hasProperty("name", is("Elbit"))))));
+        assertThat(projects, hasItem(allOf(hasProperty("name", is("Project1")), hasProperty("client", hasProperty("name", is("Elbit"))))));
     }
 
     @Test
