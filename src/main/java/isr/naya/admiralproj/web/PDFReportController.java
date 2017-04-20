@@ -2,17 +2,16 @@ package isr.naya.admiralproj.web;
 
 import isr.naya.admiralproj.AuthorizedUser;
 import isr.naya.admiralproj.report.ReportCreator;
+import isr.naya.admiralproj.report.annotations.Pdf;
 import isr.naya.admiralproj.service.WorkInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import static isr.naya.admiralproj.report.ReportCreator.PDF;
 import static isr.naya.admiralproj.report.ReportType.*;
 import static isr.naya.admiralproj.web.util.ReportSender.sendReport;
 
@@ -28,7 +27,7 @@ public class PDFReportController {
     private ReportCreator reportCreator;
 
     @Autowired
-    public PDFReportController(WorkInfoService workInfoService, @Qualifier(PDF) ReportCreator reportCreator) {
+    public PDFReportController(WorkInfoService workInfoService, @Pdf ReportCreator reportCreator) {
         this.workInfoService = workInfoService;
         this.reportCreator = reportCreator;
     }

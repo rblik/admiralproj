@@ -7,10 +7,10 @@ import com.itextpdf.text.pdf.*;
 import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.report.ReportCreator;
 import isr.naya.admiralproj.report.ReportType;
+import isr.naya.admiralproj.report.annotations.Pdf;
 import isr.naya.admiralproj.util.MappingUtil;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;
@@ -19,7 +19,6 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-import static isr.naya.admiralproj.report.ReportCreator.PDF;
 import static isr.naya.admiralproj.report.ReportCreator.durationToTimeString;
 import static isr.naya.admiralproj.report.ReportType.*;
 import static java.time.format.TextStyle.FULL;
@@ -27,7 +26,7 @@ import static java.util.Locale.forLanguageTag;
 
 @Component
 @Slf4j
-@Qualifier(PDF)
+@Pdf
 public class PdfReportCreator implements ReportCreator {
 
     @Override

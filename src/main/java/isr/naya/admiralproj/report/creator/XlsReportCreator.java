@@ -4,13 +4,13 @@ package isr.naya.admiralproj.report.creator;
 import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.report.ReportCreator;
 import isr.naya.admiralproj.report.ReportType;
+import isr.naya.admiralproj.report.annotations.Xlsx;
 import isr.naya.admiralproj.util.MappingUtil;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;
@@ -20,14 +20,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static isr.naya.admiralproj.report.ReportCreator.XLSX;
 import static isr.naya.admiralproj.report.ReportCreator.durationToTimeString;
 import static isr.naya.admiralproj.report.ReportType.*;
 import static org.apache.poi.ss.util.WorkbookUtil.createSafeSheetName;
 
 @Component
 @Slf4j
-@Qualifier(XLSX)
+@Xlsx
 public class XlsReportCreator implements ReportCreator {
 
     @Override

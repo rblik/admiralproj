@@ -2,9 +2,9 @@ package isr.naya.admiralproj.mail;
 
 import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.report.ReportCreator;
+import isr.naya.admiralproj.report.annotations.Pdf;
 import isr.naya.admiralproj.service.WorkInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static isr.naya.admiralproj.report.ReportCreator.PDF;
 import static isr.naya.admiralproj.report.ReportType.INDIVIDUAL_EMPTY;
 import static java.time.LocalDateTime.now;
 import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
@@ -29,7 +28,7 @@ public class MailAssistant {
     private WorkInfoService service;
 
     @Autowired
-    @Qualifier(PDF)
+    @Pdf
     private ReportCreator creator;
 
     @Value("${notifyScheduleMessage}")

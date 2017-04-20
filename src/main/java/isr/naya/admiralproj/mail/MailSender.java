@@ -1,11 +1,8 @@
 package isr.naya.admiralproj.mail;
 
-import isr.naya.admiralproj.report.ReportCreator;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
@@ -23,7 +20,6 @@ import javax.mail.util.ByteArrayDataSource;
 import java.util.Properties;
 
 import static isr.naya.admiralproj.mail.MailProperties.*;
-import static isr.naya.admiralproj.report.ReportCreator.PDF;
 import static javax.mail.Message.RecipientType.TO;
 import static javax.mail.Transport.send;
 
@@ -43,10 +39,6 @@ public class MailSender {
     private String emailSMTPserver;
     @Value("${emailServerPort}")
     private String emailServerPort;
-
-    @Qualifier(PDF)
-    @Autowired
-    private ReportCreator creator;
 
     private Properties props;
 
