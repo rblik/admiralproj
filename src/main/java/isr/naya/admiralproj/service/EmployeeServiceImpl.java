@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static isr.naya.admiralproj.util.ValidationUtil.checkNotFound;
+import static isr.naya.admiralproj.web.security.password.PasswordUtil.encode;
 
 @Service
 @AllArgsConstructor
@@ -32,6 +33,11 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
     public Employee save(@NonNull Integer departmentId, @NonNull Employee employee) {
         employee.setDepartment(checkNotFound(departmentRepository.findOne(departmentId), departmentId, Department.class));
         return employeeRepository.save(employee);
+    }
+
+    @Override
+    public int updatePass(@NonNull Integer employeeId, @NonNull String pass) {
+        return checkNotFound(employeeRepository.updatePassword(employeeId, encode(pass)), employeeId, Employee.class);
     }
 
     @Cacheable(value = "employees", key = "getMethodName()")

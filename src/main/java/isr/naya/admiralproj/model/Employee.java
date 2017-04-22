@@ -63,7 +63,7 @@ public class Employee extends BaseEntity{
     @JsonIgnore
     @JsonProperty(access = WRITE_ONLY)
 //    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{6,20}$")
-    @Column(name = "password", nullable = false)
+    @Column(name = "password", nullable = false, updatable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -81,7 +81,6 @@ public class Employee extends BaseEntity{
     private List<WorkAgreement> workAgreements;
 
     @PrePersist
-    @PreUpdate
     public void encodePassword() {
         this.password = encode(this.password);
     }

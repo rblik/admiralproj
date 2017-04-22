@@ -61,6 +61,27 @@ public class EmployeeServiceTest {
         assertThat(employee, allOf(hasProperty("name", is("AnotherN")), hasProperty("surname", is("AnotherS")), hasProperty("department", hasProperty("name", is("Java")))));
     }
 
+    @Test
+    public void testUpdate() {
+        Employee employee1 = Employee.builder().name("AnotherN").surname("AnotherS").passportId("999999999").password("0").email("email@gg.com").role(Role.ROLE_USER).build();
+        employee1.setId(1);
+        Employee save = service.save(1, employee1);
+        Employee employee = service.getWithDepartment(save.getId());
+        assertThat(employee, allOf(hasProperty("name", is("AnotherN")), hasProperty("surname", is("AnotherS")), hasProperty("department", hasProperty("name", is("Java")))));
+    }
+
+    @Test
+    public void updatePassword() {
+        int i = service.updatePass(1, "asdddasd");
+        assertThat(i, is(1));
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void updatePasswordWrongId() {
+        int i = service.updatePass(31, "asdddasd");
+        assertThat(i, is(1));
+    }
+
     @Test(expected = ConstraintViolationException.class)
     public void testSaveWrongEmployee() {
         service.save(1, Employee.builder().name("AnotherN").passportId("999999999").password("123123Aa").email("email@gg.com").build());
