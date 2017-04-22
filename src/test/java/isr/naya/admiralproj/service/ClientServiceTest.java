@@ -7,14 +7,10 @@ import isr.naya.admiralproj.model.Client;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.validation.ConstraintViolationException;
 
-import static isr.naya.admiralproj.SpringProfiles.TEST;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
@@ -22,9 +18,7 @@ import static org.junit.Assert.assertThat;
  * Unit test for {@link ClientService}
  */
 @RunWith(SpringRunner.class)
-@ActiveProfiles(TEST)
-@SpringBootTest
-@Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:db/data-postgres.sql")
+@ServiceTest
 public class ClientServiceTest {
 
     @Autowired
