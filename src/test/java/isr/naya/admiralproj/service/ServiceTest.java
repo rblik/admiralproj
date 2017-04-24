@@ -14,7 +14,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({ElementType.TYPE})
 @Retention(RUNTIME)
 @ActiveProfiles(TEST)
+
 @SpringBootTest
-@Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:db/data-postgres.sql")
+@Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:db/data-hsqldb.sql")
+
+//@DataJpaTest
+//@ContextConfiguration(classes = ServiceTestConf.class)
 public @interface ServiceTest {
 }
