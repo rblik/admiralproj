@@ -78,13 +78,13 @@ INSERT INTO projects (name, client_id) VALUES
   ('Project1', 6),
   ('Project2', 6);
 
-INSERT INTO work_agreements (employee_id, project_id) VALUES
-  (1, 7),
-  (2, 8),
-  (3, 1),
-  (4, 10),
-  (5, 9),
-  (5, 11);
+INSERT INTO work_agreements (start, finish, employee_id, project_id) VALUES
+  ('2017-01-01', '2018-01-01', 1, 7),
+  ('2016-08-01', '2017-08-01',2, 8),
+  ('2016-11-01', '2017-11-01',3, 1),
+  ('2017-01-15', '2018-01-15', 4, 10),
+  ('2017-01-01', '2018-01-01', 5, 9),
+  ('2017-01-01', '2018-01-01', 5, 11);
 
 
 INSERT INTO work_units (work_date, start, finish, duration, absence_type, work_agreement_id, comment) VALUES

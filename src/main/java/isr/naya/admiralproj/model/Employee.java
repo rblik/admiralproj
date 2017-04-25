@@ -24,6 +24,7 @@ import static isr.naya.admiralproj.web.security.password.PasswordUtil.encode;
 @EqualsAndHashCode(callSuper = false, of = "passportId")
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(of = {"name", "surname"})
 @Builder
 public class Employee extends BaseEntity{
 

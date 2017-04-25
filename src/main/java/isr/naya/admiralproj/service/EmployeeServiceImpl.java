@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static isr.naya.admiralproj.util.ValidationUtil.checkNotFound;
@@ -63,6 +64,23 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
         return checkNotFound(employeeRepository.getOneWithDepartment(id), id, Employee.class);
     }
 
+//    for missing days only
+    @Override
+    public List<Employee> getAllByDepartmentWithAgreements(@NonNull Integer departmentId, LocalDate from, LocalDate to) {
+        return employeeRepository.getAllByDepartmentWithAgreements(departmentId, from, to);
+    }
+
+    @Override
+    public Employee getWithDepartmentAndAgreements(@NonNull Integer id, LocalDate from, LocalDate to) {
+        return employeeRepository.getOneWithDepartmentAndAgreements(id, from, to);
+    }
+
+    @Override
+    public List<Employee> getAllWithDepartmentsAndAgreements(LocalDate from, LocalDate to) {
+        return employeeRepository.getAllWithDepartmentsAndAgreements(from, to);
+    }
+
+//    security
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Employee employee = employeeRepository.getByEmailWithRoles(email.toLowerCase());

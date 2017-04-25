@@ -4,6 +4,7 @@ import isr.naya.admiralproj.dto.Day;
 import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.exception.NotFoundException;
 import isr.naya.admiralproj.model.Employee;
+import isr.naya.admiralproj.model.WorkAgreement;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.assertj.core.util.Lists;
@@ -14,9 +15,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
+import static com.google.common.collect.Sets.newHashSet;
 import static java.time.temporal.ChronoUnit.DAYS;
 import static java.util.Comparator.comparing;
 
@@ -26,15 +26,34 @@ public class MappingUtil {
     public static List<WorkInfo> generate(Set<WorkInfo> days, LocalDate from, LocalDate to, List<Employee> employees) {
         Set<WorkInfo> result = Sets.newHashSet();
         employees.forEach(e -> {
-            Set<WorkInfo> collect = Stream.iterate(
-                    new WorkInfo(e.getId(), e.getName(), e.getSurname(), e.getEmail(), e.getDepartment().getName(), from),
-                    missingDay -> new WorkInfo(e.getId(), e.getName(), e.getSurname(), e.getEmail(), e.getDepartment().getName(), missingDay.getDate().plusDays(1))).limit(DAYS.between(from, to)).collect(Collectors.toSet());
+            List<WorkAgreement> agreements = e.getWorkAgreements();
+            Set<WorkInfo> collect = newHashSet();
+            for (int i = 0; i < DAYS.between(from, to); i++) {
+                LocalDate date = from.plusDays(i);
+                if (isActive(date, agreements)) {
+                    WorkInfo info = new WorkInfo(e.getId(), e.getName(), e.getSurname(), e.getEmail(), e.getDepartment().getName(), date);
+                    collect.add(info);
+                }
+            }
             result.addAll(collect);
         });
         result.removeAll(days);
         ArrayList<WorkInfo> infos = Lists.newArrayList(result);
         infos.sort(comparing(WorkInfo::getDate).reversed());
         return infos;
+    }
+
+    private static boolean isActive(LocalDate date, List<WorkAgreement> workAgreements) {
+        for (WorkAgreement agreement : workAgreements) {
+            if (isBetweenInclusive(agreement.getStart(), agreement.getFinish(), date)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean isBetweenInclusive(LocalDate start, LocalDate end, LocalDate target) {
+        return !target.isBefore(start) && !target.isAfter(end);
     }
 
     public static String getDay(int index) throws NotFoundException {

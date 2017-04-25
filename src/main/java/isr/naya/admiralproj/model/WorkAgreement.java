@@ -3,7 +3,6 @@ package isr.naya.admiralproj.model;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -17,8 +16,11 @@ import java.util.List;
 @Builder
 public class WorkAgreement extends BaseEntity{
 
-    @Column(name = "active", columnDefinition = "boolean default true")
-    private boolean active  = true;
+    @Column(name = "start", columnDefinition = "date")
+    private LocalDate start;
+
+    @Column(name = "finish", columnDefinition = "date")
+    private LocalDate finish;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id", referencedColumnName = "id", nullable = false)

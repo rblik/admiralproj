@@ -69,7 +69,7 @@ public class ReportServiceTest {
 
     @Test
     public void testGetAllForMissingByEmployee() {
-        List<WorkInfo> days = service.getMissingWorkInfos(LocalDate.of(2017, 3, 19), LocalDate.of(2017, 3, 24), Optional.of(1), Optional.empty());
+        List<WorkInfo> days = service.getMissingWorkInfos(LocalDate.of(2017, 1, 1), LocalDate.of(2017, 1, 24), Optional.of(4), Optional.empty());
         assertThat(days, hasSize(0));
     }
 

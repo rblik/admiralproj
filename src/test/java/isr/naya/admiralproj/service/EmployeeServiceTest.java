@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.validation.ConstraintViolationException;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
@@ -62,6 +63,12 @@ public class EmployeeServiceTest {
         Employee save = service.save(1, employee1);
         Employee employee = service.getWithDepartment(save.getId());
         assertThat(employee, allOf(hasProperty("name", is("AnotherN")), hasProperty("surname", is("AnotherS")), hasProperty("department", hasProperty("name", is("Java")))));
+    }
+
+    @Test
+    public void testGetWithDepartmentAndAgreements() {
+        Employee employee = service.getWithDepartmentAndAgreements(1, LocalDate.now().minusYears(4), LocalDate.now().minusYears(4).plusMonths(1));
+        assertThat(employee, nullValue());
     }
 
     @Test

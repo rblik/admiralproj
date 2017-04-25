@@ -13,6 +13,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true, of = {})
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(of = "name")
 @Builder
 public class Department extends BaseEntity{
 

@@ -1,6 +1,7 @@
 package isr.naya.admiralproj.service;
 
 import isr.naya.admiralproj.dto.WorkInfo;
+import isr.naya.admiralproj.model.Employee;
 import isr.naya.admiralproj.repository.WorkUnitRepository;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -9,8 +10,10 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static isr.naya.admiralproj.util.MappingUtil.generate;
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
 @Service
@@ -50,11 +53,16 @@ public class WorkInfoServiceImpl implements WorkInfoService {
                                               @NonNull Optional<Integer> employeeId,
                                               @NonNull Optional<Integer> departmentId) {
         if (employeeId.isPresent()) {
-            return generate(workUnitRepository.getAllNonEmptyDaysByDateBetweenAndEmployeeId(from, to, employeeId.get()), from, to, singletonList(employeeService.getWithDepartment(employeeId.get())));
+            Employee employee = employeeService.getWithDepartmentAndAgreements(employeeId.get(), from, to);
+            return employee == null ? emptyList() : generate(workUnitRepository.getAllNonEmptyDaysByDateBetweenAndEmployeeId(from, to, employeeId.get()), from, to, singletonList(employee));
         } else if (departmentId.isPresent()) {
-            return generate(workUnitRepository.getAllNonEmptyDaysByDateBetweenAndDepartmentId(from, to, departmentId.get()), from, to, employeeService.getAllByDepartment(departmentId.get()));
+            List<Employee> employees = employeeService.getAllByDepartmentWithAgreements(departmentId.get(), from, to);
+            Set<WorkInfo> workInfos = workUnitRepository.getAllNonEmptyDaysByDateBetweenAndDepartmentId(from, to, departmentId.get());
+            return generate(workInfos, from, to, employees);
         } else {
-            return generate(workUnitRepository.getAllNonEmptyDaysBetweenDates(from, to), from, to, employeeService.getAllWithDepartments());
+            List<Employee> employees = employeeService.getAllWithDepartmentsAndAgreements(from, to);
+            Set<WorkInfo> workInfos = workUnitRepository.getAllNonEmptyDaysBetweenDates(from, to);
+            return generate(workInfos, from, to, employees);
         }
     }
 
