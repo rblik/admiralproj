@@ -66,17 +66,17 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
 
 //    for missing days only
     @Override
-    public List<Employee> getAllByDepartmentWithAgreements(@NonNull Integer departmentId, LocalDate from, LocalDate to) {
+    public List<Employee> getAllByDepartmentWithAgreements(@NonNull Integer departmentId, @NonNull LocalDate from, @NonNull LocalDate to) {
         return employeeRepository.getAllByDepartmentWithAgreements(departmentId, from, to);
     }
 
     @Override
-    public Employee getWithDepartmentAndAgreements(@NonNull Integer id, LocalDate from, LocalDate to) {
+    public Employee getWithDepartmentAndAgreements(@NonNull Integer id, @NonNull LocalDate from, @NonNull LocalDate to) {
         return employeeRepository.getOneWithDepartmentAndAgreements(id, from, to);
     }
 
     @Override
-    public List<Employee> getAllWithDepartmentsAndAgreements(LocalDate from, LocalDate to) {
+    public List<Employee> getAllWithDepartmentsAndAgreements(@NonNull LocalDate from, @NonNull LocalDate to) {
         return employeeRepository.getAllWithDepartmentsAndAgreements(from, to);
     }
 
