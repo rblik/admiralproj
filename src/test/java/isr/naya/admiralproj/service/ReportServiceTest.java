@@ -57,7 +57,7 @@ public class ReportServiceTest {
 
     @Test
     public void testGetAllWorkUnitsForEmployeeByDateAndWorkAgreement() {
-        List<WorkInfo> workInfos = service.getAllForEmployeeByDate(1, 1, LocalDate.of(2017, 3, 20));
+        List<WorkInfo> workInfos = service.getAllForEmployeeByDate(1, Optional.empty(), LocalDate.of(2017, 3, 20));
         assertThat(workInfos, hasSize(1));
     }
 

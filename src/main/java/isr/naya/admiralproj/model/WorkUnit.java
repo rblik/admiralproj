@@ -50,5 +50,6 @@ public class WorkUnit extends BaseEntity {
     @PreUpdate
     public void calculateDuration() {
         this.duration = ChronoUnit.MINUTES.between(this.start, this.finish);
+        this.duration = this.duration == 1439 ? 1440 : this.duration;
     }
 }

@@ -10,7 +10,7 @@ public interface WorkInfoService {
 
     List<WorkInfo> getAllForEmployee(Integer id, LocalDate from, LocalDate to);
 
-    List<WorkInfo> getAllForEmployeeByDate(Integer employeeId, Integer workAgreementId, LocalDate date);
+    List<WorkInfo> getAllForEmployeeByDate(Integer employeeId, Optional<Integer> agreementId, LocalDate date);
 
     // Delegating Block
     List<WorkInfo> getPartialWorkInfos(LocalDate from, LocalDate to, Integer maxHours, Optional<Integer> employeeId, Optional<Integer> departmentId);

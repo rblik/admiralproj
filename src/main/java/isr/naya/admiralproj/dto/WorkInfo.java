@@ -39,8 +39,8 @@ public class WorkInfo implements Serializable {
         this(null, null, employeeId, null, null, null, null, null, null, null, null, date, null,null, null, null, null);
     }
 
-    public WorkInfo(Integer unitId, Integer agreementId, LocalDate date, LocalTime from, LocalTime to, Long duration, AbsenceType absenceType, String comment) {
-        this(unitId, agreementId, null, null, null, null, null, null, null, null, null, date, absenceType, from, to, duration, comment);
+    public WorkInfo(Integer unitId, Integer agreementId, Integer projectId, String projectName, Integer clientId, String clientName, LocalDate date, LocalTime from, LocalTime to, Long duration, AbsenceType absenceType, String comment) {
+        this(unitId, agreementId, null, null, null, null, null, projectId, projectName, clientId, clientName, date, absenceType, from, to, duration, comment);
     }
 
     public WorkInfo(Integer employeeId, String employeeName, String employeeSurname, String employeeEmail, String departmentName, LocalDate date) {

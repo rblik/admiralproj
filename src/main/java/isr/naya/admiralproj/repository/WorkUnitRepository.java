@@ -21,8 +21,12 @@ public interface WorkUnitRepository extends JpaRepository<WorkUnit, Integer> {
     @Query("delete from WorkUnit wu where wu.id in (select wut.id from WorkUnit wut join wut.workAgreement wat join wat.employee emp where wut.id =?2 and emp.id =?1)")
     int delete(Integer employeeId, Integer workUnitId);
 
-    @Query("select new isr.naya.admiralproj.dto.WorkInfo(wu.id, wa.id, wu.date, wu.start, wu.finish, wu.duration, wu.absenceType, wu.comment) from WorkUnit wu join wu.workAgreement wa join wa.employee e where e.id = ?1 and wa.id=?2 and wu.date =?3 order by wu.start desc ")
-    List<WorkInfo> getAllForEmployeeByDay(Integer employeeId, Integer workAgreementId, LocalDate day);
+    // Dashboard
+    @Query("select new isr.naya.admiralproj.dto.WorkInfo(wu.id, wa.id, p.id, p.name, c.id, c.name, wu.date, wu.start, wu.finish, wu.duration, wu.absenceType, wu.comment) from WorkUnit wu join wu.workAgreement wa join wa.employee e join wa.project p join p.client c where e.id = ?1 and wa.id=?2 and wu.date =?3 order by wu.start desc ")
+    List<WorkInfo> getAllForEmployeeByDayAndAgreement(Integer employeeId, Integer workAgreementId, LocalDate day);
+
+    @Query("select new isr.naya.admiralproj.dto.WorkInfo(wu.id, wa.id, p.id, p.name, c.id, c.name, wu.date, wu.start, wu.finish, wu.duration, wu.absenceType, wu.comment) from WorkUnit wu join wu.workAgreement wa join wa.employee e join wa.project p join p.client c where e.id = ?1 and wu.date =?2 order by wu.start desc ")
+    List<WorkInfo> getAllForEmployeeByDay(Integer employeeId, LocalDate day);
 
     @Query("select new isr.naya.admiralproj.dto.WorkInfo(wa.id, wu.date, sum (wu.duration)) from WorkUnit wu join wu.workAgreement wa join wa.employee e where e.id = ?1 and wu.date between ?2 and ?3 group by wa.id, wu.date order by wu.date desc ")
     List<WorkInfo> getAllForEmployeeBetweenDates(Integer employeeId, LocalDate from, LocalDate to);

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @CrossOrigin
@@ -72,9 +73,9 @@ public class UserController {
 
     @GetMapping("/units/{date}")
     public List<WorkInfo> getWorkUnitsForDay(@PathVariable("date") LocalDate date,
-                                             @RequestParam("agreementId") Integer agreementId) {
+                                             @RequestParam("agreementId") Optional<Integer> agreementId) {
         List<WorkInfo> infos = workInfoService.getAllForEmployeeByDate(AuthorizedUser.id(), agreementId, date);
-        log.info("Employee {} is retrieving work units for {} (agreementId = {})", AuthorizedUser.fullName(), date, agreementId);
+        log.info("Employee {} is retrieving work units for {}" + (agreementId.isPresent()? " (agreementId = {})" : ""), AuthorizedUser.fullName(), date, agreementId.orElse(null));
         return infos;
     }
 }
