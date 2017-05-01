@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
@@ -69,6 +70,12 @@ public class EmployeeServiceTest {
     public void testGetWithDepartmentAndAgreements() {
         Employee employee = service.getWithDepartmentAndAgreements(1, LocalDate.now().minusYears(4), LocalDate.now().minusYears(4).plusMonths(1));
         assertThat(employee, nullValue());
+    }
+
+    @Test
+    public void testGetParticularWithDepartmentAndAgreements() {
+        List<Employee> employees = service.getParticularWithDepartmentsAndAgreements(LocalDate.now().minusMonths(2), LocalDate.now().minusMonths(1), Arrays.asList(1, 2, 3));
+        assertThat(employees, notNullValue());
     }
 
     @Test

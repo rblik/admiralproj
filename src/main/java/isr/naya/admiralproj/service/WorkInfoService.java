@@ -18,4 +18,6 @@ public interface WorkInfoService {
     List<WorkInfo> getMissingWorkInfos(LocalDate from, LocalDate to, Optional<Integer> employeeId, Optional<Integer> departmentId);
 
     List<WorkInfo> getWorkInfos(LocalDate from, LocalDate to, Optional<Integer> employeeId, Optional<Integer> departmentId, Optional<Integer> projectId, Optional<Integer> clientId);
+
+    List<WorkInfo> getMissingWorkForParticularEmployees(LocalDate from, LocalDate to, List<Integer> employeeIds);
 }

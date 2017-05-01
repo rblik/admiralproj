@@ -68,9 +68,9 @@ public class XlsReportCreator implements ReportCreator {
         if (PIVOTAL == reportType) {
             titles = Arrays.asList("תאור", "משך", "עד-", "מ-", "יום", "חופשה", "תעריך", "לקוח", "פרויקט", "צוות", "שם משפחה", "שם");
         } else if (PARTIAL == reportType) {
-            titles = Arrays.asList("משך", "תעריך", "צוות", "שם משפחה", "שם");
+            titles = Arrays.asList("משך", "יום", "תעריך", "צוות", "שם משפחה", "שם");
         } else if (EMPTY == reportType) {
-            titles = Arrays.asList("תעריך", "צוות", "שם משפחה", "שם");
+            titles = Arrays.asList("יום", "תעריך", "צוות", "שם משפחה", "שם");
         } else {
             titles = Collections.emptyList();
             log.error("Not compatible report type");
@@ -97,18 +97,20 @@ public class XlsReportCreator implements ReportCreator {
 
     private void addMissedRow(Row row, WorkInfo workInfo) {
 
-        row.createCell(0).setCellValue(workInfo.getDate() != null ? workInfo.getDate().toString() : null);
-        row.createCell(1).setCellValue(workInfo.getDepartmentName());
-        row.createCell(2).setCellValue(workInfo.getEmployeeSurname());
-        row.createCell(3).setCellValue(workInfo.getEmployeeName());
-    }
-
-    private void addPartialRow(Row row, WorkInfo workInfo) {
-
-        row.createCell(0).setCellValue(String.valueOf((float) workInfo.getDuration() / 60));
+        row.createCell(0).setCellValue(workInfo.getDate() != null ? MappingUtil.getDay(workInfo.getDate().getDayOfWeek().getValue()) : null);
         row.createCell(1).setCellValue(workInfo.getDate() != null ? workInfo.getDate().toString() : null);
         row.createCell(2).setCellValue(workInfo.getDepartmentName());
         row.createCell(3).setCellValue(workInfo.getEmployeeSurname());
         row.createCell(4).setCellValue(workInfo.getEmployeeName());
+    }
+
+    private void addPartialRow(Row row, WorkInfo workInfo) {
+
+        row.createCell(0).setCellValue(durationToTimeString(workInfo.getDuration()));
+        row.createCell(1).setCellValue(workInfo.getDate() != null ? MappingUtil.getDay(workInfo.getDate().getDayOfWeek().getValue()) : null);
+        row.createCell(2).setCellValue(workInfo.getDate() != null ? workInfo.getDate().toString() : null);
+        row.createCell(3).setCellValue(workInfo.getDepartmentName());
+        row.createCell(4).setCellValue(workInfo.getEmployeeSurname());
+        row.createCell(5).setCellValue(workInfo.getEmployeeName());
     }
 }

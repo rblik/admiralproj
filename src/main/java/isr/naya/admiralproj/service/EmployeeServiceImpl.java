@@ -80,7 +80,12 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
         return employeeRepository.getAllWithDepartmentsAndAgreements(from, to);
     }
 
-//    security
+    @Override
+    public List<Employee> getParticularWithDepartmentsAndAgreements(@NonNull LocalDate from, @NonNull LocalDate to, @NonNull List<Integer> employeeIds) {
+        return employeeRepository.getPartucularWithDepartmentsAndAgreements(from, to, employeeIds);
+    }
+
+    //    security
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Employee employee = employeeRepository.getByEmailWithRoles(email.toLowerCase());

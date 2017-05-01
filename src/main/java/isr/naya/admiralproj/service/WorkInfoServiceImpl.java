@@ -51,6 +51,14 @@ public class WorkInfoServiceImpl implements WorkInfoService {
     }
 
     @Override
+    public List<WorkInfo> getMissingWorkForParticularEmployees(@NonNull LocalDate from, @NonNull LocalDate to,
+                                                               @NonNull List<Integer> employeeIds) {
+        List<Employee> employees = employeeService.getParticularWithDepartmentsAndAgreements(from, to, employeeIds);
+        Set<WorkInfo> infos = workUnitRepository.getAllNonEmptyDaysBetweenAndEmployeeIds(from, to, employeeIds);
+        return generate(infos, from, to, employees);
+    }
+
+    @Override
     public List<WorkInfo> getMissingWorkInfos(@NonNull LocalDate from, @NonNull LocalDate to,
                                               @NonNull Optional<Integer> employeeId,
                                               @NonNull Optional<Integer> departmentId) {
@@ -92,4 +100,5 @@ public class WorkInfoServiceImpl implements WorkInfoService {
                     integer -> workUnitRepository.getAllByDateBetweenAndClientId(from, to, integer)).
                     orElseGet(() -> workUnitRepository.getAllByDateBetween(from, to));
     }
+
 }

@@ -38,4 +38,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
     @Query("select e from Employee e join fetch e.department d join fetch e.workAgreements wa where wa.start<?2 and wa.finish>=?1")
     List<Employee> getAllWithDepartmentsAndAgreements(LocalDate from, LocalDate to);
+
+    @Query("select e from Employee e join fetch e.department d join fetch e.workAgreements wa where wa.start<?2 and wa.finish>=?1 and e.id in ?3")
+    List<Employee> getPartucularWithDepartmentsAndAgreements(LocalDate from, LocalDate to, List<Integer> employeeIds);
 }

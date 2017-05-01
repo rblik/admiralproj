@@ -3,24 +3,28 @@ package isr.naya.admiralproj.web.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import lombok.SneakyThrows;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
+import static org.springframework.http.HttpHeaders.RETRY_AFTER;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ReportSender {
 
-    @SneakyThrows
-    public static void sendReport(HttpServletResponse response, byte[] bytes, String returnType) {
+    public static ResponseEntity<byte[]> defaultResponse() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(RETRY_AFTER, "60");
+        return new ResponseEntity<>(headers, HttpStatus.SERVICE_UNAVAILABLE);
+    }
 
-        response.setHeader("Cache-Control", "no-store");
-        response.setHeader("Pragma", "no-cache");
-        response.setDateHeader("Expires", 0);
-        response.setContentType(returnType);
-        ServletOutputStream stream = response.getOutputStream();
-        stream.write(bytes);
-        stream.flush();
-        stream.close();
+    public static ResponseEntity<byte[]> report(byte[] body, String returnType) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setCacheControl("no-store");
+        headers.setPragma("no-cache");
+        headers.setExpires(0);
+        headers.set(CONTENT_TYPE, returnType);
+        return new ResponseEntity<>(body, headers, HttpStatus.OK);
     }
 }

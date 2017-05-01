@@ -25,4 +25,6 @@ public interface EmployeeService {
     Employee getWithDepartmentAndAgreements(Integer id, LocalDate from, LocalDate to);
 
     List<Employee> getAllWithDepartmentsAndAgreements(LocalDate from, LocalDate to);
+
+    List<Employee> getParticularWithDepartmentsAndAgreements(LocalDate from, LocalDate to, List<Integer> employeeIds);
 }

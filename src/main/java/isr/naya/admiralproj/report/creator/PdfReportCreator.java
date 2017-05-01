@@ -15,14 +15,11 @@ import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static isr.naya.admiralproj.report.ReportCreator.durationToTimeString;
 import static isr.naya.admiralproj.report.ReportType.*;
-import static java.time.format.TextStyle.FULL;
-import static java.util.Locale.forLanguageTag;
 
 @Component
 @Slf4j
@@ -72,18 +69,18 @@ public class PdfReportCreator implements ReportCreator {
 
     private PdfPTable createTable(List<WorkInfo> infoList, BaseFont bf, ReportType reportType) throws DocumentException {
 
-        int colNumber = (PIVOTAL == reportType) ? 12 : (INDIVIDUAL_EMPTY == reportType) ? 2 : (PARTIAL == reportType) ? 5 : 4;
+        int colNumber = (PIVOTAL == reportType) ? 12 : (INDIVIDUAL_EMPTY == reportType) ? 2 : (PARTIAL == reportType) ? 6 : 5;
         PdfPTable table = new PdfPTable(colNumber);
         float cols[] = new float[0];
 
         if (PIVOTAL == reportType) {
             cols = new float[]{180, 50, 30, 30, 20, 40, 70, 50, 50, 70, 120, 120};
         } else if (PARTIAL == reportType) {
-            cols = new float[]{50, 70, 120, 120, 120};
+            cols = new float[]{50, 20, 70, 120, 120, 120};
         } else if (EMPTY == reportType) {
-            cols = new float[]{70, 50, 120, 120};
+            cols = new float[]{20, 70, 50, 120, 120};
         } else if (INDIVIDUAL_EMPTY == reportType) {
-            cols = new float[]{100, 100};
+            cols = new float[]{20, 100};
         }
 
         table.setTotalWidth(cols);
@@ -103,15 +100,17 @@ public class PdfReportCreator implements ReportCreator {
                     .forEach(s -> table.addCell(createCell(s, font10, true)));
             infoList.forEach(workInfo -> addFullRow(table, workInfo, font8));
         } else if (PARTIAL == reportType) {
-            ImmutableList.of("משך", "תעריך", "צוות", "שם משפחה", "שם")
+            ImmutableList.of("משך", "יום", "תעריך", "צוות", "שם משפחה", "שם")
                     .forEach(s -> table.addCell(createCell(s, font10, true)));
             infoList.forEach(workInfo -> addPartialRow(table, workInfo, font8));
         } else if (EMPTY == reportType) {
-            ImmutableList.of("תעריך", "צוות", "שם משפחה", "שם")
+            ImmutableList.of("יום", "תעריך", "צוות", "שם משפחה", "שם")
                     .forEach(s -> table.addCell(createCell(s, font10, true)));
             infoList.forEach(workInfo -> addMissedRow(table, workInfo, font8));
         } else if (INDIVIDUAL_EMPTY == reportType) {
-            addIndividualMissedRow(table, infoList);
+            ImmutableList.of("יום", "תעריך")
+                    .forEach(s -> table.addCell(createCell(s, font10, true)));
+            infoList.forEach(workInfo -> addIndividualMissedRow(table, workInfo, font8));
         } else {
             log.error("Not compatible report type");
         }
@@ -134,6 +133,7 @@ public class PdfReportCreator implements ReportCreator {
     }
 
     private void addMissedRow(PdfPTable table, WorkInfo workInfo, Font font) {
+        table.addCell(createCell(workInfo.getDate() != null ? MappingUtil.getDay(workInfo.getDate().getDayOfWeek().getValue()) : null, font));
         table.addCell(createCell(workInfo.getDate() != null ? workInfo.getDate().toString() : null, font));
         table.addCell(createCell(workInfo.getDepartmentName(), font));
         table.addCell(createCell(workInfo.getEmployeeSurname(), font));
@@ -141,7 +141,8 @@ public class PdfReportCreator implements ReportCreator {
     }
 
     private void addPartialRow(PdfPTable table, WorkInfo workInfo, Font font) {
-        table.addCell(createCell(String.valueOf((float) workInfo.getDuration() / 60), font));
+        table.addCell(createCell(durationToTimeString(workInfo.getDuration()), font));
+        table.addCell(createCell(workInfo.getDate() != null ? MappingUtil.getDay(workInfo.getDate().getDayOfWeek().getValue()) : null, font));
         table.addCell(createCell(workInfo.getDate() != null ? workInfo.getDate().toString() : null, font));
         table.addCell(createCell(workInfo.getDepartmentName(), font));
         table.addCell(createCell(workInfo.getEmployeeSurname(), font));
@@ -152,16 +153,9 @@ public class PdfReportCreator implements ReportCreator {
         return createCell(description, font, false);
     }
 
-    private void addIndividualMissedRow(PdfPTable table, List<WorkInfo> infoList) {
-        com.itextpdf.text.List list = new com.itextpdf.text.List();
-        list.setListSymbol("");
-        infoList.forEach(workInfo -> list.add(new ListItem(workInfo.getDate().toString())));
-        Phrase phrase = new Phrase();
-        phrase.add(list);
-        PdfPCell cell = new PdfPCell();
-        cell.addElement(phrase);
-        table.addCell(LocalDateTime.now().getMonth().getDisplayName(FULL, forLanguageTag("iw-IL")) + "חודש: ");
-        table.addCell(cell);
+    private void addIndividualMissedRow(PdfPTable table, WorkInfo workInfo, Font font) {
+        table.addCell(createCell(workInfo.getDate() != null ? MappingUtil.getDay(workInfo.getDate().getDayOfWeek().getValue()) : null, font));
+        table.addCell(createCell(workInfo.getDate() != null ? workInfo.getDate().toString() : null, font));
     }
 
     private PdfPCell createCell(String description, Font font, boolean isHeader) {

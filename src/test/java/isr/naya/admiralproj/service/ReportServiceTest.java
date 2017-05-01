@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,6 +72,12 @@ public class ReportServiceTest {
     public void testGetAllForMissingByEmployee() {
         List<WorkInfo> days = service.getMissingWorkInfos(LocalDate.of(2017, 1, 1), LocalDate.of(2017, 1, 24), Optional.of(4), Optional.empty());
         assertThat(days, hasSize(0));
+    }
+
+    @Test
+    public void testGetMissingWorkForParticularEmployees() {
+        List<WorkInfo> days = service.getMissingWorkForParticularEmployees(LocalDate.of(2017, 1, 1), LocalDate.of(2017, 1, 24), Arrays.asList(1, 2, 3));
+        assertThat(days, hasSize(69));
     }
 
     @Test
