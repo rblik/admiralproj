@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -88,11 +87,6 @@ public class EmployeeServiceTest {
     public void updatePasswordWrongId() {
         int i = service.updatePass(31, "asdddasd");
         assertThat(i, is(1));
-    }
-
-    @Test(expected = ConstraintViolationException.class)
-    public void testSaveWrongEmployee() {
-        service.save(1, Employee.builder().name("AnotherN").passportId("999999999").password("123123Aa").email("email@gg.com").build());
     }
 
     @Test
