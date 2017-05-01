@@ -29,7 +29,7 @@ public class ClientServiceTest {
         Client save = service.save(Client.builder()
                 .address(new Address("Haifa", "Haifa","Yagur","10"))
                 .name("Another Comp.")
-                .companyNumber(111111111)
+                .companyNumber("111111111")
                 .phone("055-5555555").build());
         ClientDto client = service.get(save.getId());
         assertThat(client, hasProperty("name", is("Another Comp.")));
@@ -48,7 +48,7 @@ public class ClientServiceTest {
 
     @Test(expected = ConstraintViolationException.class)
     public void testSaveWrong() {
-        service.save(Client.builder().companyNumber(321123321).build());
+        service.save(Client.builder().companyNumber("321123321").build());
     }
 
     @Test

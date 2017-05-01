@@ -11,16 +11,16 @@ INSERT INTO departments (name) VALUES
   ('Courses'),
   ('Human Resources');
 
-INSERT INTO employees (name, surname, passport_id, birthday, email, private_phone, password, department_id) VALUES
-  ('Name1', 'Surname1', 234472323, '1980-07-11', 'name1@gmail.com', '050-1111111',
+INSERT INTO employees (name, surname, passport_id, employee_number, birthday, email, private_phone, password, department_id) VALUES
+  ('Name1', 'Surname1', 234472323, 1001, '1980-07-11', 'name1@gmail.com', '050-1111111',
    '$2a$10$zflDeCzgkCRgC0MgJlNGPOILOAYO6A1WbLFuhN6zjfQE0JF1/S3Vq', 1),
-  ('Name2', 'Surname2', 321321222, '1977-10-11', 'name2@gmail.com', '041-3211412',
+  ('Name2', 'Surname2', 321321222, 1002, '1977-10-11', 'name2@gmail.com', '041-3211412',
    '$2a$10$zflDeCzgkCRgC0MgJlNGPOILOAYO6A1WbLFuhN6zjfQE0JF1/S3Vq', 3),
-  ('Name3', 'Surname3', 224535323, '1987-03-21', 'name3@gmail.com', '053-1231232',
+  ('Name3', 'Surname3', 224535323, 1003, '1987-03-21', 'name3@gmail.com', '053-1231232',
    '$2a$10$zflDeCzgkCRgC0MgJlNGPOILOAYO6A1WbLFuhN6zjfQE0JF1/S3Vq', 7),
-  ('Name4', 'Surname4', 133222888, '1982-11-02', 'name4@gmail.com', '055-7656222',
+  ('Name4', 'Surname4', 133222888, 1004, '1982-11-02', 'name4@gmail.com', '055-7656222',
    '$2a$10$zflDeCzgkCRgC0MgJlNGPOILOAYO6A1WbLFuhN6zjfQE0JF1/S3Vq', 5),
-  ('Name5', 'Surname5', 125225322, '1981-08-25', 'name5@gmail.com', '053-0023341',
+  ('Name5', 'Surname5', 125225322, 1005, '1981-08-25', 'name5@gmail.com', '053-0023341',
    '$2a$10$zflDeCzgkCRgC0MgJlNGPOILOAYO6A1WbLFuhN6zjfQE0JF1/S3Vq', 5);
 
 INSERT INTO employee_roles (employee_id, role) VALUES
@@ -31,13 +31,13 @@ INSERT INTO employee_roles (employee_id, role) VALUES
   (4, 'ROLE_USER'),
   (5, 'ROLE_USER');
 
-INSERT INTO clients (company_number, name) VALUES
-  (123123123, 'Naya'),
-  (234234234, 'Bezeq'),
-  (867592006, 'Y-Net'),
-  (126030400, 'CheckPoint'),
-  (266099396, 'LeumiBank'),
-  (384695480, 'Elbit');
+INSERT INTO clients (company_number, client_number, name) VALUES
+  (123123123, 5001, 'Naya'),
+  (234234234, 5002, 'Bezeq'),
+  (867592006, 5003, 'Y-Net'),
+  (126030400, 5004, 'CheckPoint'),
+  (266099396, 5005, 'LeumiBank'),
+  (384695480, 5006, 'Elbit');
 
 INSERT INTO addresses (area, city, street, house_number, client_id) VALUES
   ('Center', 'Herzliya', 'Hanadiv', '71', 1),

@@ -18,9 +18,7 @@ import static isr.naya.admiralproj.web.security.password.PasswordUtil.encode;
 
 @Data
 @Entity
-@Table(name = "employees", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"passport_id"}),
-        @UniqueConstraint(columnNames = {"email"})})
+@Table(name = "employees", uniqueConstraints = @UniqueConstraint(columnNames = {"email"}))
 @EqualsAndHashCode(callSuper = false, of = "passportId")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -36,9 +34,11 @@ public class Employee extends BaseEntity{
     @Column(name = "surname", nullable = false)
     private String surname;
 
-    @NotNull
-    @Column(name = "passport_id", nullable = false, unique = true)
+    @Column(name = "passport_id")
     private String passportId;
+
+    @Column(name = "employee_number")
+    private String employeeNumber;
 
     @Column(name = "birthday", columnDefinition = "date")
     private LocalDate birthday;

@@ -16,13 +16,16 @@ import java.util.Set;
 @Builder
 public class Client extends BaseEntity{
 
-    @NotNull
-    @Column(name = "company_number", nullable = false)
-    private Integer companyNumber;
+    @Column(name = "company_number")
+    private String companyNumber;
 
     @NotNull
     @Column(name = "name", nullable = false, unique = true)
     private String name;
+
+
+    @Column(name = "client_number")
+    private String clientNumber;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "client_phones", joinColumns = @JoinColumn(name = "client_id"))

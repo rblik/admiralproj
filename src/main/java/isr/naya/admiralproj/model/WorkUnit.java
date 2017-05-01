@@ -31,14 +31,14 @@ public class WorkUnit extends BaseEntity {
     @Column(name = "finish", nullable = false, columnDefinition = "time")
     private LocalTime finish;
 
-    @Column(name = "duration", nullable = false)
+    @Column(name = "duration")
     private Long duration;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "absence_type")
     private AbsenceType absenceType;
 
-    @Size(max = 50)
+    @Size(max = 75)
     @Column(name = "comment")
     private String comment;
 

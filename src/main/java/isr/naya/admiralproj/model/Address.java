@@ -5,7 +5,6 @@ import lombok.*;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -17,16 +16,13 @@ import javax.validation.constraints.NotNull;
 @Builder
 public class Address extends BaseEntity{
 
-    @NotNull
-    @Column(name = "area", nullable = false)
+    @Column(name = "area")
     private String area;
 
-    @NotNull
-    @Column(name = "city", nullable = false)
+    @Column(name = "city")
     private String city;
 
-    @NotNull
-    @Column(name = "street", nullable = false)
+    @Column(name = "street")
     private String street;
 
     @Column(name = "house_number")
