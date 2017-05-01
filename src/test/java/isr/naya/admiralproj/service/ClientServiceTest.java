@@ -48,7 +48,7 @@ public class ClientServiceTest {
 
     @Test(expected = ConstraintViolationException.class)
     public void testSaveWrong() {
-        service.save(Client.builder().companyNumber("321123321").build());
+        service.save(Client.builder().name("Naya").build());
     }
 
     @Test
