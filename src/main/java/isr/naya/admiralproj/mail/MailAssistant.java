@@ -29,16 +29,17 @@ public class MailAssistant {
     private ReportCreator creator;
 
     public void send(LocalDate from, LocalDate to, List<Integer> employeeIds, String email, String message) {
+        String msg = (message == null) ? "" : message;
         List<WorkInfo> missingDays = service.getMissingWorkForParticularEmployees(from, to, employeeIds);
         if (isEmpty(email)) {
             Map<String, List<WorkInfo>> infos = missingDays.stream().collect(Collectors.groupingBy(WorkInfo::getEmployeeEmail));
             infos.forEach((emplEmail, infoList) -> {
                 byte[] pdfFile = creator.create(infoList, INDIVIDUAL_EMPTY);
-                sender.sendEmail(emplEmail, "ימים חסרים", message, pdfFile);
+                sender.sendEmail(emplEmail, "ימים חסרים", msg, pdfFile);
             });
         } else {
             byte[] pdfFile = creator.create(missingDays, INDIVIDUAL_EMPTY);
-            sender.sendEmail(email, "ימים חסרים", message, pdfFile);
+            sender.sendEmail(email, "ימים חסרים", msg, pdfFile);
         }
     }
 }
