@@ -22,6 +22,10 @@ public class WorkAgreement extends BaseEntity{
     @Column(name = "finish", columnDefinition = "date")
     private LocalDate finish;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tariff_id")
+    private Tariff tariff;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id", referencedColumnName = "id", nullable = false)
     private Project project;

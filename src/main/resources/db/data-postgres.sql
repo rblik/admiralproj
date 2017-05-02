@@ -62,29 +62,45 @@ INSERT INTO client_phones (client_id, phone) VALUES
   (6, '04-8316663'),
   (6, '04-8315315');
 
-INSERT INTO projects (name, client_id) VALUES
-  ('Office work', 1),
-  ('Team management', 1),
-  ('Courses', 1),
-  ('Freescale Meetings', 1),
-  ('Project1', 2),
-  ('Project2', 2),
-  ('Project1', 3),
-  ('Project2', 3),
-  ('Project1', 4),
-  ('Project2', 4),
-  ('Project1', 5),
-  ('Project2', 5),
-  ('Project1', 6),
-  ('Project2', 6);
+INSERT INTO tariffs (amount, currency, type) VALUES
+  (15000, 'SHEKEL', 'MONTH'),
+  (18000, 'SHEKEL', 'MONTH'),
+  (18000, 'SHEKEL', 'MONTH'),
+  (20000, 'SHEKEL', 'MONTH'),
+  (300, 'SHEKEL', 'HOUR'),
+  (350, 'SHEKEL', 'HOUR'),
+  (350, 'SHEKEL', 'HOUR'),
+  (250, 'SHEKEL', 'HOUR'),
+  (200, 'SHEKEL', 'HOUR'),
+  (500, 'SHEKEL', 'HOUR'),
+  (100, 'DOLLAR', 'HOUR'),
+  (150, 'DOLLAR', 'HOUR'),
+  (300, 'SHEKEL', 'HOUR'),
+  (50000, 'SHEKEL', 'FIX');
 
-INSERT INTO work_agreements (start, finish, employee_id, project_id) VALUES
-  ('2017-01-01', '2018-01-01', 1, 7),
-  ('2016-08-01', '2017-08-01',2, 8),
-  ('2016-11-01', '2017-11-01',3, 1),
-  ('2017-01-15', '2018-01-15', 4, 10),
-  ('2017-01-01', '2018-01-01', 5, 9),
-  ('2017-01-01', '2018-01-01', 5, 11);
+INSERT INTO projects (name, client_id, tariff_id) VALUES
+  ('Office work', 1, 1),
+  ('Team management', 1, 2),
+  ('Courses', 1, 3),
+  ('Freescale Meetings', 1, 4),
+  ('Project1', 2, 5),
+  ('Project2', 2, 6),
+  ('Project1', 3, 7),
+  ('Project2', 3, 8),
+  ('Project1', 4, 9),
+  ('Project2', 4, 10),
+  ('Project1', 5, 11),
+  ('Project2', 5, 12),
+  ('Project1', 6, 13),
+  ('Project2', 6, 14);
+
+INSERT INTO work_agreements (start, finish, employee_id, project_id, tariff_id) VALUES
+  ('2017-01-01', '2018-01-01', 1, 7, 7),
+  ('2016-08-01', '2017-08-01',2, 8, 8),
+  ('2016-11-01', '2017-11-01',3, 1, 1),
+  ('2017-01-15', '2018-01-15', 4, 10, 10),
+  ('2017-01-01', '2018-01-01', 5, 9, 9),
+  ('2017-01-01', '2018-01-01', 5, 11, 11);
 
 INSERT INTO work_units (work_date, start, finish, duration, absence_type, work_agreement_id, comment) VALUES
   ('2017-03-19', '09:00:00', '11:00:00', 120, 'ILLNESS', 1, 'Just dumping'),

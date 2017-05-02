@@ -30,4 +30,8 @@ public class Project extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false)
     private Client client;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tariff_id")
+    private Tariff tariff;
 }
