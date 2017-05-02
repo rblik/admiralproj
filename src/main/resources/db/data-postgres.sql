@@ -76,7 +76,13 @@ INSERT INTO tariffs (amount, currency, type) VALUES
   (100, 'DOLLAR', 'HOUR'),
   (150, 'DOLLAR', 'HOUR'),
   (300, 'SHEKEL', 'HOUR'),
-  (50000, 'SHEKEL', 'FIX');
+  (50000, 'SHEKEL', 'FIX'),
+  (350, 'SHEKEL', 'HOUR'),
+  (250, 'SHEKEL', 'HOUR'),
+  (15000, 'SHEKEL', 'MONTH'),
+  (500, 'SHEKEL', 'HOUR'),
+  (200, 'SHEKEL', 'HOUR'),
+  (100, 'DOLLAR', 'HOUR');
 
 INSERT INTO projects (name, client_id, tariff_id) VALUES
   ('Office work', 1, 1),
@@ -95,12 +101,12 @@ INSERT INTO projects (name, client_id, tariff_id) VALUES
   ('Project2', 6, 14);
 
 INSERT INTO work_agreements (start, finish, employee_id, project_id, tariff_id) VALUES
-  ('2017-01-01', '2018-01-01', 1, 7, 7),
-  ('2016-08-01', '2017-08-01',2, 8, 8),
-  ('2016-11-01', '2017-11-01',3, 1, 1),
-  ('2017-01-15', '2018-01-15', 4, 10, 10),
-  ('2017-01-01', '2018-01-01', 5, 9, 9),
-  ('2017-01-01', '2018-01-01', 5, 11, 11);
+  ('2017-01-01', '2018-01-01', 1, 7, 15),
+  ('2016-08-01', '2017-08-01',2, 8, 16),
+  ('2016-11-01', '2017-11-01',3, 1, 17),
+  ('2017-01-15', '2018-01-15', 4, 10, 18),
+  ('2017-01-01', '2018-01-01', 5, 9, 19),
+  ('2017-01-01', '2018-01-01', 5, 11, 20);
 
 INSERT INTO work_units (work_date, start, finish, duration, absence_type, work_agreement_id, comment) VALUES
   ('2017-03-19', '09:00:00', '11:00:00', 120, 'ILLNESS', 1, 'Just dumping'),
