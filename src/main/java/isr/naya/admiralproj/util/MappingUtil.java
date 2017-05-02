@@ -31,7 +31,7 @@ public class MappingUtil {
             for (int i = 0; i < DAYS.between(from, to); i++) {
                 LocalDate date = from.plusDays(i);
                 if (isActive(date, agreements)) {
-                    WorkInfo info = new WorkInfo(e.getId(), e.getName(), e.getSurname(), e.getEmail(), e.getDepartment().getName(), date);
+                    WorkInfo info = new WorkInfo(e.getId(), e.getName(), e.getSurname(), e.getEmail(), e.getEmployeeNumber(), e.getDepartment().getName(), date);
                     collect.add(info);
                 }
             }

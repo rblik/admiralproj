@@ -74,7 +74,7 @@ public class PdfReportCreator implements ReportCreator {
         float cols[] = new float[0];
 
         if (PIVOTAL == reportType) {
-            cols = new float[]{180, 50, 30, 30, 20, 40, 70, 50, 50, 70, 120, 120};
+            cols = new float[]{180, 50, 30, 30, 40, 20, 70, 120, 50, 80, 100, 80};
         } else if (PARTIAL == reportType) {
             cols = new float[]{50, 20, 70, 120, 120, 120};
         } else if (EMPTY == reportType) {
@@ -96,7 +96,7 @@ public class PdfReportCreator implements ReportCreator {
         Font font8 = new Font(bf, 8);
 
         if (PIVOTAL == reportType) {
-            ImmutableList.of("תאור", "משך", "עד-", "מ-", "יום", "חופשה", "תעריך", "לקוח", "פרויקט", "צוות", "שם משפחה", "שם")
+            ImmutableList.of("תאור", "משך", "עד-", "מ-", "חופשה", "יום", "תעריך", "עובד", "מ''ע", "צוות", "פרויקט", "לקוח")
                     .forEach(s -> table.addCell(createCell(s, font10, true)));
             infoList.forEach(workInfo -> addFullRow(table, workInfo, font8));
         } else if (PARTIAL == reportType) {
@@ -122,14 +122,14 @@ public class PdfReportCreator implements ReportCreator {
         table.addCell(createCell(durationToTimeString(workInfo.getDuration()), font));
         table.addCell(createCell(workInfo.getTo() != null ? workInfo.getTo().truncatedTo(ChronoUnit.MINUTES).toString() : null, font));
         table.addCell(createCell(workInfo.getFrom() != null ? workInfo.getFrom().truncatedTo(ChronoUnit.MINUTES).toString() : null, font));
-        table.addCell(createCell(workInfo.getDate() != null ? MappingUtil.getDay(workInfo.getDate().getDayOfWeek().getValue()) : null, font));
         table.addCell(createCell(workInfo.getAbsenceType() != null ? workInfo.getAbsenceType().getTranslation() : null, font));
+        table.addCell(createCell(workInfo.getDate() != null ? MappingUtil.getDay(workInfo.getDate().getDayOfWeek().getValue()) : null, font));
         table.addCell(createCell(workInfo.getDate() != null ? workInfo.getDate().toString() : null, font));
-        table.addCell(createCell(workInfo.getClientName(), font));
-        table.addCell(createCell(workInfo.getProjectName(), font));
+        table.addCell(createCell(workInfo.getEmployeeSurname() + ' ' + workInfo.getEmployeeName(), font));
+        table.addCell(createCell(workInfo.getEmployeeNumber(), font));
         table.addCell(createCell(workInfo.getDepartmentName(), font));
-        table.addCell(createCell(workInfo.getEmployeeSurname(), font));
-        table.addCell(createCell(workInfo.getEmployeeName(), font));
+        table.addCell(createCell(workInfo.getProjectName(), font));
+        table.addCell(createCell(workInfo.getClientName(), font));
     }
 
     private void addMissedRow(PdfPTable table, WorkInfo workInfo, Font font) {
