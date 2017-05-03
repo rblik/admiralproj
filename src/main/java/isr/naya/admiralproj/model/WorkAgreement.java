@@ -22,7 +22,7 @@ public class WorkAgreement extends BaseEntity{
     @Column(name = "finish", columnDefinition = "date")
     private LocalDate finish;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "tariff_id")
     private Tariff tariff;
 

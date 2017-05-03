@@ -1,4 +1,4 @@
-TRUNCATE departments, employees, employee_roles, clients, addresses, client_phones, projects, work_agreements, work_units RESTART IDENTITY;
+TRUNCATE departments, employees, employee_roles, clients, addresses, client_phones, projects, tariffs, work_agreements, work_units RESTART IDENTITY;
 
 INSERT INTO departments (name) VALUES
   ('Java'),

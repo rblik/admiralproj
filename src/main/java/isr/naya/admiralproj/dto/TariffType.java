@@ -7,8 +7,9 @@ import lombok.Getter;
 @Getter
 public enum TariffType {
 
-    HOUR("לפי שעה"),
-    MONTH("לפי חודש"),
+    HOUR("לשעה"),
+    DAY("ליום"),
+    MONTH("לחודש"),
     FIX("פיקס");
 
     private String name;

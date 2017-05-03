@@ -2,8 +2,10 @@ package isr.naya.admiralproj.service;
 
 import isr.naya.admiralproj.model.Client;
 import isr.naya.admiralproj.model.Project;
+import isr.naya.admiralproj.model.Tariff;
 import isr.naya.admiralproj.repository.ClientRepository;
 import isr.naya.admiralproj.repository.ProjectRepository;
+import isr.naya.admiralproj.repository.TariffRepository;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.cache.annotation.CacheEvict;
@@ -20,12 +22,15 @@ import static isr.naya.admiralproj.util.ValidationUtil.checkNotFound;
 public class ProjectServiceImpl implements ProjectService {
 
     private ProjectRepository projectRepository;
+    private TariffRepository tariffRepository;
     private ClientRepository clientRepository;
 
     @CacheEvict(value = {"projects", "clients"}, allEntries = true)
     @Override
     @Transactional
     public Project save(@NonNull Integer clientId, @NonNull Project project) {
+        Tariff tariffSaved = tariffRepository.save(project.getTariff());
+        project.setTariff(tariffSaved);
         project.setClient(checkNotFound(clientRepository.findOne(clientId), clientId, Client.class));
         return projectRepository.save(project);
     }
