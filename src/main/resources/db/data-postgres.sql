@@ -100,13 +100,13 @@ INSERT INTO projects (name, client_id, tariff_id) VALUES
   ('Project1', 6, 13),
   ('Project2', 6, 14);
 
-INSERT INTO work_agreements (start, finish, employee_id, project_id, tariff_id) VALUES
-  ('2017-01-01', '2018-01-01', 1, 7, 15),
-  ('2016-08-01', '2017-08-01',2, 8, 16),
-  ('2016-11-01', '2017-11-01',3, 1, 17),
-  ('2017-01-15', '2018-01-15', 4, 10, 18),
-  ('2017-01-01', '2018-01-01', 5, 9, 19),
-  ('2017-01-01', '2018-01-01', 5, 11, 20);
+INSERT INTO work_agreements (active, employee_id, project_id, tariff_id) VALUES
+  (TRUE , 1, 7, 15),
+  (TRUE ,2, 8, 16),
+  (TRUE ,3, 1, 17),
+  (TRUE , 4, 10, 18),
+  (TRUE , 5, 9, 19),
+  (TRUE , 5, 11, 20);
 
 INSERT INTO work_units (work_date, start, finish, duration, absence_type, work_agreement_id, comment) VALUES
   ('2017-03-19', '09:00:00', '11:00:00', 120, 'ILLNESS', 1, 'Just dumping'),

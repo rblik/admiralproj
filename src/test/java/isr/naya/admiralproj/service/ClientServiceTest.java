@@ -37,7 +37,7 @@ public class ClientServiceTest {
 
     @Test
     public void testGet() {
-        ClientDto client = service.get(1);
+        ClientDto client = service.get(4);
         assertThat(client, notNullValue());
     }
 

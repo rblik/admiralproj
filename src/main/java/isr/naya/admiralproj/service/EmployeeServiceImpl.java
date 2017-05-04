@@ -15,7 +15,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import static isr.naya.admiralproj.util.ValidationUtil.checkNotFound;
@@ -66,23 +65,23 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
 
 //    for missing days only
     @Override
-    public List<Employee> getAllByDepartmentWithAgreements(@NonNull Integer departmentId, @NonNull LocalDate from, @NonNull LocalDate to) {
-        return employeeRepository.getAllByDepartmentWithAgreements(departmentId, from, to);
+    public List<Employee> getAllByDepartmentWithAgreements(@NonNull Integer departmentId) {
+        return employeeRepository.getAllByDepartmentWithAgreements(departmentId);
     }
 
     @Override
-    public Employee getWithDepartmentAndAgreements(@NonNull Integer id, @NonNull LocalDate from, @NonNull LocalDate to) {
-        return employeeRepository.getOneWithDepartmentAndAgreements(id, from, to);
+    public Employee getWithDepartmentAndAgreements(@NonNull Integer id) {
+        return employeeRepository.getOneWithDepartmentAndAgreements(id);
     }
 
     @Override
-    public List<Employee> getAllWithDepartmentsAndAgreements(@NonNull LocalDate from, @NonNull LocalDate to) {
-        return employeeRepository.getAllWithDepartmentsAndAgreements(from, to);
+    public List<Employee> getAllWithDepartmentsAndAgreements() {
+        return employeeRepository.getAllWithDepartmentsAndAgreements();
     }
 
     @Override
-    public List<Employee> getParticularWithDepartmentsAndAgreements(@NonNull LocalDate from, @NonNull LocalDate to, @NonNull List<Integer> employeeIds) {
-        return employeeRepository.getPartucularWithDepartmentsAndAgreements(from, to, employeeIds);
+    public List<Employee> getParticularWithDepartmentsAndAgreements(@NonNull List<Integer> employeeIds) {
+        return employeeRepository.getPartucularWithDepartmentsAndAgreements(employeeIds);
     }
 
     //    security

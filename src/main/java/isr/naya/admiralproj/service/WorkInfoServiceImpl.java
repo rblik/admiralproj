@@ -53,7 +53,7 @@ public class WorkInfoServiceImpl implements WorkInfoService {
     @Override
     public List<WorkInfo> getMissingWorkForParticularEmployees(@NonNull LocalDate from, @NonNull LocalDate to,
                                                                @NonNull List<Integer> employeeIds) {
-        List<Employee> employees = employeeService.getParticularWithDepartmentsAndAgreements(from, to, employeeIds);
+        List<Employee> employees = employeeService.getParticularWithDepartmentsAndAgreements(employeeIds);
         Set<WorkInfo> infos = workUnitRepository.getAllNonEmptyDaysBetweenAndEmployeeIds(from, to, employeeIds);
         return generate(infos, from, to, employees);
     }
@@ -63,14 +63,14 @@ public class WorkInfoServiceImpl implements WorkInfoService {
                                               @NonNull Optional<Integer> employeeId,
                                               @NonNull Optional<Integer> departmentId) {
         if (employeeId.isPresent()) {
-            Employee employee = employeeService.getWithDepartmentAndAgreements(employeeId.get(), from, to);
+            Employee employee = employeeService.getWithDepartmentAndAgreements(employeeId.get());
             return employee == null ? emptyList() : generate(workUnitRepository.getAllNonEmptyDaysByDateBetweenAndEmployeeId(from, to, employeeId.get()), from, to, singletonList(employee));
         } else if (departmentId.isPresent()) {
-            List<Employee> employees = employeeService.getAllByDepartmentWithAgreements(departmentId.get(), from, to);
+            List<Employee> employees = employeeService.getAllByDepartmentWithAgreements(departmentId.get());
             Set<WorkInfo> workInfos = workUnitRepository.getAllNonEmptyDaysByDateBetweenAndDepartmentId(from, to, departmentId.get());
             return generate(workInfos, from, to, employees);
         } else {
-            List<Employee> employees = employeeService.getAllWithDepartmentsAndAgreements(from, to);
+            List<Employee> employees = employeeService.getAllWithDepartmentsAndAgreements();
             Set<WorkInfo> workInfos = workUnitRepository.getAllNonEmptyDaysBetweenDates(from, to);
             return generate(workInfos, from, to, employees);
         }

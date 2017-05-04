@@ -2,15 +2,13 @@ package isr.naya.admiralproj.model;
 
 import isr.naya.admiralproj.dto.Currency;
 import isr.naya.admiralproj.dto.TariffType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Data
+@EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

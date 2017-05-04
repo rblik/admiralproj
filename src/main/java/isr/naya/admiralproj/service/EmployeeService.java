@@ -2,7 +2,6 @@ package isr.naya.admiralproj.service;
 
 import isr.naya.admiralproj.model.Employee;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public interface EmployeeService {
@@ -20,11 +19,11 @@ public interface EmployeeService {
     Employee getWithDepartment(Integer id);
 
 //    for missing days only
-    List<Employee> getAllByDepartmentWithAgreements(Integer departmentId, LocalDate from, LocalDate to);
+    List<Employee> getAllByDepartmentWithAgreements(Integer departmentId);
 
-    Employee getWithDepartmentAndAgreements(Integer id, LocalDate from, LocalDate to);
+    Employee getWithDepartmentAndAgreements(Integer id);
 
-    List<Employee> getAllWithDepartmentsAndAgreements(LocalDate from, LocalDate to);
+    List<Employee> getAllWithDepartmentsAndAgreements();
 
-    List<Employee> getParticularWithDepartmentsAndAgreements(LocalDate from, LocalDate to, List<Integer> employeeIds);
+    List<Employee> getParticularWithDepartmentsAndAgreements(List<Integer> employeeIds);
 }

@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -67,13 +66,13 @@ public class EmployeeServiceTest {
 
     @Test
     public void testGetWithDepartmentAndAgreements() {
-        Employee employee = service.getWithDepartmentAndAgreements(1, LocalDate.now().minusYears(4), LocalDate.now().minusYears(4).plusMonths(1));
+        Employee employee = service.getWithDepartmentAndAgreements(1);
         assertThat(employee, nullValue());
     }
 
     @Test
     public void testGetParticularWithDepartmentAndAgreements() {
-        List<Employee> employees = service.getParticularWithDepartmentsAndAgreements(LocalDate.now().minusMonths(2), LocalDate.now().minusMonths(1), Arrays.asList(1, 2, 3));
+        List<Employee> employees = service.getParticularWithDepartmentsAndAgreements(Arrays.asList(1, 2, 3));
         assertThat(employees, notNullValue());
     }
 

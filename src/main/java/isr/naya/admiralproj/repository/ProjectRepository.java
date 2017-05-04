@@ -17,6 +17,6 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
     @Query("select p from Project p join fetch p.client where p.id=?1")
     Project getOneWithClient(Integer id);
 
-    @Query("select p from Project p join fetch p.tariff where p.client.id=?1")
+    @Query("select distinct p from Project p join fetch p.tariff join fetch p.workAgreements wa join fetch wa.tariff t join fetch wa.employee e where p.client.id=?1")
     List<Project> findAllByClientId(Integer clientId);
 }

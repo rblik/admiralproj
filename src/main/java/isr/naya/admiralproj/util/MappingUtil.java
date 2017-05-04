@@ -30,7 +30,7 @@ public class MappingUtil {
             Set<WorkInfo> collect = newHashSet();
             for (int i = 0; i < DAYS.between(from, to); i++) {
                 LocalDate date = from.plusDays(i);
-                if (isActive(date, agreements)) {
+                if (isActive(agreements)) {
                     WorkInfo info = new WorkInfo(e.getId(), e.getName(), e.getSurname(), e.getEmail(), e.getEmployeeNumber(), e.getDepartment().getName(), date);
                     collect.add(info);
                 }
@@ -43,17 +43,13 @@ public class MappingUtil {
         return infos;
     }
 
-    private static boolean isActive(LocalDate date, List<WorkAgreement> workAgreements) {
+    private static boolean isActive(List<WorkAgreement> workAgreements) {
         for (WorkAgreement agreement : workAgreements) {
-            if (isBetweenInclusive(agreement.getStart(), agreement.getFinish(), date)) {
+            if (agreement.isActive()) {
                 return true;
             }
         }
         return false;
-    }
-
-    private static boolean isBetweenInclusive(LocalDate start, LocalDate end, LocalDate target) {
-        return !target.isBefore(start) && !target.isAfter(end);
     }
 
     public static String getDay(int index) throws NotFoundException {

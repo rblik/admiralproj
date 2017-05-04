@@ -1,10 +1,13 @@
 package isr.naya.admiralproj.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.List;
+
+import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 
 
 @Data
@@ -13,19 +16,19 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true, of = {})
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(of = {"active"})
 @Builder
 public class WorkAgreement extends BaseEntity{
 
-    @Column(name = "start", columnDefinition = "date")
-    private LocalDate start;
+    @Column(name = "active")
+    private boolean active;
 
-    @Column(name = "finish", columnDefinition = "date")
-    private LocalDate finish;
-
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "tariff_id")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JoinColumn(name = "tariff_id", referencedColumnName = "id")
     private Tariff tariff;
 
+    @JsonIgnore
+    @JsonProperty(access = WRITE_ONLY)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id", referencedColumnName = "id", nullable = false)
     private Project project;
