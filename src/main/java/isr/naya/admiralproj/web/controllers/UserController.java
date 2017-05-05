@@ -1,4 +1,4 @@
-package isr.naya.admiralproj.web;
+package isr.naya.admiralproj.web.controllers;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import isr.naya.admiralproj.AuthorizedUser;
@@ -11,6 +11,7 @@ import isr.naya.admiralproj.service.WorkAgreementService;
 import isr.naya.admiralproj.service.WorkInfoService;
 import isr.naya.admiralproj.service.WorkUnitService;
 import isr.naya.admiralproj.util.JsonUtil.UserView;
+import isr.naya.admiralproj.web.security.CorsRestController;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -24,8 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-@CrossOrigin
-@RestController
+@CorsRestController
 @AllArgsConstructor
 public class UserController {
 

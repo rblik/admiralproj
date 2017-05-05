@@ -13,7 +13,7 @@ public class AuthorizedUser extends org.springframework.security.core.userdetail
     private String surname;
 
     public AuthorizedUser(Employee employee) {
-        super(employee.getEmail(), employee.getPassword(), employee.getRoles());
+        super(employee.getEmail(), employee.getPassword(), employee.isEnabled(), true, true, true, employee.getRoles());
         this.id = employee.getId();
         this.name = employee.getName();
         this.surname = employee.getSurname();

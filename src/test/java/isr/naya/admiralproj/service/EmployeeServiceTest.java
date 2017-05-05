@@ -77,9 +77,18 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    public void updatePassword() {
+    public void testUpdatePassword() {
         int i = service.updatePass(1, "asdddasd");
         assertThat(i, is(1));
+    }
+
+    @Test
+    public void testDisableEnable() {
+        service.disable(1);
+        Employee employee = service.get(1);
+        assertThat(employee.isEnabled(), is(false));
+        service.enable(1);
+        assertThat(service.get(1).isEnabled(), is(true));
     }
 
     @Test(expected = NotFoundException.class)

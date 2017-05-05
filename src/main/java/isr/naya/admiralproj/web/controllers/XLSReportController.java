@@ -1,13 +1,16 @@
-package isr.naya.admiralproj.web;
+package isr.naya.admiralproj.web.controllers;
 
 import isr.naya.admiralproj.AuthorizedUser;
 import isr.naya.admiralproj.report.ReportCreator;
-import isr.naya.admiralproj.report.annotations.Pdf;
+import isr.naya.admiralproj.report.annotations.Xlsx;
 import isr.naya.admiralproj.service.WorkInfoService;
+import isr.naya.admiralproj.web.security.CorsRestController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import java.time.LocalDate;
@@ -19,18 +22,17 @@ import static isr.naya.admiralproj.web.util.ReportSender.defaultResponse;
 import static isr.naya.admiralproj.web.util.ReportSender.report;
 
 @Slf4j
-@CrossOrigin
-@RestController
-@RequestMapping("/admin/pdf")
-public class PDFReportController {
+@CorsRestController
+@RequestMapping("/admin/xlsx")
+public class XLSReportController {
 
-    private static final String PDF_TYPE = "application/pdf";
+    private static final String XLS_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
     private WorkInfoService workInfoService;
     private ReportCreator reportCreator;
 
     @Autowired
-    public PDFReportController(WorkInfoService workInfoService, @Pdf ReportCreator reportCreator) {
+    public XLSReportController(WorkInfoService workInfoService, @Xlsx ReportCreator reportCreator) {
         this.workInfoService = workInfoService;
         this.reportCreator = reportCreator;
     }
@@ -45,8 +47,8 @@ public class PDFReportController {
         DeferredResult<ResponseEntity<byte[]>> result = new DeferredResult<>(30000L, defaultResponse());
         CompletableFuture
                 .supplyAsync(() -> reportCreator.create(workInfoService.getWorkInfos(from, to, employeeId, departmentId, projectId, clientId), PIVOTAL))
-                .thenApplyAsync(bytes -> result.setResult(report(bytes, PDF_TYPE)));
-        log.info("Admin {} is creating pdf pivotal report from {} to {}" +
+                .thenApplyAsync(bytes -> result.setResult(report(bytes, XLS_TYPE)));
+        log.info("Admin {} is creating xls pivotal report from {} to {}" +
                 (employeeId.isPresent() ? "for employee (id = {})" : "") +
                 (projectId.isPresent() ? "and project (id = {})" : ""), AuthorizedUser.fullName(), from, to);
         return result;
@@ -61,8 +63,8 @@ public class PDFReportController {
         DeferredResult<ResponseEntity<byte[]>> result = new DeferredResult<>(30000L, defaultResponse());
         CompletableFuture
                 .supplyAsync(() -> reportCreator.create(workInfoService.getPartialWorkInfos(from, to, limit, employeeId, departmentId), PARTIAL))
-                .thenApplyAsync(bytes -> result.setResult(report(bytes, PDF_TYPE)));
-        log.info("Admin {} is creating pdf partial report from {} to {}" +
+                .thenApplyAsync(bytes -> result.setResult(report(bytes, XLS_TYPE)));
+        log.info("Admin {} is creating excel partial report from {} to {}" +
                 (employeeId.isPresent() ? " for employee (id = {})" : "") +
                 (departmentId.isPresent() ? " and department (id = {})" : ""), AuthorizedUser.fullName(), from, to);
         return result;
@@ -76,8 +78,8 @@ public class PDFReportController {
         DeferredResult<ResponseEntity<byte[]>> result = new DeferredResult<>(30000L, defaultResponse());
         CompletableFuture
                 .supplyAsync(() -> reportCreator.create(workInfoService.getMissingWorkInfos(from, to, employeeId, departmentId), EMPTY))
-                .thenApplyAsync(bytes -> result.setResult(report(bytes, PDF_TYPE)));
-        log.info("Admin {} is creating pdf missing report from {} to {}" +
+                .thenApplyAsync(bytes -> result.setResult(report(bytes, XLS_TYPE)));
+        log.info("Admin {} is creating excel missing report from {} to {}" +
                 (employeeId.isPresent() ? " for employee (id = {})" : "") +
                 (departmentId.isPresent() ? " and department (id = {})" : ""), AuthorizedUser.fullName(), from, to);
         return result;

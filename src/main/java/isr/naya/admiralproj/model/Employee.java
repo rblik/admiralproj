@@ -67,6 +67,9 @@ public class Employee extends BaseEntity{
     @Column(name = "password", nullable = false, updatable = false)
     private String password;
 
+    @Column(name = "enabled", nullable = false, columnDefinition = "boolean default true")
+    private boolean enabled = true;
+
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "employee_roles", joinColumns = @JoinColumn(name = "employee_id"))
     @Column(name = "role")

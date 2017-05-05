@@ -1,19 +1,21 @@
-package isr.naya.admiralproj.web;
+package isr.naya.admiralproj.web.controllers;
 
 import isr.naya.admiralproj.AuthorizedUser;
 import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.service.WorkInfoService;
+import isr.naya.admiralproj.web.security.CorsRestController;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-@CrossOrigin
-@RestController
+@CorsRestController
 @RequestMapping("/admin/info")
 @AllArgsConstructor
 public class JsonReportController {

@@ -40,6 +40,16 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
         return checkNotFound(employeeRepository.updatePassword(employeeId, encode(pass)), employeeId, Employee.class);
     }
 
+    @Override
+    public int enable(@NonNull Integer employeeId) {
+        return checkNotFound(employeeRepository.enable(employeeId), employeeId, Employee.class);
+    }
+
+    @Override
+    public int disable(@NonNull Integer employeeId) {
+        return checkNotFound(employeeRepository.disable(employeeId), employeeId, Employee.class);
+    }
+
     @Cacheable(value = "employees", key = "getMethodName()")
     @Override
     public List<Employee> getAllWithDepartments() {

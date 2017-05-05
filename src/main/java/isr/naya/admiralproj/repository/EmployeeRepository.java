@@ -16,6 +16,16 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     @Query("update Employee e set e.password=?2 where e.id=?1")
     int updatePassword(Integer employeeId, String pass);
 
+    @Transactional
+    @Modifying
+    @Query("update Employee e set e.enabled=false where e.id=?1")
+    int disable(Integer employeeId);
+
+    @Transactional
+    @Modifying
+    @Query("update Employee e set e.enabled=true where e.id=?1")
+    int enable(Integer employeeId);
+
     @Query("select e from Employee e join fetch e.department")
     List<Employee> getAllWithDepartments();
 
@@ -29,15 +39,15 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     List<Employee> getAllByDepartment(Integer departmentId);
 
 //    for missing days only
-    @Query("select e from Employee e join fetch e.department d join fetch e.workAgreements wa where d.id=?1 and wa.active=true")
+    @Query("select e from Employee e join fetch e.department d join fetch e.workAgreements wa where d.id=?1")
     List<Employee> getAllByDepartmentWithAgreements(Integer departmentId);
 
-    @Query("select e from Employee e join fetch e.department d join fetch e.workAgreements wa where e.id=?1 and wa.active=true ")
+    @Query("select e from Employee e join fetch e.department d join fetch e.workAgreements wa where e.id=?1")
     Employee getOneWithDepartmentAndAgreements(Integer id);
 
-    @Query("select e from Employee e join fetch e.department d join fetch e.workAgreements wa where wa.active=true ")
+    @Query("select e from Employee e join fetch e.department d join fetch e.workAgreements wa")
     List<Employee> getAllWithDepartmentsAndAgreements();
 
-    @Query("select e from Employee e join fetch e.department d join fetch e.workAgreements wa where wa.active=true and e.id in ?1")
+    @Query("select e from Employee e join fetch e.department d join fetch e.workAgreements wa where e.id in ?1")
     List<Employee> getPartucularWithDepartmentsAndAgreements(List<Integer> employeeIds);
 }
