@@ -28,7 +28,7 @@ public interface WorkUnitRepository extends JpaRepository<WorkUnit, Integer> {
     @Query("select new isr.naya.admiralproj.dto.WorkInfo(wu.id, wa.id, p.id, p.name, c.id, c.name, wu.date, wu.start, wu.finish, wu.duration, wu.absenceType, wu.comment) from WorkUnit wu join wu.workAgreement wa join wa.employee e join wa.project p join p.client c where e.id = ?1 and wu.date =?2 order by wu.start desc ")
     List<WorkInfo> getAllForEmployeeByDay(Integer employeeId, LocalDate day);
 
-    @Query("select new isr.naya.admiralproj.dto.WorkInfo(wa.id, wu.date, sum (wu.duration)) from WorkUnit wu join wu.workAgreement wa join wa.employee e where e.id = ?1 and wu.date between ?2 and ?3 group by wa.id, wu.date order by wu.date desc ")
+    @Query("select new isr.naya.admiralproj.dto.WorkInfo(wa.id, wu.date, sum (wu.duration)) from WorkUnit wu join wu.workAgreement wa join wa.employee e where e.id = ?1 and wu.date>=?2 and wu.date<?3 group by wa.id, wu.date order by wu.date desc ")
     List<WorkInfo> getAllForEmployeeBetweenDates(Integer employeeId, LocalDate from, LocalDate to);
 
     // Partial Report Block
