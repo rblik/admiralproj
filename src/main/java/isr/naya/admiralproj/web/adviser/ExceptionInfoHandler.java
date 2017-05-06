@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 
+import static isr.naya.admiralproj.util.MappingUtil.extractError;
+
 @Slf4j
 @RestControllerAdvice(annotations = RestController.class)
 public class ExceptionInfoHandler {
@@ -37,7 +39,8 @@ public class ExceptionInfoHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     @Order(Ordered.HIGHEST_PRECEDENCE + 1)
     public ErrorInfoDTO conflict(HttpServletRequest req, DataIntegrityViolationException e) {
-        return logAndGetErrorInfo(req, (Exception) e.getCause().getCause(), false);
+        DataIntegrityViolationException exception = new DataIntegrityViolationException(extractError(e.getCause().getCause().getMessage()));
+        return logAndGetErrorInfo(req, exception, false);
     }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST) // 400

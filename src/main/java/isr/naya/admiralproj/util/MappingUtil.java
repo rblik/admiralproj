@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static java.time.temporal.ChronoUnit.DAYS;
@@ -22,6 +24,8 @@ import static java.util.Comparator.comparing;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MappingUtil {
+
+    private static Pattern inBracketsContentPattern = Pattern.compile("\\((.*?)\\)");
 
     public static List<WorkInfo> generate(Set<WorkInfo> days, LocalDate from, LocalDate to, List<Employee> employees) {
         Set<WorkInfo> result = Sets.newHashSet();
@@ -54,5 +58,15 @@ public class MappingUtil {
 
     public static String getDay(int index) throws NotFoundException {
         return Arrays.stream(Day.values()).filter(d -> d.getIndex() == index).findFirst().map(Day::getSymbol).orElse("N/A");
+    }
+
+
+    public static String extractError(String str) {
+        StringBuffer error = new StringBuffer();
+        Matcher matcher = inBracketsContentPattern.matcher(str);
+        while (matcher.find()) {
+            error.append(matcher.group(1)).append(' ');
+        }
+        return error.toString();
     }
 }
