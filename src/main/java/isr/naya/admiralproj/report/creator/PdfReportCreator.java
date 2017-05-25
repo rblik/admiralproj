@@ -20,6 +20,8 @@ import java.util.List;
 
 import static isr.naya.admiralproj.report.ReportCreator.durationToTimeString;
 import static isr.naya.admiralproj.report.ReportType.*;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 
 @Component
 @Slf4j
@@ -27,7 +29,7 @@ import static isr.naya.admiralproj.report.ReportType.*;
 public class PdfReportCreator implements ReportCreator {
 
     @Override
-    public byte[] create(@NonNull List<WorkInfo> infoList, @NonNull ReportType reportType) {
+    public byte[] create(@NonNull List<WorkInfo> infoList, @NonNull ReportType reportType, String employeeTitle) {
 
         ByteArrayOutputStream os;
         try {
@@ -41,18 +43,19 @@ public class PdfReportCreator implements ReportCreator {
                 partitionSize = 35;
             }
             Document document = new Document(orientation);
-            List<List<WorkInfo>> partition = Lists.partition(infoList, partitionSize);
+            List<List<WorkInfo>> partition = infoList.size() == 0 ? singletonList(emptyList()) : Lists.partition(infoList, partitionSize);
             os = new ByteArrayOutputStream();
 
             PdfWriter writer = PdfWriter.getInstance(document, os);
             document.open();
             //            fonts
-            BaseFont bf = BaseFont.createFont("DejaVuSans.ttf", BaseFont.IDENTITY_H, true);
+            BaseFont bf = BaseFont.createFont(DEJA_VU_SANS, BaseFont.IDENTITY_H, true);
             //            render
             for (List<WorkInfo> infos : partition) {
                 ColumnText column = createColumn(writer.getDirectContent(), reportType);
-                column.addElement(createTitle(bf, reportType));
+                column.addElement(createTitle(bf, reportType, 14, EMPTY_STR));
                 column.addElement(createImage(reportType));
+                if (INDIVIDUAL_EMPTY == reportType) column.addElement(createTitle(bf, reportType, 10, employeeTitle));
                 column.addElement(createTable(infos, bf, reportType));
                 //            close
                 column.go();
@@ -69,12 +72,12 @@ public class PdfReportCreator implements ReportCreator {
 
     private PdfPTable createTable(List<WorkInfo> infoList, BaseFont bf, ReportType reportType) throws DocumentException {
 
-        int colNumber = (PIVOTAL == reportType) ? 12 : (INDIVIDUAL_EMPTY == reportType) ? 2 : (PARTIAL == reportType) ? 6 : 5;
+        int colNumber = (PIVOTAL == reportType) ? 11 : (INDIVIDUAL_EMPTY == reportType) ? 2 : (PARTIAL == reportType) ? 6 : 5;
         PdfPTable table = new PdfPTable(colNumber);
         float cols[] = new float[0];
 
         if (PIVOTAL == reportType) {
-            cols = new float[]{180, 50, 30, 30, 40, 20, 70, 120, 50, 80, 100, 80};
+            cols = new float[]{180, 50, 30, 30, 20, 70, 120, 50, 80, 100, 80};
         } else if (PARTIAL == reportType) {
             cols = new float[]{50, 20, 70, 120, 120, 120};
         } else if (EMPTY == reportType) {
@@ -96,23 +99,25 @@ public class PdfReportCreator implements ReportCreator {
         Font font8 = new Font(bf, 8);
 
         if (PIVOTAL == reportType) {
-            ImmutableList.of("תאור", "משך", "עד-", "מ-", "חופשה", "יום", "תעריך", "עובד", "מ''ע", "צוות", "פרויקט", "לקוח")
+            ImmutableList.of(DESCRIPTION, DURATION, UNTIL, SINCE, DAY, DATE, EMPLOYEE, EMPL_NUMBER, DEPARTMENT, PROJECT, CLIENT)
                     .forEach(s -> table.addCell(createCell(s, font10, true)));
             infoList.forEach(workInfo -> addFullRow(table, workInfo, font8));
-        } else if (PARTIAL == reportType) {
-            ImmutableList.of("משך", "יום", "תעריך", "צוות", "שם משפחה", "שם")
-                    .forEach(s -> table.addCell(createCell(s, font10, true)));
-            infoList.forEach(workInfo -> addPartialRow(table, workInfo, font8));
-        } else if (EMPTY == reportType) {
-            ImmutableList.of("יום", "תעריך", "צוות", "שם משפחה", "שם")
-                    .forEach(s -> table.addCell(createCell(s, font10, true)));
-            infoList.forEach(workInfo -> addMissedRow(table, workInfo, font8));
-        } else if (INDIVIDUAL_EMPTY == reportType) {
-            ImmutableList.of("יום", "תעריך")
-                    .forEach(s -> table.addCell(createCell(s, font10, true)));
-            infoList.forEach(workInfo -> addIndividualMissedRow(table, workInfo, font8));
         } else {
-            log.error("Not compatible report type");
+            if (PARTIAL == reportType) {
+                ImmutableList.of(DURATION, DAY, DATE, DEPARTMENT, EMPL_SURNAME, EMPL_NAME)
+                        .forEach(s -> table.addCell(createCell(s, font10, true)));
+                infoList.forEach(workInfo -> addPartialRow(table, workInfo, font8));
+            } else if (EMPTY == reportType) {
+                ImmutableList.of(DAY, DATE, DEPARTMENT, EMPL_SURNAME, EMPL_NAME)
+                        .forEach(s -> table.addCell(createCell(s, font10, true)));
+                infoList.forEach(workInfo -> addMissedRow(table, workInfo, font8));
+            } else if (INDIVIDUAL_EMPTY == reportType) {
+                ImmutableList.of(DAY, DATE)
+                        .forEach(s -> table.addCell(createCell(s, font10, true)));
+                infoList.forEach(workInfo -> addIndividualMissedRow(table, workInfo, font8));
+            } else {
+                log.error("Not compatible report type");
+            }
         }
     }
 
@@ -122,7 +127,6 @@ public class PdfReportCreator implements ReportCreator {
         table.addCell(createCell(durationToTimeString(workInfo.getDuration()), font));
         table.addCell(createCell(workInfo.getTo() != null ? workInfo.getTo().truncatedTo(ChronoUnit.MINUTES).toString() : null, font));
         table.addCell(createCell(workInfo.getFrom() != null ? workInfo.getFrom().truncatedTo(ChronoUnit.MINUTES).toString() : null, font));
-        table.addCell(createCell(workInfo.getAbsenceType() != null ? workInfo.getAbsenceType().getTranslation() : null, font));
         table.addCell(createCell(workInfo.getDate() != null ? MappingUtil.getDay(workInfo.getDate().getDayOfWeek().getValue()) : null, font));
         table.addCell(createCell(workInfo.getDate() != null ? workInfo.getDate().toString() : null, font));
         table.addCell(createCell(workInfo.getEmployeeSurname() + ' ' + workInfo.getEmployeeName(), font));
@@ -161,7 +165,7 @@ public class PdfReportCreator implements ReportCreator {
     private PdfPCell createCell(String description, Font font, boolean isHeader) {
         PdfPCell cell;
         try {
-            cell = new PdfPCell(font == null ? new Phrase(description, new Font(BaseFont.createFont(BaseFont.COURIER, "utf-8", true), 7)) : new Phrase(description, font));
+            cell = new PdfPCell(font == null ? new Phrase(description, new Font(BaseFont.createFont(BaseFont.COURIER, UTF8, true), 7)) : new Phrase(description, font));
             cell.setFixedHeight(isHeader ? 25 : 15);
             cell.setColspan(1);
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -184,9 +188,9 @@ public class PdfReportCreator implements ReportCreator {
         return column;
     }
 
-    private Paragraph createTitle(BaseFont bf, ReportType reportType) {
+    private Paragraph createTitle(BaseFont bf, ReportType reportType, int fontSize, String employeeTitle) {
 
-        String title = "";
+        String title = EMPTY_STR;
         if (PIVOTAL == reportType)
             title = "שעות גולמי";
         else if (PARTIAL == reportType)
@@ -194,11 +198,11 @@ public class PdfReportCreator implements ReportCreator {
         else if (EMPTY == reportType)
             title = "ימים חסרים";
         else if (INDIVIDUAL_EMPTY == reportType)
-            title = "ימים חסרים";
+            title = employeeTitle.isEmpty()? "ימים חסרים" : employeeTitle;
         else
             log.error("Not compatible report type");
 
-        Paragraph paragraph = new Paragraph(title, new Font(bf, 14));
+        Paragraph paragraph = new Paragraph(title, new Font(bf, fontSize));
         paragraph.setAlignment(Element.ALIGN_CENTER);
         return paragraph;
     }

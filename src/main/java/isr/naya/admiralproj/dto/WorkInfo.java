@@ -26,33 +26,32 @@ public class WorkInfo implements Serializable {
     private Integer clientId;
     private String clientName;
     private LocalDate date;
-    private AbsenceType absenceType;
     private LocalTime from;
     private LocalTime to;
     private Long duration;
     private String comment;
 
     public WorkInfo(Integer employeeId, String employeeName, String employeeSurname, String employeeEmail, String employeeNumber, String departmentName, LocalDate date, Long duration) {
-        this(null, null, employeeId, employeeName, employeeSurname, employeeEmail, employeeNumber, departmentName, null, null, null, null, date, null,null, null, duration, null);
+        this(null, null, employeeId, employeeName, employeeSurname, employeeEmail, employeeNumber, departmentName, null, null, null, null, date, null, null, duration, null);
     }
 
     public WorkInfo(Integer employeeId, LocalDate date) {
-        this(null, null, employeeId, null, null, null, null, null, null, null, null, null, date, null,null, null, null, null);
+        this(null, null, employeeId, null, null, null, null, null, null, null, null, null, date, null, null, null, null);
     }
 
-    public WorkInfo(Integer unitId, Integer agreementId, Integer projectId, String projectName, Integer clientId, String clientName, LocalDate date, LocalTime from, LocalTime to, Long duration, AbsenceType absenceType, String comment) {
-        this(unitId, agreementId, null, null, null, null, null, null, projectId, projectName, clientId, clientName, date, absenceType, from, to, duration, comment);
+    public WorkInfo(Integer unitId, Integer agreementId, Integer projectId, String projectName, Integer clientId, String clientName, LocalDate date, LocalTime from, LocalTime to, Long duration, String comment) {
+        this(unitId, agreementId, null, null, null, null, null, null, projectId, projectName, clientId, clientName, date, from, to, duration, comment);
     }
 
     public WorkInfo(Integer employeeId, String employeeName, String employeeSurname, String employeeEmail, String employeeNumber, String departmentName, LocalDate date) {
-        this(null, null, employeeId, employeeName, employeeSurname, employeeEmail, employeeNumber, departmentName, null, null, null, null, date, null,null, null, null, null);
+        this(null, null, employeeId, employeeName, employeeSurname, employeeEmail, employeeNumber, departmentName, null, null, null, null, date, null, null, null, null);
     }
 
     public WorkInfo(Integer agreementId, LocalDate date, Long duration) {
-        this(null, agreementId, null, null, null, null, null, null, null, null, null, null, date, null, null, null, duration, null);
+        this(null, agreementId, null, null, null, null, null, null, null, null, null, null, date, null, null, duration, null);
     }
 
     public WorkInfo(Integer agreementId, Integer employeeId, String employeeName, String employeeSurname, String departmentName, Integer projectId, String projectName, Integer clientId, String clientName, LocalDate date) {
-        this(null, agreementId, employeeId, employeeName, employeeSurname, null, null, departmentName, projectId, projectName, clientId, clientName, date, null, null, null, null, null);
+        this(null, agreementId, employeeId, employeeName, employeeSurname, null, null, departmentName, projectId, projectName, clientId, clientName, date, null, null, null, null);
     }
 }

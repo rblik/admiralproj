@@ -1,6 +1,5 @@
 package isr.naya.admiralproj;
 
-import isr.naya.admiralproj.dto.AbsenceType;
 import isr.naya.admiralproj.model.WorkUnit;
 
 import java.time.LocalTime;
@@ -11,6 +10,5 @@ public class TestData {
             finish(LocalTime.of(15, 0)).build();
     public static final WorkUnit HOLIDAY = WorkUnit.builder().
             start(LocalTime.now()).
-            finish(LocalTime.now()).
-            absenceType(AbsenceType.HOLIDAY).build();
+            finish(LocalTime.now()).build();
 }

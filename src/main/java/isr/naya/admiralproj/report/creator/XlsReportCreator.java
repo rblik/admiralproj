@@ -30,7 +30,7 @@ import static org.apache.poi.ss.util.WorkbookUtil.createSafeSheetName;
 public class XlsReportCreator implements ReportCreator {
 
     @Override
-    public byte[] create(@NonNull List<WorkInfo> infoList, @NonNull ReportType reportType) {
+    public byte[] create(@NonNull List<WorkInfo> infoList, @NonNull ReportType reportType, String employeeTitle) {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet(createSafeSheetName(reportType.name() + LocalDate.now().toString()));
@@ -66,7 +66,7 @@ public class XlsReportCreator implements ReportCreator {
 
         List<String> titles;
         if (PIVOTAL == reportType) {
-            titles = Arrays.asList("תאור", "משך", "עד-", "מ-", "חופשה", "יום", "תעריך", "עובד", "מ''ע", "צוות", "פרויקט", "לקוח");
+            titles = Arrays.asList("תאור", "משך", "עד-", "מ-", "יום", "תעריך", "עובד", "מ''ע", "צוות", "פרויקט", "לקוח");
         } else if (PARTIAL == reportType) {
             titles = Arrays.asList("משך", "יום", "תעריך", "צוות", "שם משפחה", "שם");
         } else if (EMPTY == reportType) {
@@ -85,14 +85,13 @@ public class XlsReportCreator implements ReportCreator {
         row.createCell(1).setCellValue(durationToTimeString(workInfo.getDuration()));
         row.createCell(2).setCellValue(workInfo.getTo() != null ? workInfo.getTo().truncatedTo(ChronoUnit.MINUTES).toString() : null);
         row.createCell(3).setCellValue(workInfo.getFrom() != null ? workInfo.getFrom().truncatedTo(ChronoUnit.MINUTES).toString() : null);
-        row.createCell(4).setCellValue(workInfo.getAbsenceType() != null ? workInfo.getAbsenceType().getTranslation() : null);
-        row.createCell(5).setCellValue(workInfo.getDate() != null ? MappingUtil.getDay(workInfo.getDate().getDayOfWeek().getValue()) : null);
-        row.createCell(6).setCellValue(workInfo.getDate() != null ? workInfo.getDate().toString() : null);
-        row.createCell(7).setCellValue(workInfo.getEmployeeSurname() + ' ' + workInfo.getEmployeeName());
-        row.createCell(8).setCellValue(workInfo.getEmployeeNumber());
-        row.createCell(9).setCellValue(workInfo.getDepartmentName());
-        row.createCell(10).setCellValue(workInfo.getProjectName());
-        row.createCell(11).setCellValue(workInfo.getClientName());
+        row.createCell(4).setCellValue(workInfo.getDate() != null ? MappingUtil.getDay(workInfo.getDate().getDayOfWeek().getValue()) : null);
+        row.createCell(5).setCellValue(workInfo.getDate() != null ? workInfo.getDate().toString() : null);
+        row.createCell(6).setCellValue(workInfo.getEmployeeSurname() + ' ' + workInfo.getEmployeeName());
+        row.createCell(7).setCellValue(workInfo.getEmployeeNumber());
+        row.createCell(8).setCellValue(workInfo.getDepartmentName());
+        row.createCell(9).setCellValue(workInfo.getProjectName());
+        row.createCell(10).setCellValue(workInfo.getClientName());
     }
 
     private void addMissedRow(Row row, WorkInfo workInfo) {

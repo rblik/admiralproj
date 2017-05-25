@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static isr.naya.admiralproj.util.MappingUtil.filterWeekEndDays;
 import static isr.naya.admiralproj.util.MappingUtil.generate;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
@@ -42,11 +43,11 @@ public class WorkInfoServiceImpl implements WorkInfoService {
                                               @NonNull Optional<Integer> departmentId) {
 
         if (employeeId.isPresent()) {
-            return workUnitRepository.getAllPartialBetweenDatesByEmployeeId(from, to, maxHours, employeeId.get());
+            return filterWeekEndDays(workUnitRepository.getAllPartialBetweenDatesByEmployeeId(from, to, maxHours, employeeId.get()));
         } else if (departmentId.isPresent()) {
-            return workUnitRepository.getAllPartialBetweenDatesByDepartmentId(from, to, maxHours, departmentId.get());
+            return filterWeekEndDays(workUnitRepository.getAllPartialBetweenDatesByDepartmentId(from, to, maxHours, departmentId.get()));
         } else {
-            return workUnitRepository.getAllPartialBetweenDates(from, to, maxHours);
+            return filterWeekEndDays(workUnitRepository.getAllPartialBetweenDates(from, to, maxHours));
         }
     }
 

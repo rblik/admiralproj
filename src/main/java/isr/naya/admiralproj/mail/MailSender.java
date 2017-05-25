@@ -20,6 +20,7 @@ import javax.mail.util.ByteArrayDataSource;
 import java.util.Properties;
 
 import static isr.naya.admiralproj.mail.MailProperties.*;
+import static isr.naya.admiralproj.report.ReportCreator.UTF8;
 import static javax.mail.Message.RecipientType.TO;
 import static javax.mail.Transport.send;
 
@@ -28,8 +29,10 @@ import static javax.mail.Transport.send;
 @PropertySource("classpath:mail/mail.properties")
 public class MailSender {
 
-    private static final String TEXT_MIME_TYPE = "text/html";
     private static final String PDF_MIME_TYPE = "application/pdf";
+    private static final String HTML_UTF8 ="text/html; charset=UTF-8";
+    private static final String PLAIN_UTF8 ="text/plain; charset=\"utf-8\"";
+    private static final String sslSocketFactory = "javax.net.ssl.SSLSocketFactory";
 
     @Value("${senderEmail}")
     private String senderEmailID;
@@ -51,7 +54,7 @@ public class MailSender {
         props.put(tls, "true");
         props.put(auth, "true");
         props.put(socketFactoryPort, emailServerPort);
-        props.put(socketFactoryClass, "javax.net.ssl.SSLSocketFactory");
+        props.put(socketFactoryClass, sslSocketFactory);
         props.put(socketFactoryFallback, "false");
     }
 
@@ -59,8 +62,9 @@ public class MailSender {
         try {
             Session session = Session.getInstance(props, new SMTPAuthenticator());
             MimeMessage msg = new MimeMessage(session);
-            msg.setSubject(emailSubject);
+            msg.setSubject(emailSubject, UTF8);
             msg.setFrom(new InternetAddress(senderEmailID, name));
+            msg.setHeader("Content-type",  HTML_UTF8);
             msg.addRecipient(TO, new InternetAddress(receiverEmailID));
             msg.setContent(buildBody(message, attachedContent));
             send(msg);
@@ -74,11 +78,16 @@ public class MailSender {
     private Multipart buildBody(String message, byte[] attached) {
         Multipart multipart = new MimeMultipart();
         MimeBodyPart messageBodyPart = new MimeBodyPart();
-        messageBodyPart.setContent(message, TEXT_MIME_TYPE);
+        messageBodyPart.setContent(message, HTML_UTF8);
+        messageBodyPart.setHeader("Content-Type", PLAIN_UTF8);
+        messageBodyPart.setHeader("Content-Transfer-Encoding", "quoted-printable");
 
         multipart.addBodyPart(messageBodyPart);
 
         MimeBodyPart attachedBodyPart = new MimeBodyPart();
+        attachedBodyPart.setContent(message, HTML_UTF8);
+        attachedBodyPart.setHeader("Content-Type", PLAIN_UTF8);
+        attachedBodyPart.setHeader("Content-Transfer-Encoding", "quoted-printable");
         attachedBodyPart.setDataHandler(new DataHandler(new ByteArrayDataSource(attached, PDF_MIME_TYPE)));
         multipart.addBodyPart(attachedBodyPart);
         return multipart;

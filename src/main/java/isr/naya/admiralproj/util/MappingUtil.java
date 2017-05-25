@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.assertj.core.util.Lists;
 import org.assertj.core.util.Sets;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,8 +20,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.google.common.collect.Sets.newHashSet;
+import static java.time.DayOfWeek.FRIDAY;
+import static java.time.DayOfWeek.SATURDAY;
 import static java.time.temporal.ChronoUnit.DAYS;
 import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MappingUtil {
@@ -32,18 +36,20 @@ public class MappingUtil {
         employees.forEach(e -> {
             List<WorkAgreement> agreements = e.getWorkAgreements();
             Set<WorkInfo> collect = newHashSet();
-            for (int i = 0; i < DAYS.between(from, to); i++) {
-                LocalDate date = from.plusDays(i);
-                if (isActive(agreements)) {
-                    WorkInfo info = new WorkInfo(e.getId(), e.getName(), e.getSurname(), e.getEmail(), e.getEmployeeNumber(), e.getDepartment().getName(), date);
-                    collect.add(info);
+            if (isActive(agreements)) {
+                for (int i = 0; i < DAYS.between(from, to); i++) {
+                    LocalDate date = from.plusDays(i);
+                    if (date.getDayOfWeek() != FRIDAY && date.getDayOfWeek() != SATURDAY) {
+                        WorkInfo info = new WorkInfo(e.getId(), e.getName(), e.getSurname(), e.getEmail(), e.getEmployeeNumber(), e.getDepartment().getName(), date);
+                        collect.add(info);
+                    }
                 }
             }
             result.addAll(collect);
         });
         result.removeAll(days);
         ArrayList<WorkInfo> infos = Lists.newArrayList(result);
-        infos.sort(comparing(WorkInfo::getDate).reversed());
+        infos.sort(comparing(WorkInfo::getEmployeeId).thenComparing(WorkInfo::getDate).reversed());
         return infos;
     }
 
@@ -54,6 +60,13 @@ public class MappingUtil {
             }
         }
         return false;
+    }
+
+    public static List<WorkInfo> filterWeekEndDays(List<WorkInfo> infos) {
+        return infos.stream().filter(info -> {
+            DayOfWeek dayOfWeek = info.getDate().getDayOfWeek();
+            return dayOfWeek != FRIDAY && dayOfWeek != SATURDAY;
+        }).collect(toList());
     }
 
     public static String getDay(int index) throws NotFoundException {

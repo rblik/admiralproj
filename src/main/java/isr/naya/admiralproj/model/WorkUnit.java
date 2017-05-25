@@ -1,6 +1,5 @@
 package isr.naya.admiralproj.model;
 
-import isr.naya.admiralproj.dto.AbsenceType;
 import lombok.*;
 
 import javax.persistence.*;
@@ -33,10 +32,6 @@ public class WorkUnit extends BaseEntity {
 
     @Column(name = "duration")
     private Long duration;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "absence_type")
-    private AbsenceType absenceType;
 
     @Size(max = 75)
     @Column(name = "comment")
