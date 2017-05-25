@@ -5,8 +5,6 @@ import isr.naya.admiralproj.dto.WorkInfo;
 import java.util.List;
 
 public interface ReportCreator {
-    String XLSX = "xlsx";
-    String PDF = "pdf";
     String DEJA_VU_SANS = "DejaVuSans.ttf";
     String UTF8 ="utf-8";
     String CLIENT = "לקוח";
@@ -29,6 +27,10 @@ public interface ReportCreator {
         int hours = round / 60;
         int minutes = round % 60;
         return hours + "h " + ((minutes == 0) ? EMPTY_STR : minutes + "min");
+    }
+
+    default byte[] create(List<WorkInfo> infoList, ReportType reportType) {
+        return create(infoList, reportType, null);
     }
 
     byte[] create(List<WorkInfo> infoList, ReportType reportType, String employeeTitle);

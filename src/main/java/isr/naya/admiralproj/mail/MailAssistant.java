@@ -41,7 +41,7 @@ public class MailAssistant {
                 sender.sendEmail(emplEmail, "ימים חסרים", msg, pdfFile);
             });
         } else {
-            byte[] pdfFile = creator.create(missingDays, EMPTY, null);
+            byte[] pdfFile = creator.create(missingDays, EMPTY);
             sender.sendEmail(email, "ימים חסרים", msg, pdfFile);
         }
     }
