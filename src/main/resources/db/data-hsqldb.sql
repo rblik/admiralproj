@@ -108,6 +108,23 @@ INSERT INTO work_agreements (active, employee_id, project_id, tariff_id) VALUES
   (TRUE , 5, 9, 19),
   (TRUE , 5, 11, 20);
 
+INSERT INTO datelocks(month, year, employee_id) VALUES
+  (1, 2017, 1),
+  (2, 2017, 1),
+  (3, 2017, 1),
+  (1, 2017, 2),
+  (2, 2017, 2),
+  (3, 2017, 2),
+  (1, 2017, 3),
+  (2, 2017, 3),
+  (3, 2017, 3),
+  (1, 2017, 4),
+  (2, 2017, 4),
+  (3, 2017, 4),
+  (1, 2017, 5),
+  (2, 2017, 5),
+  (3, 2017, 5);
+
 INSERT INTO work_units (work_date, start, finish, duration, work_agreement_id, comment) VALUES
   ('2017-03-19', '09:00:00', '11:00:00', 120, 1, 'Just dumping'),
   ('2017-03-19', '12:00:00', '13:00:00', 60,  1, 'Just dumping'),

@@ -4,12 +4,10 @@ import com.fasterxml.jackson.annotation.JsonView;
 import isr.naya.admiralproj.AuthorizedUser;
 import isr.naya.admiralproj.dto.AgreementDto;
 import isr.naya.admiralproj.dto.WorkInfo;
+import isr.naya.admiralproj.model.DateLock;
 import isr.naya.admiralproj.model.Employee;
 import isr.naya.admiralproj.model.WorkUnit;
-import isr.naya.admiralproj.service.EmployeeService;
-import isr.naya.admiralproj.service.WorkAgreementService;
-import isr.naya.admiralproj.service.WorkInfoService;
-import isr.naya.admiralproj.service.WorkUnitService;
+import isr.naya.admiralproj.service.*;
 import isr.naya.admiralproj.util.JsonUtil.UserView;
 import isr.naya.admiralproj.web.security.CorsRestController;
 import lombok.AllArgsConstructor;
@@ -23,6 +21,7 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @CorsRestController
@@ -30,6 +29,7 @@ import java.util.Optional;
 public class UserController {
 
     private EmployeeService employeeService;
+    private LockService lockService;
     private WorkUnitService workUnitService;
     private WorkAgreementService workAgreementService;
     private WorkInfoService workInfoService;
@@ -61,6 +61,14 @@ public class UserController {
         List<AgreementDto> agreements = workAgreementService.getAllForEmployee(AuthorizedUser.id());
         log.info("Employee {} is retrieving his agreements", AuthorizedUser.fullName());
         return agreements;
+    }
+
+    @GetMapping("/locks")
+    public Set<DateLock> getLocks(@RequestParam("from") LocalDate from,
+                                  @RequestParam("to") LocalDate to) {
+        Set<DateLock> locks = lockService.getAllLocks(AuthorizedUser.id(), from, to);
+        log.info("Employee {} is retrieving his locks from {} to {}", AuthorizedUser.fullName(), from.toString(), to.toString());
+        return locks;
     }
 
     @GetMapping("/units")

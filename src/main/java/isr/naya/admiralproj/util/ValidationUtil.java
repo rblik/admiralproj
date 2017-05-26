@@ -8,6 +8,8 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+import java.time.Month;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ValidationUtil {
 
@@ -28,6 +30,9 @@ public class ValidationUtil {
 
     public static <T> void checkNotFound(Integer obj, Integer id, Integer employeeId, Class<T> clazz) {
         checkNotFound(obj != 0, clazz.getSimpleName().replaceAll("([a-z])([A-Z])", "$1 $2").toLowerCase() + " with ID " + id + " for user with ID " + employeeId);
+    }
+    public static <T> void checkNotFound(Integer obj, Integer year, Integer month, Integer employeeId, Class<T> clazz) {
+        checkNotFound(obj != 0, clazz.getSimpleName().replaceAll("([a-z])([A-Z])", "$1 $2").toLowerCase() + " with year " + year + " and month " + Month.of(month) + " for user with ID " + employeeId);
     }
 
     public static <T> int checkNotFound(Integer obj, Integer id, Class<T> clazz) {
