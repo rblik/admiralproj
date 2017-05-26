@@ -52,7 +52,7 @@ public class ReportServiceTest {
 
     @Test
     public void testGetAllWorkUnitsForEmployee() {
-        List<WorkInfo> workInfos = service.getAllForEmployee(5, LocalDate.of(2017, 4, 9), LocalDate.of(2017, 4, 16));
+        List<WorkInfo> workInfos = service.getAllForEmployee(5, LocalDate.of(2017, 4, 19), LocalDate.of(2017, 4, 25));
         assertThat(workInfos, hasSize(5));
     }
 

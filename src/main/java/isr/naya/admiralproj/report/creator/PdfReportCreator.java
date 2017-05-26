@@ -1,7 +1,6 @@
 package isr.naya.admiralproj.report.creator;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import isr.naya.admiralproj.dto.WorkInfo;
@@ -18,6 +17,7 @@ import java.io.IOException;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+import static com.google.common.collect.Lists.partition;
 import static isr.naya.admiralproj.report.ReportCreator.durationToTimeString;
 import static isr.naya.admiralproj.report.ReportType.*;
 import static java.util.Collections.emptyList;
@@ -42,14 +42,13 @@ public class PdfReportCreator implements ReportCreator {
                 orientation = PageSize.A4;
                 partitionSize = 35;
             }
-            Document document = new Document(orientation);
-            List<List<WorkInfo>> partition = infoList.size() == 0 ? singletonList(emptyList()) : Lists.partition(infoList, partitionSize);
             os = new ByteArrayOutputStream();
-
-            PdfWriter writer = PdfWriter.getInstance(document, os);
-            document.open();
             //            fonts
             BaseFont bf = BaseFont.createFont(DEJA_VU_SANS, BaseFont.IDENTITY_H, true);
+            Document document = new Document(orientation);
+            PdfWriter writer = PdfWriter.getInstance(document, os);
+            document.open();
+            List<List<WorkInfo>> partition = infoList.size() == 0 ? singletonList(emptyList()) : partition(infoList, partitionSize);
             //            render
             for (List<WorkInfo> infos : partition) {
                 ColumnText column = createColumn(writer.getDirectContent(), reportType);

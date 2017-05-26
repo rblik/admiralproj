@@ -30,6 +30,11 @@ public class WorkInfo implements Serializable {
     private LocalTime to;
     private Long duration;
     private String comment;
+    private Boolean editable;
+
+    public WorkInfo(Integer unitId, Integer agreementId, Integer employeeId, String employeeName, String employeeSurname, String employeeEmail, String employeeNumber, String departmentName, Integer projectId, String projectName, Integer clientId, String clientName, LocalDate date, LocalTime from, LocalTime to, Long duration, String comment) {
+        this(unitId, agreementId, employeeId, employeeName, employeeSurname, employeeEmail, employeeNumber, departmentName, projectId, projectName, clientId, clientName, date, from, to, duration, comment, null);
+    }
 
     public WorkInfo(Integer employeeId, String employeeName, String employeeSurname, String employeeEmail, String employeeNumber, String departmentName, LocalDate date, Long duration) {
         this(null, null, employeeId, employeeName, employeeSurname, employeeEmail, employeeNumber, departmentName, null, null, null, null, date, null, null, duration, null);
