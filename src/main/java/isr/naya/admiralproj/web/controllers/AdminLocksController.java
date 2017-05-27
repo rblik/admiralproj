@@ -16,16 +16,17 @@ import java.util.Set;
 @Slf4j
 @CorsRestController
 @AllArgsConstructor
-@RequestMapping("/admin/locks")
+@RequestMapping("/admin/dashboard/locks")
 public class AdminLocksController {
 
     private LockService lockService;
 
     @GetMapping
-    public Set<DateLock> getLocks(@RequestParam("from") LocalDate from,
+    public Set<DateLock> getLocks(@RequestParam("employeeId") Integer employeeId,
+                                  @RequestParam("from") LocalDate from,
                                   @RequestParam("to") LocalDate to) {
-        Set<DateLock> locks = lockService.getAllLocks(AuthorizedUser.id(), from, to);
-        log.info("Employee {} is retrieving his locks from {} to {}", AuthorizedUser.fullName(), from.toString(), to.toString());
+        Set<DateLock> locks = lockService.getAllLocks(employeeId, from, to);
+        log.info("Admin {} is retrieving locks of employee (id = {}) from {} to {}", AuthorizedUser.fullName(), employeeId, from.toString(), to.toString());
         return locks;
     }
 

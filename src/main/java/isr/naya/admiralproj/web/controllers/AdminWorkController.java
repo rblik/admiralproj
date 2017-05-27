@@ -16,10 +16,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @CorsRestController
-@RequestMapping("/admin/units")
+@RequestMapping("/admin/dashboard/units")
 @AllArgsConstructor
 public class AdminWorkController {
 
@@ -27,27 +28,37 @@ public class AdminWorkController {
     private WorkUnitService workUnitService;
 
     @GetMapping
-    public List<WorkInfo> getWorkUnits(@RequestParam("from") LocalDate from,
-                                       @RequestParam("to") LocalDate to,
-                                       @RequestParam("employeeId") Integer employeeId) {
+    public List<WorkInfo> getWorkUnits(@RequestParam("employeeId") Integer employeeId,
+                                       @RequestParam("from") LocalDate from,
+                                       @RequestParam("to") LocalDate to) {
         List<WorkInfo> infos = workInfoService.getAllForEmployee(employeeId, from, to);
-        log.info("Admin {} is retrieving all work info for employee (id = {}) from {} to {}", AuthorizedUser.fullName(), employeeId, from, to);
+        log.info("Admin {} is retrieving work units for employee (id = {}) from {} to {}", AuthorizedUser.fullName(), employeeId, from, to);
+        return infos;
+    }
+
+    @GetMapping("/{date}")
+    public List<WorkInfo> getWorkUnitsForDay(@RequestParam("employeeId") Integer employeeId,
+                                             @PathVariable("date") LocalDate date,
+                                             @RequestParam("agreementId") Optional<Integer> agreementId) {
+        List<WorkInfo> infos = workInfoService.getAllForEmployeeByDate(employeeId, agreementId, date);
+        log.info("Admin {} is retrieving work units for employee {} for {}" + (agreementId.isPresent() ? " (agreementId = {})" : ""), AuthorizedUser.fullName(), employeeId, date, agreementId.orElse(null));
         return infos;
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<WorkUnit> saveWorkUnit(@Valid @RequestBody WorkUnit workUnit,
-                                                 @RequestParam("employeeId") Integer employeeId,
-                                                 @RequestParam("agreementId") Integer agreementId) {
-        WorkUnit saved = workUnitService.save(employeeId, agreementId, workUnit);
-        log.info("Admin {} saved a new work unit (id = {}) for employee (id = {}) and agreement (id = {})", AuthorizedUser.fullName(), saved.getId(), employeeId, agreementId);
-        return new ResponseEntity<>(saved, HttpStatus.CREATED);
+    public ResponseEntity<WorkUnit> saveWorkUnit(@RequestParam("employeeId") Integer employeeId,
+                                                 @RequestParam("agreementId") Integer agreementId,
+                                                 @Valid @RequestBody WorkUnit unit) {
+        boolean aNew = unit.isNew();
+        WorkUnit save = workUnitService.save(employeeId, agreementId, unit);
+        log.info("Admin {} {} new unit of work (id = {}) for employee (id = {})", AuthorizedUser.fullName(), aNew ? "saved" : "updated", save.getId(), employeeId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(save);
     }
 
-    @DeleteMapping("/{unitId}")
-    public void deleteWorkUnit(@PathVariable("unitId") Integer unitId,
+    @DeleteMapping("/{id}")
+    public void deleteWorkUnit(@PathVariable("id") Integer id,
                                @RequestParam("employeeId") Integer employeeId) {
-        workUnitService.delete(employeeId, unitId);
-        log.info("Admin {} removed work unit with id = {}", AuthorizedUser.fullName(), unitId);
+        log.info("Admin {} is removing work unit (id = {}) of employee (id = {})", AuthorizedUser.fullName(), id, employeeId);
+        workUnitService.delete(employeeId, id);
     }
 }
