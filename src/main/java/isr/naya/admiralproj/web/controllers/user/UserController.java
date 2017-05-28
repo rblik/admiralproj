@@ -1,4 +1,4 @@
-package isr.naya.admiralproj.web.controllers;
+package isr.naya.admiralproj.web.controllers.user;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import isr.naya.admiralproj.AuthorizedUser;

@@ -1,4 +1,4 @@
-package isr.naya.admiralproj.web.controllers;
+package isr.naya.admiralproj.web.controllers.admin;
 
 import isr.naya.admiralproj.mail.MailAssistant;
 import isr.naya.admiralproj.web.dto.MailReportRequest;

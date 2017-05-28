@@ -1,4 +1,4 @@
-package isr.naya.admiralproj.web.controllers;
+package isr.naya.admiralproj.web.controllers.admin;
 
 import isr.naya.admiralproj.AuthorizedUser;
 import isr.naya.admiralproj.model.Department;
