@@ -34,6 +34,7 @@ public class UserController {
     private WorkAgreementService workAgreementService;
     private WorkInfoService workInfoService;
 
+
     @JsonView(UserView.class)
     @GetMapping("/profile")
     public Employee getProfile() {

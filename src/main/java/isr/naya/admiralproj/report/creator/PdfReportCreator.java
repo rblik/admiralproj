@@ -54,7 +54,7 @@ public class PdfReportCreator implements ReportCreator {
                 ColumnText column = createColumn(writer.getDirectContent(), reportType);
                 column.addElement(createTitle(bf, reportType, 14, EMPTY_STR));
                 column.addElement(createImage(reportType));
-                if (INDIVIDUAL_EMPTY == reportType) column.addElement(createTitle(bf, reportType, 10, employeeTitle));
+                if (INDIVIDUAL_EMPTY == reportType || INDIVIDUAL_PIVOTAL == reportType) column.addElement(createTitle(bf, reportType, 10, employeeTitle));
                 column.addElement(createTable(infos, bf, reportType));
                 //            close
                 column.go();
@@ -71,12 +71,14 @@ public class PdfReportCreator implements ReportCreator {
 
     private PdfPTable createTable(List<WorkInfo> infoList, BaseFont bf, ReportType reportType) throws DocumentException {
 
-        int colNumber = (PIVOTAL == reportType) ? 11 : (INDIVIDUAL_EMPTY == reportType) ? 2 : (PARTIAL == reportType) ? 6 : 5;
+        int colNumber = (PIVOTAL == reportType) ? 11 : (INDIVIDUAL_PIVOTAL == reportType)? 8 : (INDIVIDUAL_EMPTY == reportType) ? 2 : (PARTIAL == reportType) ? 6 : 5;
         PdfPTable table = new PdfPTable(colNumber);
         float cols[] = new float[0];
 
         if (PIVOTAL == reportType) {
             cols = new float[]{180, 50, 30, 30, 20, 70, 120, 50, 80, 100, 80};
+        } else if (INDIVIDUAL_PIVOTAL == reportType) {
+            cols = new float[]{180, 50, 30, 30, 20, 70, 100, 80};
         } else if (PARTIAL == reportType) {
             cols = new float[]{50, 20, 70, 120, 120, 120};
         } else if (EMPTY == reportType) {
@@ -102,7 +104,11 @@ public class PdfReportCreator implements ReportCreator {
                     .forEach(s -> table.addCell(createCell(s, font10, true)));
             infoList.forEach(workInfo -> addFullRow(table, workInfo, font8));
         } else {
-            if (PARTIAL == reportType) {
+            if (INDIVIDUAL_PIVOTAL == reportType) {
+                ImmutableList.of(DESCRIPTION, DURATION, UNTIL, SINCE, DAY, DATE, PROJECT, CLIENT)
+                        .forEach(s -> table.addCell(createCell(s, font10, true)));
+                infoList.forEach(workInfo -> addIndividualFullRow(table, workInfo, font8));
+            } else if (PARTIAL == reportType) {
                 ImmutableList.of(DURATION, DAY, DATE, DEPARTMENT, EMPL_SURNAME, EMPL_NAME)
                         .forEach(s -> table.addCell(createCell(s, font10, true)));
                 infoList.forEach(workInfo -> addPartialRow(table, workInfo, font8));
@@ -152,13 +158,24 @@ public class PdfReportCreator implements ReportCreator {
         table.addCell(createCell(workInfo.getEmployeeName(), font));
     }
 
-    private PdfPCell createCell(String description, Font font) {
-        return createCell(description, font, false);
-    }
-
     private void addIndividualMissedRow(PdfPTable table, WorkInfo workInfo, Font font) {
         table.addCell(createCell(workInfo.getDate() != null ? MappingUtil.getDay(workInfo.getDate().getDayOfWeek().getValue()) : null, font));
         table.addCell(createCell(workInfo.getDate() != null ? workInfo.getDate().toString() : null, font));
+    }
+
+    private void addIndividualFullRow(PdfPTable table, WorkInfo workInfo, Font font) {
+        table.addCell(createCell(workInfo.getComment(), font));
+        table.addCell(createCell(durationToTimeString(workInfo.getDuration()), font));
+        table.addCell(createCell(workInfo.getTo() != null ? workInfo.getTo().truncatedTo(ChronoUnit.MINUTES).toString() : null, font));
+        table.addCell(createCell(workInfo.getFrom() != null ? workInfo.getFrom().truncatedTo(ChronoUnit.MINUTES).toString() : null, font));
+        table.addCell(createCell(workInfo.getDate() != null ? MappingUtil.getDay(workInfo.getDate().getDayOfWeek().getValue()) : null, font));
+        table.addCell(createCell(workInfo.getDate() != null ? workInfo.getDate().toString() : null, font));
+        table.addCell(createCell(workInfo.getProjectName(), font));
+        table.addCell(createCell(workInfo.getClientName(), font));
+    }
+
+    private PdfPCell createCell(String description, Font font) {
+        return createCell(description, font, false);
     }
 
     private PdfPCell createCell(String description, Font font, boolean isHeader) {
@@ -192,6 +209,8 @@ public class PdfReportCreator implements ReportCreator {
         String title = EMPTY_STR;
         if (PIVOTAL == reportType)
             title = "שעות גולמי";
+        else if (INDIVIDUAL_PIVOTAL == reportType)
+            title = employeeTitle.isEmpty()? "שעות בשבוע" : employeeTitle;
         else if (PARTIAL == reportType)
             title = "ימים חלקיים";
         else if (EMPTY == reportType)
