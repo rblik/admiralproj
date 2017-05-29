@@ -18,7 +18,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static com.google.common.collect.Lists.partition;
-import static isr.naya.admiralproj.report.ReportCreator.durationToTimeString;
+import static isr.naya.admiralproj.report.ReportCreator.*;
 import static isr.naya.admiralproj.report.ReportType.*;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
@@ -54,7 +54,8 @@ public class PdfReportCreator implements ReportCreator {
                 ColumnText column = createColumn(writer.getDirectContent(), reportType);
                 column.addElement(createTitle(bf, reportType, 14, EMPTY_STR));
                 column.addElement(createImage(reportType));
-                if (INDIVIDUAL_EMPTY == reportType || INDIVIDUAL_PIVOTAL == reportType) column.addElement(createTitle(bf, reportType, 10, employeeTitle));
+                if (INDIVIDUAL_EMPTY == reportType || INDIVIDUAL_PIVOTAL == reportType)
+                    column.addElement(createTitle(bf, reportType, 10, employeeTitle));
                 column.addElement(createTable(infos, bf, reportType));
                 //            close
                 column.go();
@@ -71,7 +72,7 @@ public class PdfReportCreator implements ReportCreator {
 
     private PdfPTable createTable(List<WorkInfo> infoList, BaseFont bf, ReportType reportType) throws DocumentException {
 
-        int colNumber = (PIVOTAL == reportType) ? 11 : (INDIVIDUAL_PIVOTAL == reportType)? 8 : (INDIVIDUAL_EMPTY == reportType) ? 2 : (PARTIAL == reportType) ? 6 : 5;
+        int colNumber = (PIVOTAL == reportType) ? 11 : (INDIVIDUAL_PIVOTAL == reportType) ? 8 : (INCOME == reportType) ? 7 : (INDIVIDUAL_EMPTY == reportType) ? 2 : (PARTIAL == reportType) ? 6 : 5;
         PdfPTable table = new PdfPTable(colNumber);
         float cols[] = new float[0];
 
@@ -79,6 +80,8 @@ public class PdfReportCreator implements ReportCreator {
             cols = new float[]{180, 50, 30, 30, 20, 70, 120, 50, 80, 100, 80};
         } else if (INDIVIDUAL_PIVOTAL == reportType) {
             cols = new float[]{180, 50, 30, 30, 20, 70, 100, 80};
+        } else if (INCOME == reportType) {
+            cols = new float[]{60, 50, 80, 120, 70, 100, 80};
         } else if (PARTIAL == reportType) {
             cols = new float[]{50, 20, 70, 120, 120, 120};
         } else if (EMPTY == reportType) {
@@ -108,6 +111,10 @@ public class PdfReportCreator implements ReportCreator {
                 ImmutableList.of(DESCRIPTION, DURATION, UNTIL, SINCE, DAY, DATE, PROJECT, CLIENT)
                         .forEach(s -> table.addCell(createCell(s, font10, true)));
                 infoList.forEach(workInfo -> addIndividualFullRow(table, workInfo, font8));
+            } else if (INCOME == reportType) {
+                ImmutableList.of(TOTAL, DURATION, TARIFF, EMPLOYEE, DEPARTMENT, PROJECT, CLIENT)
+                        .forEach(s -> table.addCell(createCell(s, font10, true)));
+                infoList.forEach(workInfo -> addIncomeRow(table, workInfo, font8));
             } else if (PARTIAL == reportType) {
                 ImmutableList.of(DURATION, DAY, DATE, DEPARTMENT, EMPL_SURNAME, EMPL_NAME)
                         .forEach(s -> table.addCell(createCell(s, font10, true)));
@@ -124,6 +131,19 @@ public class PdfReportCreator implements ReportCreator {
                 log.error("Not compatible report type");
             }
         }
+    }
+
+    private void addIncomeRow(PdfPTable table, WorkInfo workInfo, Font font) {
+        table.addCell(createCell(calculateIncome(workInfo.getAmount(), workInfo.getType(), workInfo.getDuration()) + ' ' + getCurrencySign(workInfo.getCurrency()), font));
+        table.addCell(createCell(durationToTimeString(workInfo.getDuration()), font));
+        table.addCell(createCell(
+                ((workInfo.getAmount()) != null ? workInfo.getAmount().toString() : "") + ' ' +
+                        getCurrencySign(workInfo.getCurrency()) + ' ' +
+                        ((workInfo.getType() != null) ? workInfo.getType().getName() : ""), font));
+        table.addCell(createCell(workInfo.getEmployeeSurname() + ' ' + workInfo.getEmployeeName(), font));
+        table.addCell(createCell(workInfo.getDepartmentName(), font));
+        table.addCell(createCell(workInfo.getProjectName(), font));
+        table.addCell(createCell(workInfo.getClientName(), font));
     }
 
     private void addFullRow(PdfPTable table, WorkInfo workInfo, Font font) {
@@ -210,13 +230,15 @@ public class PdfReportCreator implements ReportCreator {
         if (PIVOTAL == reportType)
             title = "שעות גולמי";
         else if (INDIVIDUAL_PIVOTAL == reportType)
-            title = employeeTitle.isEmpty()? "שעות בשבוע" : employeeTitle;
+            title = employeeTitle.isEmpty() ? "שעות בשבוע" : employeeTitle;
+        else if (INCOME == reportType)
+            title = "דוח הכנסות";
         else if (PARTIAL == reportType)
             title = "ימים חלקיים";
         else if (EMPTY == reportType)
             title = "ימים חסרים";
         else if (INDIVIDUAL_EMPTY == reportType)
-            title = employeeTitle.isEmpty()? "ימים חסרים" : employeeTitle;
+            title = employeeTitle.isEmpty() ? "ימים חסרים" : employeeTitle;
         else
             log.error("Not compatible report type");
 

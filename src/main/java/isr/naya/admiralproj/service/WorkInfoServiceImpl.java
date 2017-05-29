@@ -102,4 +102,29 @@ public class WorkInfoServiceImpl implements WorkInfoService {
                     orElseGet(() -> workUnitRepository.getAllByDateBetween(from, to));
     }
 
+    @Override
+    public List<WorkInfo> getIncomeReports(@NonNull LocalDate from, @NonNull LocalDate to,
+                                               @NonNull Optional<Integer> employeeId,
+                                               @NonNull Optional<Integer> departmentId,
+                                               @NonNull Optional<Integer> projectId,
+                                               @NonNull Optional<Integer> clientId) {
+        if (employeeId.isPresent() && projectId.isPresent()) {
+            return workUnitRepository.getAllIncomeReportsBetweenAndEmployeeIdAndProjectId(from, to, employeeId.get(), projectId.get());
+        } else if (employeeId.isPresent()) {
+            return clientId.map(
+                    integer -> workUnitRepository.getAllIncomeReportsBetweenAndEmployeeIdAndClientId(from, to, employeeId.get(), integer)).
+                    orElseGet(() -> workUnitRepository.getAllIncomeReportsBetweenAndEmployeeId(from, to, employeeId.get()));
+        } else if (projectId.isPresent()) {
+            return departmentId.map(
+                    integer -> workUnitRepository.getAllIncomeReportsBetweenAndDepartmentIdAndProjectId(from, to, departmentId.get(), projectId.get())).
+                    orElseGet(() -> workUnitRepository.getAllIncomeReportsBetweenAndProjectId(from, to, projectId.get()));
+        } else if (departmentId.isPresent()) {
+            return clientId.map(
+                    integer -> workUnitRepository.getAllIncomeReportsBetweenAndDepartmentIdAndClientId(from, to, departmentId.get(), clientId.get())).
+                    orElseGet(() -> workUnitRepository.getAllIncomeReportsBetweenAndDepartmentId(from, to, departmentId.get()));
+        } else
+            return clientId.map(
+                    integer -> workUnitRepository.getAllIncomeReportsBetweenAndClientId(from, to, clientId.get())).
+                    orElseGet(() -> workUnitRepository.getAllIncomeReportsBetween(from, to));
+    }
 }

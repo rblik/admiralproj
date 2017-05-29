@@ -57,4 +57,17 @@ public class JsonReportController {
                 (projectId.isPresent() ? " and project (id = {})" : ""), AuthorizedUser.fullName(), from, to);
         return workInfoService.getWorkInfos(from, to, employeeId, departmentId, projectId, clientId);
     }
+
+    @GetMapping("/income")
+    public List<WorkInfo> getIncomeReport(@RequestParam("from") LocalDate from,
+                                          @RequestParam("to") LocalDate to,
+                                          @RequestParam("employeeId") Optional<Integer> employeeId,
+                                          @RequestParam("departmentId") Optional<Integer> departmentId,
+                                          @RequestParam("projectId") Optional<Integer> projectId,
+                                          @RequestParam("clientId") Optional<Integer> clientId) {
+        log.info("Admin {} is creating json income report from {} to {}" +
+                (employeeId.isPresent() ? " for employee (id = {})" : "") +
+                (projectId.isPresent() ? " and project (id = {})" : ""), AuthorizedUser.fullName(), from, to);
+        return workInfoService.getIncomeReports(from, to, employeeId, departmentId, projectId, clientId);
+    }
 }

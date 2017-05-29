@@ -54,6 +54,23 @@ public class XLSReportController {
         return result;
     }
 
+    @GetMapping(value = "/income")
+    public DeferredResult<ResponseEntity<byte[]>> getIncomeReport(@RequestParam("from") LocalDate from,
+                                                                   @RequestParam("to") LocalDate to,
+                                                                   @RequestParam("employeeId") Optional<Integer> employeeId,
+                                                                   @RequestParam("departmentId") Optional<Integer> departmentId,
+                                                                   @RequestParam("projectId") Optional<Integer> projectId,
+                                                                   @RequestParam("clientId") Optional<Integer> clientId) {
+        DeferredResult<ResponseEntity<byte[]>> result = new DeferredResult<>(30000L, defaultResponse());
+        CompletableFuture
+                .supplyAsync(() -> reportCreator.create(workInfoService.getIncomeReports(from, to, employeeId, departmentId, projectId, clientId), INCOME))
+                .thenApplyAsync(bytes -> result.setResult(report(bytes, XLS_TYPE)));
+        log.info("Admin {} is creating xls income report from {} to {}" +
+                (employeeId.isPresent() ? "for employee (id = {})" : "") +
+                (projectId.isPresent() ? "and project (id = {})" : ""), AuthorizedUser.fullName(), from, to);
+        return result;
+    }
+
     @GetMapping(value = "/partial")
     public DeferredResult<ResponseEntity<byte[]>> getPartialDaysReport(@RequestParam(value = "from") LocalDate from,
                                                                        @RequestParam("to") LocalDate to,

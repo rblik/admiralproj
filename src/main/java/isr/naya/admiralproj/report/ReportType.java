@@ -5,5 +5,6 @@ public enum ReportType {
     INDIVIDUAL_PIVOTAL,
     PARTIAL,
     EMPTY,
-    INDIVIDUAL_EMPTY
+    INDIVIDUAL_EMPTY,
+    INCOME
 }

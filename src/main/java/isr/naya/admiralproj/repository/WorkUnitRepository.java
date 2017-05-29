@@ -81,4 +81,32 @@ public interface WorkUnitRepository extends JpaRepository<WorkUnit, Integer> {
 
     @Query("select new isr.naya.admiralproj.dto.WorkInfo(wu.id, wa.id, e.id, e.name, e.surname, e.email, e.employeeNumber, d.name, p.id, p.name, c.id, c.name, wu.date, wu.start, wu.finish, wu.duration, wu.comment) from WorkUnit wu join wu.workAgreement wa join wa.employee e join wa.project p join p.client c join e.department d where e.id =?3 and p.id=?4 and wu.date between ?1 and ?2 order by wu.date desc ")
     List<WorkInfo> getAllByDateBetweenAndEmployeeIdAndProjectId(LocalDate from, LocalDate to, Integer employeeId, Integer projectId);
+
+    // Income Report Block
+    @Query("select new isr.naya.admiralproj.dto.WorkInfo(e.id, e.name, e.surname, d.name, p.id, p.name, c.name, sum(wu.duration), t.amount, t.currency, t.type) from WorkUnit wu join wu.workAgreement wa join wa.employee e join e.department d join wa.project p join p.client c join wa.tariff t where wu.date between ?1 and ?2 group by wa.id, e.id, d.id, p.id, c.id, t.id order by e.name asc")
+    List<WorkInfo> getAllIncomeReportsBetween(LocalDate from, LocalDate to);
+
+    @Query("select new isr.naya.admiralproj.dto.WorkInfo(e.id, e.name, e.surname, d.name, p.id, p.name, c.name, sum(wu.duration), t.amount, t.currency, t.type) from WorkUnit wu join wu.workAgreement wa join wa.employee e join e.department d join wa.project p join p.client c join wa.tariff t where e.id=?3 and wu.date between ?1 and ?2 group by wa.id, e.id, d.id, p.id, c.id, t.id order by e.name asc")
+    List<WorkInfo> getAllIncomeReportsBetweenAndEmployeeId(LocalDate from, LocalDate to, Integer employeeId);
+
+    @Query("select new isr.naya.admiralproj.dto.WorkInfo(e.id, e.name, e.surname, d.name, p.id, p.name, c.name, sum(wu.duration), t.amount, t.currency, t.type) from WorkUnit wu join wu.workAgreement wa join wa.employee e join e.department d join wa.project p join p.client c join wa.tariff t where d.id=?3 and wu.date between ?1 and ?2 group by wa.id, e.id, d.id, p.id, c.id, t.id order by e.name asc")
+    List<WorkInfo> getAllIncomeReportsBetweenAndDepartmentId(LocalDate from, LocalDate to, Integer departmentId);
+
+    @Query("select new isr.naya.admiralproj.dto.WorkInfo(e.id, e.name, e.surname, d.name, p.id, p.name, c.name, sum(wu.duration), t.amount, t.currency, t.type) from WorkUnit wu join wu.workAgreement wa join wa.employee e join e.department d join wa.project p join p.client c join wa.tariff t where p.id=?3 and wu.date between ?1 and ?2 group by wa.id, e.id, d.id, p.id, c.id, t.id order by e.name asc")
+    List<WorkInfo> getAllIncomeReportsBetweenAndProjectId(LocalDate from, LocalDate to, Integer projectId);
+
+    @Query("select new isr.naya.admiralproj.dto.WorkInfo(e.id, e.name, e.surname, d.name, p.id, p.name, c.name, sum(wu.duration), t.amount, t.currency, t.type) from WorkUnit wu join wu.workAgreement wa join wa.employee e join e.department d join wa.project p join p.client c join wa.tariff t where c.id=?3 and wu.date between ?1 and ?2 group by wa.id, e.id, d.id, p.id, c.id, t.id order by e.name asc")
+    List<WorkInfo> getAllIncomeReportsBetweenAndClientId(LocalDate from, LocalDate to, Integer clientId);
+
+    @Query("select new isr.naya.admiralproj.dto.WorkInfo(e.id, e.name, e.surname, d.name, p.id, p.name, c.name, sum(wu.duration), t.amount, t.currency, t.type) from WorkUnit wu join wu.workAgreement wa join wa.employee e join e.department d join wa.project p join p.client c join wa.tariff t where e.id=?3 and c.id=?4 and wu.date between ?1 and ?2 group by wa.id, e.id, d.id, p.id, c.id, t.id order by e.name asc")
+    List<WorkInfo> getAllIncomeReportsBetweenAndEmployeeIdAndClientId(LocalDate from, LocalDate to, Integer employeeId, Integer clientId);
+
+    @Query("select new isr.naya.admiralproj.dto.WorkInfo(e.id, e.name, e.surname, d.name, p.id, p.name, c.name, sum(wu.duration), t.amount, t.currency, t.type) from WorkUnit wu join wu.workAgreement wa join wa.employee e join e.department d join wa.project p join p.client c join wa.tariff t where d.id=?3 and p.id=?4 and wu.date between ?1 and ?2 group by wa.id, e.id, d.id, p.id, c.id, t.id order by e.name asc")
+    List<WorkInfo> getAllIncomeReportsBetweenAndDepartmentIdAndProjectId(LocalDate from, LocalDate to, Integer departmentId, Integer projectId);
+
+    @Query("select new isr.naya.admiralproj.dto.WorkInfo(e.id, e.name, e.surname, d.name, p.id, p.name, c.name, sum(wu.duration), t.amount, t.currency, t.type) from WorkUnit wu join wu.workAgreement wa join wa.employee e join e.department d join wa.project p join p.client c join wa.tariff t where d.id=?3 and c.id=?4 and wu.date between ?1 and ?2 group by wa.id, e.id, d.id, p.id, c.id, t.id order by e.name asc")
+    List<WorkInfo> getAllIncomeReportsBetweenAndDepartmentIdAndClientId(LocalDate from, LocalDate to, Integer departmentId, Integer clientId);
+
+    @Query("select new isr.naya.admiralproj.dto.WorkInfo(e.id, e.name, e.surname, d.name, p.id, p.name, c.name, sum(wu.duration), t.amount, t.currency, t.type) from WorkUnit wu join wu.workAgreement wa join wa.employee e join e.department d join wa.project p join p.client c join wa.tariff t where d.id=?3 and c.id=?4 and wu.date between ?1 and ?2 group by wa.id, e.id, d.id, p.id, c.id, t.id order by e.name asc")
+    List<WorkInfo> getAllIncomeReportsBetweenAndEmployeeIdAndProjectId(LocalDate from, LocalDate to, Integer employeeId, Integer projectId);
 }

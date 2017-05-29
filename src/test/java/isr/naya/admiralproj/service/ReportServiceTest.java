@@ -140,4 +140,13 @@ public class ReportServiceTest {
         assertThat(workUnits, hasSize(5));
     }
 
+    @Test
+    public void testGetIncomeReports() {
+        List<WorkInfo> reportList = service.getIncomeReports(
+                LocalDate.of(2017, 3, 1),
+                LocalDate.of(2017, 4, 1),
+                Optional.of(1), Optional.empty(),
+                Optional.empty(), Optional.empty());
+        assertThat(reportList, hasSize(1));
+    }
 }
