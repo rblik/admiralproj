@@ -9,8 +9,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.validation.ConstraintViolationException;
-
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
@@ -44,11 +42,6 @@ public class ClientServiceTest {
     @Test(expected = NotFoundException.class)
     public void testGetWithWrongId() {
         service.get(-1);
-    }
-
-    @Test(expected = ConstraintViolationException.class)
-    public void testSaveWrong() {
-        service.save(Client.builder().name("Naya").build());
     }
 
     @Test

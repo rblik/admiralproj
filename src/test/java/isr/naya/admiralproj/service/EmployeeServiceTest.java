@@ -67,7 +67,7 @@ public class EmployeeServiceTest {
     @Test
     public void testGetWithDepartmentAndAgreements() {
         Employee employee = service.getWithDepartmentAndAgreements(1);
-        assertThat(employee, nullValue());
+        assertThat(employee, notNullValue());
     }
 
     @Test

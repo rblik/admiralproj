@@ -20,7 +20,7 @@ import static isr.naya.admiralproj.report.ReportType.INDIVIDUAL_PIVOTAL;
 
 @Slf4j
 @CorsRestController
-@RequestMapping("/xlsx")
+@RequestMapping("/backend/xlsx")
 public class UserXlsController {
     private static final String XLS_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
     private WorkInfoService workInfoService;

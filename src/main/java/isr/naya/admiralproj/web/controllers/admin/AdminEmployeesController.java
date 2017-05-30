@@ -20,7 +20,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 @Slf4j
 @CorsRestController
-@RequestMapping("/admin/employees")
+@RequestMapping("/backend/admin/employees")
 @AllArgsConstructor
 public class AdminEmployeesController {
 

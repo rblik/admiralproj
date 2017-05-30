@@ -23,7 +23,7 @@ import static isr.naya.admiralproj.web.util.ReportSender.report;
 
 @Slf4j
 @CorsRestController
-@RequestMapping("/admin/pdf")
+@RequestMapping("/backend/admin/pdf")
 public class PDFReportController {
 
     private static final String PDF_TYPE = "application/pdf";

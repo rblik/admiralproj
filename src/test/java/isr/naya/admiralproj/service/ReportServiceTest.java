@@ -47,7 +47,7 @@ public class ReportServiceTest {
                 hasProperty("employeeId", equalTo(1)),
                 hasProperty("date", equalTo(LocalDate.of(2017, 3, 19))),
                 hasProperty("duration", equalTo(180L)))));
-        assertThat(all, hasSize(21));
+        assertThat(all, hasSize(25));
     }
 
     @Test
@@ -70,14 +70,14 @@ public class ReportServiceTest {
 
     @Test
     public void testGetAllForMissingByEmployee() {
-        List<WorkInfo> days = service.getMissingWorkInfos(LocalDate.of(2017, 1, 1), LocalDate.of(2017, 1, 24), Optional.of(4), Optional.empty());
-        assertThat(days, hasSize(0));
+        List<WorkInfo> days = service.getMissingWorkInfos(LocalDate.of(2017, 1, 1), LocalDate.of(2017, 1, 2), Optional.of(4), Optional.empty());
+        assertThat(days, hasSize(1));
     }
 
     @Test
     public void testGetMissingWorkForParticularEmployees() {
         List<WorkInfo> days = service.getMissingWorkForParticularEmployees(LocalDate.of(2017, 1, 1), LocalDate.of(2017, 1, 24), Arrays.asList(1, 2, 3));
-        assertThat(days, hasSize(69));
+        assertThat(days, hasSize(51));
     }
 
     @Test

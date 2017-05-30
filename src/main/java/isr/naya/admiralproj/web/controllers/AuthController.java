@@ -30,7 +30,7 @@ public class AuthController {
     @Autowired
     private JwtTokenUtil tokenUtil;
 
-    @PostMapping(value = "/auth", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/backend/auth", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<JwtAuthResponse> createAuthToken(@RequestBody JwtAuthRequest request) {
 
         final Authentication authentication;

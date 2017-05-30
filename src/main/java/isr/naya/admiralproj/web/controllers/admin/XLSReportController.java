@@ -23,7 +23,7 @@ import static isr.naya.admiralproj.web.util.ReportSender.report;
 
 @Slf4j
 @CorsRestController
-@RequestMapping("/admin/xlsx")
+@RequestMapping("/backend/admin/xlsx")
 public class XLSReportController {
 
     private static final String XLS_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";

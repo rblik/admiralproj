@@ -16,7 +16,7 @@ import java.util.List;
 
 @Slf4j
 @CorsRestController
-@RequestMapping("/admin/departments")
+@RequestMapping("/backend/admin/departments")
 @AllArgsConstructor
 public class AdminDepartmentsController {
 

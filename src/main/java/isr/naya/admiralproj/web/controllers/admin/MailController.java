@@ -18,7 +18,7 @@ import static isr.naya.admiralproj.web.util.ReportSender.defaultResponse;
 
 @Slf4j
 @CorsRestController
-@RequestMapping("/admin/mail")
+@RequestMapping("/backend/admin/mail")
 public class MailController {
 
     @Autowired

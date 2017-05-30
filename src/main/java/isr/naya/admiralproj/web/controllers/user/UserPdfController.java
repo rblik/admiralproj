@@ -20,7 +20,7 @@ import static isr.naya.admiralproj.report.ReportType.INDIVIDUAL_PIVOTAL;
 
 @Slf4j
 @CorsRestController
-@RequestMapping("/pdf")
+@RequestMapping("/backend/pdf")
 public class UserPdfController {
 
     private static final String PDF_TYPE = "application/pdf";

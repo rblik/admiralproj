@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @Slf4j
 @CorsRestController
-@RequestMapping("/admin/info")
+@RequestMapping("/backend/admin/info")
 @AllArgsConstructor
 public class JsonReportController {
 

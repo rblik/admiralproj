@@ -26,6 +26,7 @@ import java.util.Set;
 @Slf4j
 @CorsRestController
 @AllArgsConstructor
+@RequestMapping("/backend")
 public class UserController {
 
     private EmployeeService employeeService;

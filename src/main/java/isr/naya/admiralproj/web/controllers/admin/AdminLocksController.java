@@ -16,7 +16,7 @@ import java.util.Set;
 @Slf4j
 @CorsRestController
 @AllArgsConstructor
-@RequestMapping("/admin/dashboard/locks")
+@RequestMapping("/backend/admin/dashboard/locks")
 public class AdminLocksController {
 
     private LockService lockService;

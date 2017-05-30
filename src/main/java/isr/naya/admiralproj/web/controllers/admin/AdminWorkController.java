@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @Slf4j
 @CorsRestController
-@RequestMapping("/admin/dashboard/units")
+@RequestMapping("/backend/admin/dashboard/units")
 @AllArgsConstructor
 public class AdminWorkController {
 
