@@ -8,6 +8,7 @@ import isr.naya.admiralproj.web.security.CorsRestController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,7 +39,8 @@ public class XLSReportController {
     }
 
     @GetMapping(value = "/pivotal")
-    public DeferredResult<ResponseEntity<byte[]>> getPivotalReport(@RequestParam("from") LocalDate from,
+    public DeferredResult<ResponseEntity<byte[]>> getPivotalReport(@AuthenticationPrincipal AuthorizedUser admin,
+                                                                   @RequestParam("from") LocalDate from,
                                                                    @RequestParam("to") LocalDate to,
                                                                    @RequestParam("employeeId") Optional<Integer> employeeId,
                                                                    @RequestParam("departmentId") Optional<Integer> departmentId,
@@ -50,29 +52,31 @@ public class XLSReportController {
                 .thenApplyAsync(bytes -> result.setResult(report(bytes, XLS_TYPE)));
         log.info("Admin {} is creating xls pivotal report from {} to {}" +
                 (employeeId.isPresent() ? "for employee (id = {})" : "") +
-                (projectId.isPresent() ? "and project (id = {})" : ""), AuthorizedUser.fullName(), from, to);
+                (projectId.isPresent() ? "and project (id = {})" : ""), admin.getFullName(), from, to);
         return result;
     }
 
     @GetMapping(value = "/income")
-    public DeferredResult<ResponseEntity<byte[]>> getIncomeReport(@RequestParam("from") LocalDate from,
-                                                                   @RequestParam("to") LocalDate to,
-                                                                   @RequestParam("employeeId") Optional<Integer> employeeId,
-                                                                   @RequestParam("departmentId") Optional<Integer> departmentId,
-                                                                   @RequestParam("projectId") Optional<Integer> projectId,
-                                                                   @RequestParam("clientId") Optional<Integer> clientId) {
+    public DeferredResult<ResponseEntity<byte[]>> getIncomeReport(@AuthenticationPrincipal AuthorizedUser admin,
+                                                                  @RequestParam("from") LocalDate from,
+                                                                  @RequestParam("to") LocalDate to,
+                                                                  @RequestParam("employeeId") Optional<Integer> employeeId,
+                                                                  @RequestParam("departmentId") Optional<Integer> departmentId,
+                                                                  @RequestParam("projectId") Optional<Integer> projectId,
+                                                                  @RequestParam("clientId") Optional<Integer> clientId) {
         DeferredResult<ResponseEntity<byte[]>> result = new DeferredResult<>(30000L, defaultResponse());
         CompletableFuture
                 .supplyAsync(() -> reportCreator.create(workInfoService.getIncomeReports(from, to, employeeId, departmentId, projectId, clientId), INCOME))
                 .thenApplyAsync(bytes -> result.setResult(report(bytes, XLS_TYPE)));
         log.info("Admin {} is creating xls income report from {} to {}" +
                 (employeeId.isPresent() ? "for employee (id = {})" : "") +
-                (projectId.isPresent() ? "and project (id = {})" : ""), AuthorizedUser.fullName(), from, to);
+                (projectId.isPresent() ? "and project (id = {})" : ""), admin.getFullName(), from, to);
         return result;
     }
 
     @GetMapping(value = "/partial")
-    public DeferredResult<ResponseEntity<byte[]>> getPartialDaysReport(@RequestParam(value = "from") LocalDate from,
+    public DeferredResult<ResponseEntity<byte[]>> getPartialDaysReport(@AuthenticationPrincipal AuthorizedUser admin,
+                                                                       @RequestParam(value = "from") LocalDate from,
                                                                        @RequestParam("to") LocalDate to,
                                                                        @RequestParam("limit") Integer limit,
                                                                        @RequestParam("employeeId") Optional<Integer> employeeId,
@@ -83,12 +87,13 @@ public class XLSReportController {
                 .thenApplyAsync(bytes -> result.setResult(report(bytes, XLS_TYPE)));
         log.info("Admin {} is creating excel partial report from {} to {}" +
                 (employeeId.isPresent() ? " for employee (id = {})" : "") +
-                (departmentId.isPresent() ? " and department (id = {})" : ""), AuthorizedUser.fullName(), from, to);
+                (departmentId.isPresent() ? " and department (id = {})" : ""), admin.getFullName(), from, to);
         return result;
     }
 
     @GetMapping(value = "/missing")
-    public DeferredResult<ResponseEntity<byte[]>> getMissingDaysReport(@RequestParam("from") LocalDate from,
+    public DeferredResult<ResponseEntity<byte[]>> getMissingDaysReport(@AuthenticationPrincipal AuthorizedUser admin,
+                                                                       @RequestParam("from") LocalDate from,
                                                                        @RequestParam("to") LocalDate to,
                                                                        @RequestParam("employeeId") Optional<Integer> employeeId,
                                                                        @RequestParam("departmentId") Optional<Integer> departmentId) {
@@ -98,7 +103,7 @@ public class XLSReportController {
                 .thenApplyAsync(bytes -> result.setResult(report(bytes, XLS_TYPE)));
         log.info("Admin {} is creating excel missing report from {} to {}" +
                 (employeeId.isPresent() ? " for employee (id = {})" : "") +
-                (departmentId.isPresent() ? " and department (id = {})" : ""), AuthorizedUser.fullName(), from, to);
+                (departmentId.isPresent() ? " and department (id = {})" : ""), admin.getFullName(), from, to);
         return result;
     }
 }

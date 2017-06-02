@@ -6,6 +6,7 @@ import isr.naya.admiralproj.service.WorkInfoService;
 import isr.naya.admiralproj.web.security.CorsRestController;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,30 +24,33 @@ public class JsonReportController {
     private WorkInfoService workInfoService;
 
     @GetMapping("/partial")
-    public List<WorkInfo> getPartialDaysReport(@RequestParam("from") LocalDate from,
+    public List<WorkInfo> getPartialDaysReport(@AuthenticationPrincipal AuthorizedUser admin,
+                                               @RequestParam("from") LocalDate from,
                                                @RequestParam("to") LocalDate to,
                                                @RequestParam("limit") Integer limit,
                                                @RequestParam("employeeId") Optional<Integer> employeeId,
                                                @RequestParam("departmentId") Optional<Integer> departmentId) {
         log.info("Admin {} is creating json partial report from {} to {}" +
                 (employeeId.isPresent() ? " for employee (id = {})" : "") +
-                (departmentId.isPresent() ? " and department (id = {})" : ""), AuthorizedUser.fullName(), from, to);
+                (departmentId.isPresent() ? " and department (id = {})" : ""), admin.getFullName(), from, to);
         return workInfoService.getPartialWorkInfos(from, to, limit, employeeId, departmentId);
     }
 
     @GetMapping("/missing")
-    public List<WorkInfo> getMissingDaysReport(@RequestParam("from") LocalDate from,
+    public List<WorkInfo> getMissingDaysReport(@AuthenticationPrincipal AuthorizedUser admin,
+                                               @RequestParam("from") LocalDate from,
                                                @RequestParam("to") LocalDate to,
                                                @RequestParam("employeeId") Optional<Integer> employeeId,
                                                @RequestParam("departmentId") Optional<Integer> departmentId) {
         log.info("Admin {} is creating json missing report from {} to {}" +
                 (employeeId.isPresent() ? " for employee (id = {})" : "") +
-                (departmentId.isPresent() ? " and department (id = {})" : ""), AuthorizedUser.fullName(), from, to);
+                (departmentId.isPresent() ? " and department (id = {})" : ""), admin.getFullName(), from, to);
         return workInfoService.getMissingWorkInfos(from, to, employeeId, departmentId);
     }
 
     @GetMapping("/pivotal")
-    public List<WorkInfo> getPivotalReport(@RequestParam("from") LocalDate from,
+    public List<WorkInfo> getPivotalReport(@AuthenticationPrincipal AuthorizedUser admin,
+                                           @RequestParam("from") LocalDate from,
                                            @RequestParam("to") LocalDate to,
                                            @RequestParam("employeeId") Optional<Integer> employeeId,
                                            @RequestParam("departmentId") Optional<Integer> departmentId,
@@ -54,12 +58,13 @@ public class JsonReportController {
                                            @RequestParam("clientId") Optional<Integer> clientId) {
         log.info("Admin {} is creating json pivotal report from {} to {}" +
                 (employeeId.isPresent() ? " for employee (id = {})" : "") +
-                (projectId.isPresent() ? " and project (id = {})" : ""), AuthorizedUser.fullName(), from, to);
+                (projectId.isPresent() ? " and project (id = {})" : ""), admin.getFullName(), from, to);
         return workInfoService.getWorkInfos(from, to, employeeId, departmentId, projectId, clientId);
     }
 
     @GetMapping("/income")
-    public List<WorkInfo> getIncomeReport(@RequestParam("from") LocalDate from,
+    public List<WorkInfo> getIncomeReport(@AuthenticationPrincipal AuthorizedUser admin,
+                                          @RequestParam("from") LocalDate from,
                                           @RequestParam("to") LocalDate to,
                                           @RequestParam("employeeId") Optional<Integer> employeeId,
                                           @RequestParam("departmentId") Optional<Integer> departmentId,
@@ -67,7 +72,7 @@ public class JsonReportController {
                                           @RequestParam("clientId") Optional<Integer> clientId) {
         log.info("Admin {} is creating json income report from {} to {}" +
                 (employeeId.isPresent() ? " for employee (id = {})" : "") +
-                (projectId.isPresent() ? " and project (id = {})" : ""), AuthorizedUser.fullName(), from, to);
+                (projectId.isPresent() ? " and project (id = {})" : ""), admin.getFullName(), from, to);
         return workInfoService.getIncomeReports(from, to, employeeId, departmentId, projectId, clientId);
     }
 }

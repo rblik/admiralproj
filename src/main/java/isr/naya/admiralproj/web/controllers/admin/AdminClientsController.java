@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,23 +25,25 @@ public class AdminClientsController {
     private ClientService clientService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Client> saveClient(@Valid @RequestBody Client client) {
+    public ResponseEntity<Client> saveClient(@AuthenticationPrincipal AuthorizedUser admin,
+                                             @Valid @RequestBody Client client) {
         Client saved = clientService.save(client);
-        log.info("Admin {} saved a new client {} with id = {}", AuthorizedUser.fullName(), saved.getName(), saved.getId());
+        log.info("Admin {} saved a new client {} with id = {}", admin.getFullName(), saved.getName(), saved.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @GetMapping
-    public List<Client> getAllClients() {
+    public List<Client> getAllClients(@AuthenticationPrincipal AuthorizedUser admin) {
         List<Client> clients = clientService.getAll();
-        log.info("Admin {} is retrieving all clients", AuthorizedUser.fullName());
+        log.info("Admin {} is retrieving all clients", admin.getFullName());
         return clients;
     }
 
     @GetMapping("/{clientId}")
-    public ClientDto getClient(@PathVariable("clientId") Integer clientId) {
+    public ClientDto getClient(@AuthenticationPrincipal AuthorizedUser admin,
+                               @PathVariable("clientId") Integer clientId) {
         ClientDto client = clientService.get(clientId);
-        log.info("Admin {} is retrieving client with id = {}", AuthorizedUser.fullName(), clientId);
+        log.info("Admin {} is retrieving client with id = {}", admin.getFullName(), clientId);
         return client;
     }
 }

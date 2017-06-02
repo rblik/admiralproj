@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -27,32 +28,36 @@ public class AdminEmployeesController {
     private EmployeeService employeeService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Employee> saveEmployee(@Valid @RequestBody Employee employee,
+    public ResponseEntity<Employee> saveEmployee(@AuthenticationPrincipal AuthorizedUser admin,
+                                                 @Valid @RequestBody Employee employee,
                                                  @RequestParam("departmentId") Integer departmentId) {
         Employee saved = employeeService.save(departmentId, employee);
-        log.info("Admin {} saved a new employee {} with id = {} for department (id = {})", AuthorizedUser.fullName(), saved.getName() + saved.getSurname(), saved.getId(), departmentId);
+        log.info("Admin {} saved a new employee {} with id = {} for department (id = {})", admin.getFullName(), saved.getName() + saved.getSurname(), saved.getId(), departmentId);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @GetMapping
-    public List<Employee> getAllEmployees() {
+    public List<Employee> getAllEmployees(@AuthenticationPrincipal AuthorizedUser admin) {
         List<Employee> employees = employeeService.getAllWithDepartments();
-        log.info("Admin {} is retrieving all employees", AuthorizedUser.fullName());
+        log.info("Admin {} is retrieving all employees", admin.getFullName());
         return employees;
     }
 
     @JsonView(JsonUtil.AdminView.class)
     @GetMapping("/{employeeId}")
-    public Employee getEmployee(@PathVariable("employeeId") Integer employeeId) {
+    public Employee getEmployee(@AuthenticationPrincipal AuthorizedUser admin,
+                                @PathVariable("employeeId") Integer employeeId) {
         Employee employee = employeeService.getWithDepartment(employeeId);
-        log.info("Admin {} is retrieving employee with id = {}", AuthorizedUser.fullName(), employeeId);
+        log.info("Admin {} is retrieving employee with id = {}", admin.getFullName(), employeeId);
         return employee;
     }
 
     @PutMapping("/{employeeId}")
-    public ResponseEntity<?> updatePassword(@PathVariable("employeeId") Integer employeeId,
+    public ResponseEntity<?> updatePassword(@AuthenticationPrincipal AuthorizedUser admin,
+                                            @PathVariable("employeeId") Integer employeeId,
                                             @RequestParam("password") String password) {
         employeeService.updatePass(employeeId, password);
+        log.info("Admin {} is updating password of employee (id = {})", admin.getFullName(), employeeId);
         return ResponseEntity.status(OK).build();
     }
 }
