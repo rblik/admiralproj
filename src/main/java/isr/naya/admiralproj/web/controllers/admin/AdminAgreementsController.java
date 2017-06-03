@@ -4,7 +4,7 @@ import isr.naya.admiralproj.AuthorizedUser;
 import isr.naya.admiralproj.dto.AgreementDto;
 import isr.naya.admiralproj.model.WorkAgreement;
 import isr.naya.admiralproj.service.WorkAgreementService;
-import isr.naya.admiralproj.web.security.CorsRestController;
+import isr.naya.admiralproj.web.controllers.CorsRestController;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

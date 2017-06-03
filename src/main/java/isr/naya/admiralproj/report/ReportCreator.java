@@ -1,6 +1,7 @@
 package isr.naya.admiralproj.report;
 
 import isr.naya.admiralproj.dto.Currency;
+import isr.naya.admiralproj.dto.ReportFile;
 import isr.naya.admiralproj.dto.TariffType;
 import isr.naya.admiralproj.dto.WorkInfo;
 
@@ -53,9 +54,9 @@ public interface ReportCreator {
         }
     }
 
-    default byte[] create(List<WorkInfo> infoList, ReportType reportType) {
+    default ReportFile create(List<WorkInfo> infoList, ReportType reportType) {
         return create(infoList, reportType, null);
     }
 
-    byte[] create(List<WorkInfo> infoList, ReportType reportType, String employeeTitle);
+    ReportFile create(List<WorkInfo> infoList, ReportType reportType, String employeeTitle);
 }

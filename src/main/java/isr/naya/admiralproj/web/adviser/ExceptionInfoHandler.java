@@ -4,6 +4,7 @@ import com.itextpdf.text.ExceptionConverter;
 import isr.naya.admiralproj.exception.NotFoundException;
 import isr.naya.admiralproj.exception.TimeOverlappingException;
 import isr.naya.admiralproj.exception.TimeRangeException;
+import isr.naya.admiralproj.web.dto.ErrorInfoDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;

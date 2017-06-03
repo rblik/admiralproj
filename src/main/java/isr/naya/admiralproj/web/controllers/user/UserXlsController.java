@@ -1,10 +1,11 @@
 package isr.naya.admiralproj.web.controllers.user;
 
 import isr.naya.admiralproj.AuthorizedUser;
+import isr.naya.admiralproj.dto.ReportFile;
 import isr.naya.admiralproj.report.ReportCreator;
 import isr.naya.admiralproj.report.annotations.Xlsx;
 import isr.naya.admiralproj.service.WorkInfoService;
-import isr.naya.admiralproj.web.security.CorsRestController;
+import isr.naya.admiralproj.web.controllers.CorsRestController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,6 @@ import static isr.naya.admiralproj.web.util.ReportSender.report;
 @CorsRestController
 @RequestMapping("/backend/xlsx")
 public class UserXlsController {
-    private static final String XLS_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
     private WorkInfoService workInfoService;
     private ReportCreator reportCreator;
 
@@ -37,9 +37,9 @@ public class UserXlsController {
     public ResponseEntity<byte[]> getPivotalReport(@AuthenticationPrincipal AuthorizedUser user,
                                                    @RequestParam("from") LocalDate from,
                                                    @RequestParam("to") LocalDate to) {
-        byte[] bytes = reportCreator.create(workInfoService.getWorkInfos(from, to, Optional.of(user.getId()), Optional.empty(), Optional.empty(), Optional.empty()), INDIVIDUAL_PIVOTAL);
+        ReportFile file = reportCreator.create(workInfoService.getWorkInfos(from, to, Optional.of(user.getId()), Optional.empty(), Optional.empty(), Optional.empty()), INDIVIDUAL_PIVOTAL);
         log.info("Employee {} is creating xls week report from {} to {}", user.getFullName(), from, to);
-        return report(bytes, XLS_TYPE);
+        return report(file);
     }
 
 }

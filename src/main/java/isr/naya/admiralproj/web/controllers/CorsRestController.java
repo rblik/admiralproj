@@ -1,4 +1,4 @@
-package isr.naya.admiralproj.web.security;
+package isr.naya.admiralproj.web.controllers;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,7 +11,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({ElementType.TYPE})
 @Retention(RUNTIME)
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 @RestController
 public @interface CorsRestController {
 }

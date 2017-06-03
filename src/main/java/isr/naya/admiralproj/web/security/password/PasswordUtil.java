@@ -1,5 +1,7 @@
 package isr.naya.admiralproj.web.security.password;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -7,6 +9,7 @@ import java.util.regex.Pattern;
 
 import static org.springframework.util.StringUtils.isEmpty;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PasswordUtil {
     private static final Pattern BCRYPT_PATTERN = Pattern.compile("\\A\\$2a?\\$\\d\\d\\$[./0-9A-Za-z]{53}");
     private static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();

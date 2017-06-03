@@ -4,7 +4,7 @@ import isr.naya.admiralproj.AuthorizedUser;
 import isr.naya.admiralproj.report.ReportCreator;
 import isr.naya.admiralproj.report.annotations.Xlsx;
 import isr.naya.admiralproj.service.WorkInfoService;
-import isr.naya.admiralproj.web.security.CorsRestController;
+import isr.naya.admiralproj.web.controllers.CorsRestController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,18 +16,17 @@ import org.springframework.web.context.request.async.DeferredResult;
 
 import java.time.LocalDate;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 
 import static isr.naya.admiralproj.report.ReportType.*;
+import static isr.naya.admiralproj.web.util.LogUtil.logMessage;
 import static isr.naya.admiralproj.web.util.ReportSender.defaultResponse;
 import static isr.naya.admiralproj.web.util.ReportSender.report;
+import static java.util.concurrent.CompletableFuture.supplyAsync;
 
 @Slf4j
 @CorsRestController
 @RequestMapping("/backend/admin/xlsx")
 public class XLSReportController {
-
-    private static final String XLS_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
     private WorkInfoService workInfoService;
     private ReportCreator reportCreator;
@@ -47,12 +46,12 @@ public class XLSReportController {
                                                                    @RequestParam("projectId") Optional<Integer> projectId,
                                                                    @RequestParam("clientId") Optional<Integer> clientId) {
         DeferredResult<ResponseEntity<byte[]>> result = new DeferredResult<>(30000L, defaultResponse());
-        CompletableFuture
-                .supplyAsync(() -> reportCreator.create(workInfoService.getWorkInfos(from, to, employeeId, departmentId, projectId, clientId), PIVOTAL))
-                .thenApplyAsync(bytes -> result.setResult(report(bytes, XLS_TYPE)));
-        log.info("Admin {} is creating xls pivotal report from {} to {}" +
-                (employeeId.isPresent() ? "for employee (id = {})" : "") +
-                (projectId.isPresent() ? "and project (id = {})" : ""), admin.getFullName(), from, to);
+        supplyAsync(() -> reportCreator.create(workInfoService.getWorkInfos(from, to, employeeId, departmentId, projectId, clientId), PIVOTAL))
+                .thenApplyAsync(file -> result.setResult(report(file)));
+        log.info(logMessage("pivotal", "xls", employeeId, departmentId, projectId, clientId),
+                admin.getFullName(), from, to,
+                employeeId.orElseGet(() -> departmentId.orElseGet(() -> null)),
+                projectId.orElseGet(() -> clientId.orElseGet(() -> null)));
         return result;
     }
 
@@ -65,12 +64,12 @@ public class XLSReportController {
                                                                   @RequestParam("projectId") Optional<Integer> projectId,
                                                                   @RequestParam("clientId") Optional<Integer> clientId) {
         DeferredResult<ResponseEntity<byte[]>> result = new DeferredResult<>(30000L, defaultResponse());
-        CompletableFuture
-                .supplyAsync(() -> reportCreator.create(workInfoService.getIncomeReports(from, to, employeeId, departmentId, projectId, clientId), INCOME))
-                .thenApplyAsync(bytes -> result.setResult(report(bytes, XLS_TYPE)));
-        log.info("Admin {} is creating xls income report from {} to {}" +
-                (employeeId.isPresent() ? "for employee (id = {})" : "") +
-                (projectId.isPresent() ? "and project (id = {})" : ""), admin.getFullName(), from, to);
+        supplyAsync(() -> reportCreator.create(workInfoService.getIncomeReports(from, to, employeeId, departmentId, projectId, clientId), INCOME))
+                .thenApplyAsync(file -> result.setResult(report(file)));
+        log.info(logMessage("income", "xls", employeeId, departmentId, projectId, clientId),
+                admin.getFullName(), from, to,
+                employeeId.orElseGet(() -> departmentId.orElseGet(() -> null)),
+                projectId.orElseGet(() -> clientId.orElseGet(() -> null)));
         return result;
     }
 
@@ -82,12 +81,11 @@ public class XLSReportController {
                                                                        @RequestParam("employeeId") Optional<Integer> employeeId,
                                                                        @RequestParam("departmentId") Optional<Integer> departmentId) {
         DeferredResult<ResponseEntity<byte[]>> result = new DeferredResult<>(30000L, defaultResponse());
-        CompletableFuture
-                .supplyAsync(() -> reportCreator.create(workInfoService.getPartialWorkInfos(from, to, limit, employeeId, departmentId), PARTIAL))
-                .thenApplyAsync(bytes -> result.setResult(report(bytes, XLS_TYPE)));
-        log.info("Admin {} is creating excel partial report from {} to {}" +
-                (employeeId.isPresent() ? " for employee (id = {})" : "") +
-                (departmentId.isPresent() ? " and department (id = {})" : ""), admin.getFullName(), from, to);
+        supplyAsync(() -> reportCreator.create(workInfoService.getPartialWorkInfos(from, to, limit, employeeId, departmentId), PARTIAL))
+                .thenApplyAsync(file -> result.setResult(report(file)));
+        log.info(logMessage("partial", "xls", employeeId, departmentId),
+                admin.getFullName(), from, to,
+                employeeId.orElseGet(() -> departmentId.orElseGet(() -> null)));
         return result;
     }
 
@@ -98,12 +96,11 @@ public class XLSReportController {
                                                                        @RequestParam("employeeId") Optional<Integer> employeeId,
                                                                        @RequestParam("departmentId") Optional<Integer> departmentId) {
         DeferredResult<ResponseEntity<byte[]>> result = new DeferredResult<>(30000L, defaultResponse());
-        CompletableFuture
-                .supplyAsync(() -> reportCreator.create(workInfoService.getMissingWorkInfos(from, to, employeeId, departmentId), EMPTY))
-                .thenApplyAsync(bytes -> result.setResult(report(bytes, XLS_TYPE)));
-        log.info("Admin {} is creating excel missing report from {} to {}" +
-                (employeeId.isPresent() ? " for employee (id = {})" : "") +
-                (departmentId.isPresent() ? " and department (id = {})" : ""), admin.getFullName(), from, to);
+        supplyAsync(() -> reportCreator.create(workInfoService.getMissingWorkInfos(from, to, employeeId, departmentId), EMPTY))
+                .thenApplyAsync(file -> result.setResult(report(file)));
+        log.info(logMessage("missing", "xls", employeeId, departmentId),
+                admin.getFullName(), from, to,
+                employeeId.orElseGet(() -> departmentId.orElseGet(() -> null)));
         return result;
     }
 }

@@ -1,12 +1,12 @@
 package isr.naya.admiralproj.web.dto;
 
-import lombok.Data;
+import lombok.Value;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
+@Value
 public class MailReportRequest {
     @NotNull
     private LocalDate from;

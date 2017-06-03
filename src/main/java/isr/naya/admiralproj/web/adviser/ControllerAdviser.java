@@ -1,7 +1,7 @@
 package isr.naya.admiralproj.web.adviser;
 
-import isr.naya.admiralproj.web.util.LocalDateFormatter;
-import isr.naya.admiralproj.web.util.LocalTimeFormatter;
+import isr.naya.admiralproj.web.formatters.LocalDateFormatter;
+import isr.naya.admiralproj.web.formatters.LocalTimeFormatter;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RestController;

@@ -1,6 +1,7 @@
 package isr.naya.admiralproj.report.creator;
 
 
+import isr.naya.admiralproj.dto.ReportFile;
 import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.report.ReportCreator;
 import isr.naya.admiralproj.report.ReportType;
@@ -20,6 +21,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static isr.naya.admiralproj.dto.ReportFileType.XLS;
 import static isr.naya.admiralproj.report.ReportCreator.*;
 import static isr.naya.admiralproj.report.ReportType.*;
 import static org.apache.poi.ss.util.WorkbookUtil.createSafeSheetName;
@@ -30,7 +32,7 @@ import static org.apache.poi.ss.util.WorkbookUtil.createSafeSheetName;
 public class XlsReportCreator implements ReportCreator {
 
     @Override
-    public byte[] create(@NonNull List<WorkInfo> infoList, @NonNull ReportType reportType, String employeeTitle) {
+    public ReportFile create(@NonNull List<WorkInfo> infoList, @NonNull ReportType reportType, String employeeTitle) {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet(createSafeSheetName(reportType.name() + LocalDate.now().toString()));
@@ -62,7 +64,7 @@ public class XlsReportCreator implements ReportCreator {
             throw new RuntimeException(e);
         }
 
-        return os.toByteArray();
+        return new ReportFile(XLS, os.toByteArray());
     }
 
     private void populateTitle(Row row, ReportType reportType) {

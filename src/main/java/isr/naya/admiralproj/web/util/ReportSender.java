@@ -1,6 +1,7 @@
 package isr.naya.admiralproj.web.util;
 
 
+import isr.naya.admiralproj.dto.ReportFile;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -19,12 +20,12 @@ public class ReportSender {
         return new ResponseEntity<>(headers, HttpStatus.SERVICE_UNAVAILABLE);
     }
 
-    public static ResponseEntity<byte[]> report(byte[] body, String returnType) {
+    public static ResponseEntity<byte[]> report(ReportFile file) {
         HttpHeaders headers = new HttpHeaders();
         headers.setCacheControl("no-store");
         headers.setPragma("no-cache");
         headers.setExpires(0);
-        headers.set(CONTENT_TYPE, returnType);
-        return new ResponseEntity<>(body, headers, HttpStatus.OK);
+        headers.set(CONTENT_TYPE, file.getFileType().getName());
+        return new ResponseEntity<>(file.getContent(), headers, HttpStatus.OK);
     }
 }

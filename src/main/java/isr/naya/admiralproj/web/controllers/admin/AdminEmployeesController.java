@@ -5,7 +5,7 @@ import isr.naya.admiralproj.AuthorizedUser;
 import isr.naya.admiralproj.model.Employee;
 import isr.naya.admiralproj.service.EmployeeService;
 import isr.naya.admiralproj.util.JsonUtil;
-import isr.naya.admiralproj.web.security.CorsRestController;
+import isr.naya.admiralproj.web.controllers.CorsRestController;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

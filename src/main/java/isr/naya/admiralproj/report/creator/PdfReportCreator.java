@@ -3,6 +3,7 @@ package isr.naya.admiralproj.report.creator;
 import com.google.common.collect.ImmutableList;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
+import isr.naya.admiralproj.dto.ReportFile;
 import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.report.ReportCreator;
 import isr.naya.admiralproj.report.ReportType;
@@ -18,6 +19,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static com.google.common.collect.Lists.partition;
+import static isr.naya.admiralproj.dto.ReportFileType.PDF;
 import static isr.naya.admiralproj.report.ReportCreator.*;
 import static isr.naya.admiralproj.report.ReportType.*;
 import static java.util.Collections.emptyList;
@@ -29,7 +31,7 @@ import static java.util.Collections.singletonList;
 public class PdfReportCreator implements ReportCreator {
 
     @Override
-    public byte[] create(@NonNull List<WorkInfo> infoList, @NonNull ReportType reportType, String employeeTitle) {
+    public ReportFile create(@NonNull List<WorkInfo> infoList, @NonNull ReportType reportType, String employeeTitle) {
 
         ByteArrayOutputStream os;
         try {
@@ -66,7 +68,7 @@ public class PdfReportCreator implements ReportCreator {
             log.error("An error occurred while creating report. {}", e.getLocalizedMessage());
             throw new ExceptionConverter(e);
         }
-        return os.toByteArray();
+        return new ReportFile(PDF, os.toByteArray());
 
     }
 

@@ -1,10 +1,9 @@
 package isr.naya.admiralproj.web.controllers;
 
-import isr.naya.admiralproj.web.security.CorsRestController;
 import isr.naya.admiralproj.web.security.JwtTokenUtil;
 import isr.naya.admiralproj.web.security.dto.JwtAuthRequest;
 import isr.naya.admiralproj.web.security.dto.JwtAuthResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,13 +20,11 @@ import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.http.ResponseEntity.status;
 
 @CorsRestController
+@AllArgsConstructor
 public class AuthController {
 
-    @Autowired
     private AuthenticationManager manager;
-    @Autowired
     private UserDetailsService service;
-    @Autowired
     private JwtTokenUtil tokenUtil;
 
     @PostMapping(value = "/backend/auth", consumes = MediaType.APPLICATION_JSON_VALUE)
