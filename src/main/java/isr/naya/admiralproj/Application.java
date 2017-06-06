@@ -13,7 +13,7 @@ import static isr.naya.admiralproj.util.JsonUtil.getMapper;
 @EnableCaching
 @EnableScheduling
 @SpringBootApplication
-public class Application /*extends SpringBootServletInitializer*/ {
+public class Application/* extends SpringBootServletInitializer*/ {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
@@ -21,6 +21,7 @@ public class Application /*extends SpringBootServletInitializer*/ {
 
     /*@Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        builder.application().setAdditionalProfiles("postgres");
         return builder.sources(Application.class);
     }*/
 
