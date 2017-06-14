@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import isr.naya.admiralproj.AuthorizedUser;
 import isr.naya.admiralproj.dto.AgreementDto;
 import isr.naya.admiralproj.dto.WorkInfo;
-import isr.naya.admiralproj.model.DateLock;
 import isr.naya.admiralproj.model.Employee;
 import isr.naya.admiralproj.model.WorkUnit;
 import isr.naya.admiralproj.service.*;
@@ -22,7 +21,6 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Slf4j
 @CorsRestController
@@ -68,12 +66,12 @@ public class UserController {
     }
 
     @GetMapping("/locks")
-    public Set<DateLock> getLocks(@AuthenticationPrincipal AuthorizedUser user,
-                                  @RequestParam("from") LocalDate from,
-                                  @RequestParam("to") LocalDate to) {
-        Set<DateLock> locks = lockService.getAllLocks(user.getId(), from, to);
-        log.info("Employee {} is retrieving his locks from {} to {}", user.getFullName(), from.toString(), to.toString());
-        return locks;
+    public boolean isLockExist(@AuthenticationPrincipal AuthorizedUser user,
+                                  @RequestParam("year") Integer year,
+                                  @RequestParam("month") Integer month) {
+        boolean lockExists = lockService.isLockExists(user.getId(), year, month);
+        log.info("Employee {} is ckecking his lock for {} {}", user.getFullName(), month.toString(), year.toString());
+        return lockExists;
     }
 
     @GetMapping("/units")

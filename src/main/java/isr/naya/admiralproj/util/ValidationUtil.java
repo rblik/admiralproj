@@ -1,14 +1,17 @@
 package isr.naya.admiralproj.util;
 
+import isr.naya.admiralproj.exception.DateLockedException;
 import isr.naya.admiralproj.exception.NotFoundException;
 import isr.naya.admiralproj.exception.TimeOverlappingException;
 import isr.naya.admiralproj.exception.TimeRangeException;
+import isr.naya.admiralproj.model.DateLock;
 import isr.naya.admiralproj.model.WorkUnit;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import java.time.Month;
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ValidationUtil {
@@ -26,6 +29,11 @@ public class ValidationUtil {
             throw new TimeOverlappingException("There is already a record for this period of time.");
         } else
             return true;
+    }
+
+    public static WorkUnit checkLock(WorkUnit unit, List<DateLock> lock) {
+        if (lock != null && !lock.isEmpty()) throw new DateLockedException("This date is locked");
+        else return unit;
     }
 
     public static <T> void checkNotFound(Integer obj, Integer id, Integer employeeId, Class<T> clazz) {

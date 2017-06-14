@@ -10,9 +10,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
 import java.time.Month;
-import java.util.Set;
 
 @Slf4j
 @CorsRestController
@@ -23,13 +21,13 @@ public class AdminLocksController {
     private LockService lockService;
 
     @GetMapping
-    public Set<DateLock> getLocks(@AuthenticationPrincipal AuthorizedUser admin,
+    public boolean isExist(@AuthenticationPrincipal AuthorizedUser admin,
                                   @RequestParam("employeeId") Integer employeeId,
-                                  @RequestParam("from") LocalDate from,
-                                  @RequestParam("to") LocalDate to) {
-        Set<DateLock> locks = lockService.getAllLocks(employeeId, from, to);
-        log.info("Admin {} is retrieving locks of employee (id = {}) from {} to {}", admin.getFullName(), employeeId, from.toString(), to.toString());
-        return locks;
+                                  @RequestParam("year") Integer year,
+                                  @RequestParam("month") Integer month) {
+        boolean lock = lockService.isLockExists(employeeId, year, month);
+        log.info("Admin {} is ckecking lock of employee (id = {}) for {} {}", admin.getFullName(), employeeId, month.toString(), year.toString());
+        return lock;
     }
 
     @PostMapping

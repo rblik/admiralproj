@@ -2,11 +2,10 @@ package isr.naya.admiralproj.service;
 
 import isr.naya.admiralproj.model.DateLock;
 
-import java.time.LocalDate;
-import java.util.Set;
-
 public interface LockService {
-    Set<DateLock> getAllLocks(Integer employeeId, LocalDate from, LocalDate to);
+    DateLock getLock(Integer employeeId, Integer year, Integer month);
+
+    boolean isLockExists(Integer employeeId, Integer year, Integer month);
 
     DateLock saveLock(DateLock lock, Integer employeeId);
 

@@ -1,6 +1,7 @@
 package isr.naya.admiralproj.web.adviser;
 
 import com.itextpdf.text.ExceptionConverter;
+import isr.naya.admiralproj.exception.DateLockedException;
 import isr.naya.admiralproj.exception.NotFoundException;
 import isr.naya.admiralproj.exception.TimeOverlappingException;
 import isr.naya.admiralproj.exception.TimeRangeException;
@@ -42,6 +43,13 @@ public class ExceptionInfoHandler {
     public ErrorInfoDTO conflict(HttpServletRequest req, DataIntegrityViolationException e) {
         DataIntegrityViolationException exception = new DataIntegrityViolationException(extractError(e.getCause().getCause().getMessage()));
         return logAndGetErrorInfo(req, exception, false);
+    }
+
+    @ResponseStatus(value = HttpStatus.CONFLICT)  // 409
+    @ExceptionHandler(DateLockedException.class)
+    @Order(Ordered.HIGHEST_PRECEDENCE + 1)
+    public ErrorInfoDTO dateLockedError(HttpServletRequest req, DateLockedException e) {
+        return logAndGetErrorInfo(req, e, false);
     }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST) // 400

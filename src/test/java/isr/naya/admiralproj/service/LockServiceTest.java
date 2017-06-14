@@ -6,11 +6,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.LocalDate;
 import java.time.Month;
-import java.util.Set;
 
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -23,21 +22,21 @@ public class LockServiceTest {
     @Test
     public void testSaveLock() throws Exception {
         service.saveLock(DateLock.builder().year(2017).month(Month.MAY.getValue()).build(), 1);
-        Set<DateLock> locks = service.getAllLocks(1, LocalDate.of(2017, Month.JANUARY, 1), LocalDate.MAX);
-        assertThat(locks, hasSize(4));
+        DateLock lock = service.getLock(1, 2017, Month.MAY.getValue());
+        assertThat(lock, notNullValue());
     }
 
     @Test
-    public void testGetAllLocks() {
-        Set<DateLock> locks = service.getAllLocks(1, LocalDate.of(2017, Month.JANUARY, 1), LocalDate.MAX);
-        assertThat(locks, hasSize(3));
+    public void testGetLock() {
+        DateLock lock = service.getLock(1, 2017, Month.MARCH.getValue());
+        assertThat(lock, notNullValue());
     }
 
     @Test
     public void testRemoveLock() throws Exception {
         service.removeLock(1, 2017, Month.MARCH.getValue());
-        Set<DateLock> locks = service.getAllLocks(1, LocalDate.of(2017, Month.JANUARY, 1), LocalDate.MAX);
-        assertThat(locks, hasSize(2));
+        DateLock lock = service.getLock(1, 2017, Month.MARCH.getValue());
+        assertThat(lock, nullValue());
     }
 
 }

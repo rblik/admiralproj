@@ -9,8 +9,7 @@ import lombok.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
 import static isr.naya.admiralproj.util.ValidationUtil.checkNotFound;
 
@@ -22,8 +21,14 @@ public class LockServiceImpl implements LockService {
     private EmployeeRepository employeeRepository;
 
     @Override
-    public Set<DateLock> getAllLocks(@NonNull Integer employeeId, @NonNull LocalDate from, @NonNull LocalDate to) {
-        return lockRepository.getAllLocksByEmployeeIdAndDateRange(employeeId, from.getYear(), from.getMonth().getValue(), to.getYear(), to.getMonth().getValue());
+    public DateLock getLock(@NonNull Integer employeeId, @NonNull Integer year, @NonNull Integer month) {
+        List<DateLock> locks = lockRepository.getLockByEmployeeIdAndYearAndMonth(employeeId, year, month);
+        return locks.size() == 0 ? null : locks.get(0);
+    }
+
+    @Override
+    public boolean isLockExists(Integer employeeId, Integer year, Integer month) {
+        return getLock(employeeId, year, month) != null;
     }
 
     @Override
