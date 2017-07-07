@@ -38,6 +38,7 @@ public class XlsReportCreator implements ReportCreator {
         XSSFSheet sheet = workbook.createSheet(createSafeSheetName(reportType.name() + LocalDate.now().toString()));
 
         Row row = sheet.createRow(0);
+        sheet.getCTWorksheet().getSheetViews().getSheetViewArray(0).setRightToLeft(true);
         populateTitle(row, reportType);
 
         int rowNum = 1;
@@ -53,7 +54,6 @@ public class XlsReportCreator implements ReportCreator {
                 sheet.setColumnWidth(i, 4000);
 
             }
-            sheet.getCTWorksheet().getSheetViews().getSheetViewArray(0).setRightToLeft(true);
         }
 
         try {

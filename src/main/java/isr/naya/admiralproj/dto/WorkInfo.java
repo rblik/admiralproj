@@ -54,8 +54,8 @@ public class WorkInfo implements Serializable {
         this(null, null, employeeId, employeeName, employeeSurname, employeeEmail, employeeNumber, departmentName, null, null, null, null, date, null, null, null, null);
     }
 
-    public WorkInfo(Integer agreementId, LocalDate date, Long duration) {
-        this(null, agreementId, null, null, null, null, null, null, null, null, null, null, date, null, null, duration, null);
+    public WorkInfo(Integer agreementId, LocalDate date, String clientName, Long duration) {
+        this(null, agreementId, null, null, null, null, null, null, null, null, null, clientName, date, null, null, duration, null);
     }
 
     public WorkInfo(Integer agreementId, Integer employeeId, String employeeName, String employeeSurname, String departmentName, Integer projectId, String projectName, Integer clientId, String clientName, LocalDate date) {
