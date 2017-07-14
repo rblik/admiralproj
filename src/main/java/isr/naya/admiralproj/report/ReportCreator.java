@@ -1,9 +1,7 @@
 package isr.naya.admiralproj.report;
 
-import isr.naya.admiralproj.dto.Currency;
-import isr.naya.admiralproj.dto.ReportFile;
-import isr.naya.admiralproj.dto.TariffType;
-import isr.naya.admiralproj.dto.WorkInfo;
+import isr.naya.admiralproj.dto.*;
+import isr.naya.admiralproj.model.WorkUnit;
 
 import java.util.List;
 
@@ -17,8 +15,10 @@ public interface ReportCreator {
     String DEPARTMENT = "צוות";
     String EMPL_NUMBER = "מ''ע";
     String EMPLOYEE = "עובד";
-    String DATE = "תעריך";
+    String DATE = "תאריך";
+    String DAY_OF_MONTH = "יום בחודש";
     String DAY = "יום";
+    String PROJECT_ID = "מזהה מיקום עבודה";
     String SINCE = "מ-";
     String UNTIL = "עד-";
     String DURATION = "משך";
@@ -59,4 +59,8 @@ public interface ReportCreator {
     }
 
     ReportFile create(List<WorkInfo> infoList, ReportType reportType, String employeeTitle);
+
+    ReportFile generateTemplate(List<AgreementDto> agreements, List<WorkInfo> infos);
+
+    List<WorkUnit> readFromFile(ReportFile file, Integer year, Integer month);
 }

@@ -1,10 +1,7 @@
 package isr.naya.admiralproj.web.adviser;
 
 import com.itextpdf.text.ExceptionConverter;
-import isr.naya.admiralproj.exception.DateLockedException;
-import isr.naya.admiralproj.exception.NotFoundException;
-import isr.naya.admiralproj.exception.TimeOverlappingException;
-import isr.naya.admiralproj.exception.TimeRangeException;
+import isr.naya.admiralproj.exception.*;
 import isr.naya.admiralproj.web.dto.ErrorInfoDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -49,6 +46,13 @@ public class ExceptionInfoHandler {
     @ExceptionHandler(DateLockedException.class)
     @Order(Ordered.HIGHEST_PRECEDENCE + 1)
     public ErrorInfoDTO dateLockedError(HttpServletRequest req, DateLockedException e) {
+        return logAndGetErrorInfo(req, e, false);
+    }
+
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)  // 400
+    @ExceptionHandler(IllegalCellFormatException.class)
+    @Order(Ordered.HIGHEST_PRECEDENCE + 1)
+    public ErrorInfoDTO cellFormatError(HttpServletRequest req, IllegalCellFormatException e) {
         return logAndGetErrorInfo(req, e, false);
     }
 

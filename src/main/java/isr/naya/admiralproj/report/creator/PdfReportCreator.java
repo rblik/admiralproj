@@ -3,8 +3,10 @@ package isr.naya.admiralproj.report.creator;
 import com.google.common.collect.ImmutableList;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
+import isr.naya.admiralproj.dto.AgreementDto;
 import isr.naya.admiralproj.dto.ReportFile;
 import isr.naya.admiralproj.dto.WorkInfo;
+import isr.naya.admiralproj.model.WorkUnit;
 import isr.naya.admiralproj.report.ReportCreator;
 import isr.naya.admiralproj.report.ReportType;
 import isr.naya.admiralproj.report.annotations.Pdf;
@@ -64,12 +66,23 @@ public class PdfReportCreator implements ReportCreator {
                 document.newPage();
             }
             document.close();
+            os.close();
         } catch (Exception e) {
             log.error("An error occurred while creating report. {}", e.getLocalizedMessage());
             throw new ExceptionConverter(e);
         }
         return new ReportFile(PDF, os.toByteArray());
 
+    }
+
+    @Override
+    public ReportFile generateTemplate(List<AgreementDto> agreements, List<WorkInfo> infos) {
+        return ReportFile.empty(PDF);
+    }
+
+    @Override
+    public List<WorkUnit> readFromFile(ReportFile file, Integer year, Integer month) {
+        return null;
     }
 
     private PdfPTable createTable(List<WorkInfo> infoList, BaseFont bf, ReportType reportType) throws DocumentException {
