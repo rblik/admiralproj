@@ -5,6 +5,7 @@ import isr.naya.admiralproj.AuthorizedUser;
 import isr.naya.admiralproj.dto.AgreementDto;
 import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.model.Employee;
+import isr.naya.admiralproj.model.MonthInfo;
 import isr.naya.admiralproj.model.WorkUnit;
 import isr.naya.admiralproj.service.*;
 import isr.naya.admiralproj.util.JsonUtil.UserView;
@@ -29,10 +30,10 @@ import java.util.Optional;
 public class UserController {
 
     private EmployeeService employeeService;
-    private LockService lockService;
     private WorkUnitService workUnitService;
     private WorkAgreementService workAgreementService;
     private WorkInfoService workInfoService;
+    private MonthInfoService monthInfoService;
 
 
     @JsonView(UserView.class)
@@ -65,13 +66,13 @@ public class UserController {
         return agreements;
     }
 
-    @GetMapping("/locks")
-    public boolean isLockExist(@AuthenticationPrincipal AuthorizedUser user,
+    @GetMapping("/monthinfo")
+    public MonthInfo getMonthInfo(@AuthenticationPrincipal AuthorizedUser user,
                                   @RequestParam("year") Integer year,
                                   @RequestParam("month") Integer month) {
-        boolean lockExists = lockService.isLockExists(user.getId(), year, month);
-        log.info("Employee {} is ckecking his lock for {} {}", user.getFullName(), month.toString(), year.toString());
-        return lockExists;
+        MonthInfo monthInfo = monthInfoService.getOrNew(user.getId(), year, month);
+        log.info("Employee {} is retrieving his month info for {} {}", user.getFullName(), month.toString(), year.toString());
+        return monthInfo;
     }
 
     @GetMapping("/units")

@@ -213,7 +213,7 @@ public class XlsReportCreator implements ReportCreator {
             rowBody.createCell(6).setCellValue(agreements.get(i).getClientName());
             rowBody.createCell(7).setCellValue(agreements.get(i).getProjectName());
             rowBody.createCell(8).setCellValue(agreements.get(i).getAgreementId());
-            alignCenter(rowBody, true);
+            alignCenter(rowBody, false);
         }
     }
 
@@ -331,6 +331,10 @@ public class XlsReportCreator implements ReportCreator {
         font.setBold(isBold);
         cellStyle.setFont(font);
         cellStyle.setAlignment(HorizontalAlignment.CENTER);
+        cellStyle.setBorderBottom(BorderStyle.THIN);
+        cellStyle.setBorderTop(BorderStyle.THIN);
+        cellStyle.setBorderRight(BorderStyle.THIN);
+        cellStyle.setBorderLeft(BorderStyle.THIN);
         row.cellIterator().forEachRemaining(cell -> cell.setCellStyle(cellStyle));
     }
 }
