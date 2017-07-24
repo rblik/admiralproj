@@ -62,7 +62,7 @@ public class PdfMailService implements MailService {
         MimeMessage message = mailSender.createMimeMessage();
 
         try {
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            MimeMessageHelper helper = new MimeMessageHelper(message, file != null);
             helper.setFrom(address, titleName);
             helper.setTo(email);
             helper.setSubject(subject);
