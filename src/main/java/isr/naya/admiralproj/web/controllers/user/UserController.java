@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import isr.naya.admiralproj.AuthorizedUser;
 import isr.naya.admiralproj.dto.AgreementDto;
 import isr.naya.admiralproj.dto.WorkInfo;
+import isr.naya.admiralproj.mail.MailService;
 import isr.naya.admiralproj.model.Employee;
 import isr.naya.admiralproj.model.MonthInfo;
 import isr.naya.admiralproj.model.WorkUnit;
@@ -22,6 +23,9 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+
+import static org.springframework.http.HttpStatus.OK;
 
 @Slf4j
 @CorsRestController
@@ -34,6 +38,7 @@ public class UserController {
     private WorkAgreementService workAgreementService;
     private WorkInfoService workInfoService;
     private MonthInfoService monthInfoService;
+    private MailService service;
 
 
     @JsonView(UserView.class)
@@ -51,6 +56,16 @@ public class UserController {
         WorkUnit save = workUnitService.save(user.getId(), agreementId, unit);
         log.info("Employee {} {} new unit of work (id = {})", user.getFullName(), aNew? "saved": "updated", save.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(save);
+    }
+
+    @PutMapping("/profile/password")
+    public ResponseEntity<?> updatePassword(@AuthenticationPrincipal AuthorizedUser user,
+                                            @RequestParam("password") String password) {
+        employeeService.updatePass(user.getId(), password);
+        log.info("Employee {} is updating his password", user.getFullName());
+        CompletableFuture.runAsync(() ->
+                service.sendSimpleMessage(user.getUsername(), "סיסמא חדשה", password));
+        return ResponseEntity.status(OK).build();
     }
 
     @DeleteMapping("/units/{id}")

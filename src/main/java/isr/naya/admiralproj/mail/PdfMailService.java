@@ -38,6 +38,11 @@ public class PdfMailService implements MailService {
     private String titleName;
 
     @Override
+    public void sendSimpleMessage(@NonNull String email, @NonNull String subject, String message) {
+        doSend(email, subject, message, null);
+    }
+
+    @Override
     public void sendReport(@NonNull List<WorkInfo> infos, String email, @NonNull String subject, String message) {
         String msg = (message == null) ? EMPTY_STR : message;
         if (isEmpty(email)) {
@@ -62,7 +67,7 @@ public class PdfMailService implements MailService {
             helper.setTo(email);
             helper.setSubject(subject);
             helper.setText(msg);
-            helper.addAttachment(subject + ".pdf", new ByteArrayDataSource(file.getContent(), file.getFileType().getName()));
+            if (file != null) helper.addAttachment(subject + ".pdf", new ByteArrayDataSource(file.getContent(), file.getFileType().getName()));
             mailSender.send(message);
             log.info("Message to {}  was successfully sent", email);
         } catch (Exception ex) {

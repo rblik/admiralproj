@@ -6,5 +6,7 @@ import java.util.List;
 
 public interface MailService {
 
+    void sendSimpleMessage(String email, String subject, String message);
+
     void sendReport(List<WorkInfo> infos, String email, String subject, String message);
 }
