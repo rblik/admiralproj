@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface ClientRepository extends JpaRepository<Client, Integer> {
 
-    @Query("select distinct c from Client c left join fetch c.addresses a left join fetch c.phones")
+    @Query("select distinct c from Client c left join fetch c.addresses a left join fetch c.phones order by c.name")
     List<Client> getAllWithAddressesAndPhones();
 
-    @Query("select distinct c from Client c left join fetch c.addresses a left join fetch c.phones where c.id=?1")
+    @Query("select distinct c from Client c left join fetch c.addresses a left join fetch c.phones where c.id=?1  order by c.name")
     Client getWithAddressesAndPhones(Integer clientId);
 }

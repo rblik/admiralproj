@@ -26,7 +26,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     @Query("update Employee e set e.enabled=true where e.id=?1")
     int enable(Integer employeeId);
 
-    @Query("select e from Employee e join fetch e.department")
+    @Query("select e from Employee e join fetch e.department order by e.name, e.surname")
     List<Employee> getAllWithDepartments();
 
     @Query("select distinct e from Employee e join fetch e.department join fetch e.roles where e.id=?1")

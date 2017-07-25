@@ -29,7 +29,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Cacheable(value = "departments", key = "getMethodName()")
     @Override
     public List<Department> getAll() {
-        return departmentRepository.findAll();
+        return departmentRepository.findAllByOrderByName();
     }
 
     @Cacheable(value = "departments", key = "getMethodName() + #id")
