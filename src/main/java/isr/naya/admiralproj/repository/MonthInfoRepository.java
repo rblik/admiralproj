@@ -16,6 +16,6 @@ public interface MonthInfoRepository extends JpaRepository<MonthInfo, Integer> {
     List<MonthInfo> getByEmployeeIdAndYearAndMonth(Integer employeeId, Integer year, Integer month);
 
     @Modifying
-    @Query("update MonthInfo info set info.locked = true where info.employee.id=?1 and info.year=?2 and info.month=?3")
+    @Query("update MonthInfo info set info.locked = false where info.employee.id=?1 and info.year=?2 and info.month=?3")
     int deleteLock(Integer employeeId, Integer year, Integer month);
 }
