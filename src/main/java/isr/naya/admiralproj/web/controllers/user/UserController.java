@@ -5,6 +5,7 @@ import isr.naya.admiralproj.AuthorizedUser;
 import isr.naya.admiralproj.dto.AgreementDto;
 import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.mail.MailService;
+import isr.naya.admiralproj.model.DefaultChoice;
 import isr.naya.admiralproj.model.Employee;
 import isr.naya.admiralproj.model.MonthInfo;
 import isr.naya.admiralproj.model.WorkUnit;
@@ -39,6 +40,7 @@ public class UserController {
     private WorkInfoService workInfoService;
     private MonthInfoService monthInfoService;
     private MailService service;
+    private DefaultChoiceService choiceService;
 
 
     @JsonView(UserView.class)
@@ -51,11 +53,20 @@ public class UserController {
     @PostMapping(value = "/units", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WorkUnit> saveWorkUnit(@AuthenticationPrincipal AuthorizedUser user,
                                                  @RequestParam("agreementId") Integer agreementId,
+                                                 @RequestParam(value = "isDefault", required = false) boolean isDefault,
                                                  @Valid @RequestBody WorkUnit unit) {
         boolean aNew = unit.isNew();
         WorkUnit save = workUnitService.save(user.getId(), agreementId, unit);
-        log.info("Employee {} {} new unit of work (id = {})", user.getFullName(), aNew? "saved": "updated", save.getId());
+        log.info("Employee {} {} new unit of work (id = {})", user.getFullName(), aNew ? "saved" : "updated", save.getId());
+        if (isDefault) choiceService.saveAsDefault(unit, user.getId(), agreementId);
         return ResponseEntity.status(HttpStatus.CREATED).body(save);
+    }
+
+    @GetMapping(value = "/profile/defaultchoice")
+    public DefaultChoice getDefaultChoice(@AuthenticationPrincipal AuthorizedUser user) {
+        DefaultChoice choice = choiceService.get(user.getId());
+        log.info("Employee {} is retrieving his default choice", user.getFullName());
+        return choice;
     }
 
     @PutMapping("/profile/password")

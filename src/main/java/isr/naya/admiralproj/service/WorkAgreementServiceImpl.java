@@ -46,4 +46,9 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
     public List<AgreementDto> getAgreementsGraph() {
         return workAgreementRepository.getAllWithEmployeesAndDepartmentsAndProjectsAndClients();
     }
+
+    @Override
+    public WorkAgreement get(@NonNull Integer agreementId) {
+        return checkNotFound(workAgreementRepository.findOne(agreementId), agreementId, WorkAgreement.class);
+    }
 }
