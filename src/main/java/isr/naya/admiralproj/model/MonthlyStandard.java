@@ -1,25 +1,28 @@
 package isr.naya.admiralproj.model;
 
 import isr.naya.admiralproj.util.YearMonthConverter;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.YearMonth;
 
-@EqualsAndHashCode(callSuper = false)
 @Data
+@Entity
+@Table(name = "monthly_standards")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity
-@Table(name = "datelocks")
-public class DateLock extends BaseEntity{
+public class MonthlyStandard implements Serializable{
 
+    @Id
     @Convert(converter = YearMonthConverter.class)
     @Column(name = "year_month")
     private YearMonth yearMonth;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "employee_id", referencedColumnName = "id")
-    private Employee employee;
+    @Column(name = "hours_sum")
+    private Integer hoursSum;
 }

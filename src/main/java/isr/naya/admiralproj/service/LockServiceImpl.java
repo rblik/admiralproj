@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static isr.naya.admiralproj.util.ValidationUtil.checkNotFound;
+import static java.time.YearMonth.of;
 
 @Service
 @AllArgsConstructor
@@ -22,7 +23,7 @@ public class LockServiceImpl implements LockService {
 
     @Override
     public DateLock getLock(@NonNull Integer employeeId, @NonNull Integer year, @NonNull Integer month) {
-        List<DateLock> locks = lockRepository.getLockByEmployeeIdAndYearAndMonth(employeeId, year, month);
+        List<DateLock> locks = lockRepository.getLockByEmployeeIdAndYearAndMonth(employeeId, of(year, month));
         return locks.size() == 0 ? null : locks.get(0);
     }
 
@@ -33,14 +34,15 @@ public class LockServiceImpl implements LockService {
 
     @Override
     @Transactional
-    public DateLock saveLock(@NonNull DateLock lock, @NonNull Integer employeeId) {
-        lock.setEmployee(checkNotFound(employeeRepository.findOne(employeeId), employeeId, Employee.class));
+    public DateLock saveLock(@NonNull Integer employeeId, Integer year, Integer month) {
+        Employee employee = checkNotFound(employeeRepository.findOne(employeeId), employeeId, Employee.class);
+        DateLock lock = DateLock.builder().yearMonth(of(year, month)).employee(employee).build();
         return lockRepository.save(lock);
     }
 
     @Override
     @Transactional
     public void removeLock(Integer employeeId, Integer year, Integer month) {
-        checkNotFound(lockRepository.delete(employeeId, year, month), year, month, employeeId, DateLock.class);
+        checkNotFound(lockRepository.delete(employeeId, of(year,month)), year, month, employeeId, DateLock.class);
     }
 }

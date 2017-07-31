@@ -1,18 +1,16 @@
 package isr.naya.admiralproj.service;
 
-import isr.naya.admiralproj.model.Employee;
-import isr.naya.admiralproj.model.MonthInfo;
-import isr.naya.admiralproj.repository.EmployeeRepository;
-import isr.naya.admiralproj.repository.MonthInfoRepository;
+import isr.naya.admiralproj.model.MonthlyStandard;
+import isr.naya.admiralproj.repository.MonthlyStandardRepository;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.util.ArrayList;
+import java.time.YearMonth;
 import java.util.List;
 
-import static isr.naya.admiralproj.util.ValidationUtil.checkNotFound;
+import static java.time.YearMonth.now;
+import static java.time.YearMonth.of;
 
 /**
  * Created by jonathan on 14/07/17.
@@ -21,66 +19,40 @@ import static isr.naya.admiralproj.util.ValidationUtil.checkNotFound;
 @AllArgsConstructor
 public class MonthInfoServiceImpl implements MonthInfoService {
 
-    private MonthInfoRepository repository;
-    private EmployeeRepository employeeRepository;
+    private MonthlyStandardRepository monthlyStandardRepository;
 
     @Override
-    public MonthInfo getOrNew(@NonNull Integer employeeId, @NonNull Integer year, @NonNull Integer month) {
-        MonthInfo monthInfo = get(employeeId, year, month);
-        return monthInfo != null ? monthInfo : new MonthInfo(year, month, false,0, null);
+    public MonthlyStandard saveStandardForMonth(@NonNull Integer year, @NonNull Integer month, @NonNull Integer hoursSum) {
+        MonthlyStandard standard = MonthlyStandard
+                .builder()
+                .yearMonth(of(year, month))
+                .hoursSum(hoursSum)
+                .build();
+        return monthlyStandardRepository.save(standard);
     }
 
     @Override
-    public MonthInfo get(@NonNull Integer employeeId, @NonNull Integer year, @NonNull Integer month) {
-        List<MonthInfo> infos = repository.getByEmployeeIdAndYearAndMonth(employeeId, year, month);
-        return infos.size() == 0 ? null : infos.get(0);
+    public List<MonthlyStandard> getAllStandards() {
+        return monthlyStandardRepository.findAll();
     }
 
     @Override
-    public boolean isLockExists(@NonNull Integer employeeId, @NonNull Integer year, @NonNull Integer month) {
-        MonthInfo info = get(employeeId, year, month);
-        return info != null && info.isLocked();
+    public List<MonthlyStandard> getStandardsForNLastMonths(int monthsNumber) {
+        YearMonth month = now().minusMonths(monthsNumber);
+        return monthlyStandardRepository.findAllByYearMonthGreaterThan(month);
     }
 
     @Override
-    @Transactional
-    public MonthInfo save(@NonNull MonthInfo info, @NonNull Integer employeeId) {
-        MonthInfo monthInfo = get(employeeId, info.getYear(), info.getMonth());
-        if (monthInfo == null) {
-            info.setEmployee(checkNotFound(employeeRepository.findOne(employeeId), employeeId, Employee.class));
-            return repository.save(info);
-        } else {
-            monthInfo.setLocked(info.isLocked());
-            monthInfo.setHoursSum(info.getHoursSum());
-            return repository.save(monthInfo);
-        }
-    }
-
-    private MonthInfo updateHoursForEmployee(@NonNull MonthInfo info, @NonNull Integer employeeId) {
-        MonthInfo existedInfo = get(employeeId, info.getYear(), info.getMonth());
-        if (existedInfo == null) {
-            MonthInfo newInfo = new MonthInfo(info);
-            newInfo.setEmployee(checkNotFound(employeeRepository.findOne(employeeId), employeeId, Employee.class));
-            return repository.saveAndFlush(newInfo);
-        } else {
-            existedInfo.setHoursSum(info.getHoursSum());
-            return repository.save(existedInfo);
-        }
+    public List<MonthlyStandard> getStandardsForYear(@NonNull Integer year) {
+        YearMonth from = YearMonth.of(year, 1);
+        YearMonth to = YearMonth.of(year + 1, 1);
+        return monthlyStandardRepository.findAllByYearMonthGreaterThanEqualAndYearMonthIsLessThan(from, to);
     }
 
     @Override
-    public Iterable<MonthInfo> updateHoursSumForAllEmployees(MonthInfo info, Iterable<Integer> employeeIds) {
-        List<MonthInfo> monthInfos = new ArrayList<>();
-        employeeIds.forEach(employeeId -> {
-            MonthInfo monthInfo = updateHoursForEmployee(info, employeeId);
-            monthInfos.add(monthInfo);
-        });
-        return monthInfos;
-    }
-
-    @Override
-    @Transactional
-    public void removeLock(Integer employeeId, Integer year, Integer month) {
-        checkNotFound(repository.deleteLock(employeeId, year, month), year, month, employeeId, MonthInfo.class);
+    public MonthlyStandard getStandardForMonth(Integer year, Integer month) {
+        MonthlyStandard monthlyStandard = monthlyStandardRepository.findOne(of(year, month));
+        if (monthlyStandard == null) monthlyStandard = MonthlyStandard.builder().yearMonth(YearMonth.of(year, month)).hoursSum(0).build();
+        return monthlyStandard;
     }
 }

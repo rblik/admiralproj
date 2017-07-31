@@ -10,6 +10,8 @@ import lombok.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.YearMonth;
+
 import static isr.naya.admiralproj.util.ValidationUtil.*;
 
 @Service
@@ -25,7 +27,7 @@ public class WorkUnitServiceImpl implements WorkUnitService {
     public WorkUnit save(@NonNull Integer employeeId, @NonNull Integer workAgreementId, @NonNull WorkUnit workUnit) {
         checkTimeRange(workUnit).setWorkAgreement(checkNotFound(workAgreementRepository.findFirstByIdAndEmployeeId(workAgreementId, employeeId), workAgreementId, WorkAgreement.class));
         return checkTimeOverlap(workUnitRepository.countExistedByDateTimeRange(employeeId, workAgreementId, workUnit.isNew() ? -1 : workUnit.getId(), workUnit.getDate(), workUnit.getStart(), workUnit.getFinish())) ?
-                checkLock(workUnitRepository.save(workUnit), lockRepository.getLockByEmployeeIdAndYearAndMonth(employeeId, workUnit.getDate().getYear(), workUnit.getDate().getMonthValue())) : null;
+                checkLock(workUnitRepository.save(workUnit), lockRepository.getLockByEmployeeIdAndYearAndMonth(employeeId, YearMonth.of(workUnit.getDate().getYear(), workUnit.getDate().getMonthValue()))) : null;
     }
 
     @Override

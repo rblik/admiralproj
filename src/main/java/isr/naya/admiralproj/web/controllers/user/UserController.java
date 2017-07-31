@@ -3,12 +3,10 @@ package isr.naya.admiralproj.web.controllers.user;
 import com.fasterxml.jackson.annotation.JsonView;
 import isr.naya.admiralproj.AuthorizedUser;
 import isr.naya.admiralproj.dto.AgreementDto;
+import isr.naya.admiralproj.dto.MonthInfo;
 import isr.naya.admiralproj.dto.WorkInfo;
 import isr.naya.admiralproj.mail.MailService;
-import isr.naya.admiralproj.model.DefaultChoice;
-import isr.naya.admiralproj.model.Employee;
-import isr.naya.admiralproj.model.MonthInfo;
-import isr.naya.admiralproj.model.WorkUnit;
+import isr.naya.admiralproj.model.*;
 import isr.naya.admiralproj.service.*;
 import isr.naya.admiralproj.util.JsonUtil.UserView;
 import isr.naya.admiralproj.web.controllers.CorsRestController;
@@ -41,6 +39,7 @@ public class UserController {
     private MonthInfoService monthInfoService;
     private MailService service;
     private DefaultChoiceService choiceService;
+    private LockService lockService;
 
 
     @JsonView(UserView.class)
@@ -96,9 +95,10 @@ public class UserController {
     public MonthInfo getMonthInfo(@AuthenticationPrincipal AuthorizedUser user,
                                   @RequestParam("year") Integer year,
                                   @RequestParam("month") Integer month) {
-        MonthInfo monthInfo = monthInfoService.getOrNew(user.getId(), year, month);
         log.info("Employee {} is retrieving his month info for {} {}", user.getFullName(), month.toString(), year.toString());
-        return monthInfo;
+        MonthlyStandard monthStandard = monthInfoService.getStandardForMonth(year, month);
+        DateLock monthLock = lockService.getLock(user.getId(), year, month);
+        return new MonthInfo(monthStandard, monthLock);
     }
 
     @GetMapping("/units")
@@ -115,7 +115,7 @@ public class UserController {
                                              @PathVariable("date") LocalDate date,
                                              @RequestParam("agreementId") Optional<Integer> agreementId) {
         List<WorkInfo> infos = workInfoService.getAllForEmployeeByDate(user.getId(), agreementId, date);
-        log.info("Employee {} is retrieving work units for {}" + (agreementId.isPresent()? " (agreementId = {})" : ""), user.getFullName(), date, agreementId.orElse(null));
+        log.info("Employee {} is retrieving work units for {}" + (agreementId.isPresent() ? " (agreementId = {})" : ""), user.getFullName(), date, agreementId.orElse(null));
         return infos;
     }
 }

@@ -1,21 +1,21 @@
 package isr.naya.admiralproj.service;
 
-import isr.naya.admiralproj.model.MonthInfo;
+import isr.naya.admiralproj.model.MonthlyStandard;
+
+import java.util.List;
 
 /**
  * Created by jonathan on 14/07/17.
  */
 public interface MonthInfoService {
 
-    MonthInfo getOrNew(Integer employeeId, Integer year, Integer month);
+    MonthlyStandard saveStandardForMonth(Integer year, Integer month, Integer hoursSum);
 
-    MonthInfo get(Integer employeeId, Integer year, Integer month);
+    List<MonthlyStandard> getAllStandards();
 
-    boolean isLockExists(Integer employeeId, Integer year, Integer month);
+    List<MonthlyStandard> getStandardsForNLastMonths(int monthsNumber);
 
-    MonthInfo save(MonthInfo info, Integer employeeId);
+    List<MonthlyStandard> getStandardsForYear(Integer year);
 
-    Iterable<MonthInfo> updateHoursSumForAllEmployees(MonthInfo info, Iterable<Integer> employeeIds);
-
-    void removeLock(Integer employeeId, Integer year, Integer month);
+    MonthlyStandard getStandardForMonth(Integer year, Integer month);
 }

@@ -7,7 +7,7 @@ public interface LockService {
 
     boolean isLockExists(Integer employeeId, Integer year, Integer month);
 
-    DateLock saveLock(DateLock lock, Integer employeeId);
+    DateLock saveLock(Integer employeeId, Integer year, Integer month);
 
     void removeLock(Integer employeeId, Integer year, Integer month);
 }

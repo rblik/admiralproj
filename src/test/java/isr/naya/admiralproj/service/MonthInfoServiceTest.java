@@ -1,15 +1,19 @@
 package isr.naya.admiralproj.service;
 
-import isr.naya.admiralproj.model.MonthInfo;
+import isr.naya.admiralproj.model.MonthlyStandard;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.Month;
-import java.util.Arrays;
+import java.time.YearMonth;
+import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 /**
  * Created by jonathan on 14/07/17.
@@ -21,27 +25,16 @@ public class MonthInfoServiceTest {
     private MonthInfoService monthInfoService;
 
     @Test
-    public void testSave() {
-        MonthInfo monthInfo = monthInfoService.save(new MonthInfo(2017, Month.JULY.getValue(), false, 1500, null), 1);
-        assertNotNull(monthInfo);
-    }
-
-    @Test
-    public void testGet() {
-        MonthInfo monthInfo = monthInfoService.save(new MonthInfo(2017, Month.JULY.getValue(), false, 1500, null), 1);
-        boolean lockNotExists = monthInfoService.isLockExists(1, 2017, Month.JULY.getValue());
-        assertFalse(lockNotExists);
-        monthInfoService.removeLock(1, 2017, Month.JULY.getValue());
-        lockNotExists = monthInfoService.isLockExists(1, 2017, Month.JULY.getValue());
-        assertTrue(lockNotExists);
-    }
-
-    @Test
-    public void testUpdateHoursToAll() {
-        Iterable<MonthInfo> monthInfos =
-                monthInfoService.updateHoursSumForAllEmployees(
-                        new MonthInfo(2017, Month.MARCH.getValue(), 200),
-                        Arrays.asList(1, 2, 3, 4, 5)
-                );
+    public void testSaveStandard() {
+        MonthlyStandard month = monthInfoService.saveStandardForMonth(2017, Month.JULY.getValue(), 200);
+        assertNotNull(month);
+        MonthlyStandard month1 = monthInfoService.saveStandardForMonth(2017, Month.JUNE.getValue(), 200);
+        List<MonthlyStandard> allStandards = monthInfoService.getAllStandards();
+        MonthlyStandard standardForMonth = monthInfoService.getStandardForMonth(2017, 7);
+        List<MonthlyStandard> standardsForNLastMonths = monthInfoService.getStandardsForNLastMonths(5);
+        monthInfoService.saveStandardForMonth(2017, Month.JULY.getValue(), 150);
+        List<MonthlyStandard> standardsForNLastMonths1 = monthInfoService.getStandardsForNLastMonths(5);
+        assertThat(standardsForNLastMonths1, hasSize(2));
+        assertThat(standardsForNLastMonths1, hasItem(MonthlyStandard.builder().yearMonth(YearMonth.of(2017,Month.JULY)).hoursSum(150).build()));
     }
 }

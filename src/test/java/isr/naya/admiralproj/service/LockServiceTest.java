@@ -21,7 +21,7 @@ public class LockServiceTest {
 
     @Test
     public void testSaveLock() throws Exception {
-        service.saveLock(DateLock.builder().year(2017).month(Month.MAY.getValue()).build(), 1);
+        service.saveLock(1, 2017, 5);
         DateLock lock = service.getLock(1, 2017, Month.MAY.getValue());
         assertThat(lock, notNullValue());
     }
