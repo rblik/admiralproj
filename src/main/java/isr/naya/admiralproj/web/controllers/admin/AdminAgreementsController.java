@@ -43,4 +43,11 @@ public class AdminAgreementsController {
         log.info("Admin {} is retrieving work agreements" + ((employeeId != null) ? " for employee (id = {})" : " for all employees"), admin.getFullName(), employeeId);
         return dtoList;
     }
+
+    @DeleteMapping("/{agreementId}")
+    public void removeAgreement(@AuthenticationPrincipal AuthorizedUser admin,
+                                @PathVariable("agreementId") Integer agreementId) {
+        workAgreementService.remove(agreementId);
+        log.info("Admin {} is removing agreement with id = {}", admin.getFullName(), agreementId);
+    }
 }

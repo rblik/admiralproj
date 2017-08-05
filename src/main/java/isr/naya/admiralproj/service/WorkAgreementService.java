@@ -14,4 +14,6 @@ public interface WorkAgreementService {
     List<AgreementDto> getAgreementsGraph();
 
     WorkAgreement get(Integer agreementId);
+
+    void remove(Integer agreementId);
 }

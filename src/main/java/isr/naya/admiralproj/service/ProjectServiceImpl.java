@@ -4,6 +4,7 @@ import isr.naya.admiralproj.model.Client;
 import isr.naya.admiralproj.model.Project;
 import isr.naya.admiralproj.model.Tariff;
 import isr.naya.admiralproj.repository.ClientRepository;
+import isr.naya.admiralproj.repository.DefaultChoiceRepository;
 import isr.naya.admiralproj.repository.ProjectRepository;
 import isr.naya.admiralproj.repository.TariffRepository;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,7 @@ public class ProjectServiceImpl implements ProjectService {
     private ProjectRepository projectRepository;
     private TariffRepository tariffRepository;
     private ClientRepository clientRepository;
+    private DefaultChoiceRepository defaultChoiceRepository;
 
     @CacheEvict(value = {"projects", "clients"}, allEntries = true)
     @Override
@@ -56,5 +58,12 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Project getWithClient(@NonNull Integer id) {
         return checkNotFound(projectRepository.getOneWithClient(id), id, Project.class);
+    }
+
+    @CacheEvict(value = {"projects", "clients"}, allEntries = true)
+    @Override
+    public void remove(@NonNull Integer id) {
+        defaultChoiceRepository.cleanDefaultChoicesByProjectId(id);
+        projectRepository.delete(id);
     }
 }

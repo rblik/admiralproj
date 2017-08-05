@@ -24,7 +24,7 @@ public class Project extends BaseEntity{
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
     private List<WorkAgreement> workAgreements;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -15,4 +15,6 @@ public interface ProjectService {
     Project get(Integer id);
 
     Project getWithClient(Integer id);
+
+    void remove(Integer id);
 }

@@ -54,4 +54,11 @@ public class AdminProjectsController {
         log.info("Admin {} is retrieving project with id = {}", admin.getFullName(), projectId);
         return project;
     }
+
+    @DeleteMapping("/{projectId}")
+    public void deleteProject(@AuthenticationPrincipal AuthorizedUser admin,
+                              @PathVariable("projectId") Integer projectId) {
+        projectService.remove(projectId);
+        log.info("Admin {} is removing project with id = {}", admin.getFullName(), projectId);
+    }
 }

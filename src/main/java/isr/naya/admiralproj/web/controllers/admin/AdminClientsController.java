@@ -46,4 +46,11 @@ public class AdminClientsController {
         log.info("Admin {} is retrieving client with id = {}", admin.getFullName(), clientId);
         return client;
     }
+
+    @DeleteMapping("/{clientId}")
+    public void deleteProject(@AuthenticationPrincipal AuthorizedUser admin,
+                              @PathVariable("clientId") Integer clientId) {
+        clientService.delete(clientId);
+        log.info("Admin {} is removing client with id = {}", admin.getFullName(), clientId);
+    }
 }

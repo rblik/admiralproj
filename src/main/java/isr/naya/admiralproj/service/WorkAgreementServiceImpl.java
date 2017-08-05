@@ -5,12 +5,10 @@ import isr.naya.admiralproj.model.Employee;
 import isr.naya.admiralproj.model.Project;
 import isr.naya.admiralproj.model.Tariff;
 import isr.naya.admiralproj.model.WorkAgreement;
-import isr.naya.admiralproj.repository.EmployeeRepository;
-import isr.naya.admiralproj.repository.ProjectRepository;
-import isr.naya.admiralproj.repository.TariffRepository;
-import isr.naya.admiralproj.repository.WorkAgreementRepository;
+import isr.naya.admiralproj.repository.*;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +24,7 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
     private EmployeeRepository employeeRepository;
     private ProjectRepository projectRepository;
     private TariffRepository tariffRepository;
+    private DefaultChoiceRepository defaultChoiceRepository;
 
     @Override
     public List<AgreementDto> getAllForEmployee(@NonNull Integer employeeId) {
@@ -33,6 +32,7 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
     }
 
     @Override
+    @CacheEvict(value = {"clients", "projects"}, allEntries = true)
     @Transactional
     public WorkAgreement save(@NonNull Integer employeeId, @NonNull Integer projectId, @NonNull WorkAgreement workAgreement) {
         Tariff tariffSaved = tariffRepository.save(workAgreement.getTariff());
@@ -50,5 +50,11 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
     @Override
     public WorkAgreement get(@NonNull Integer agreementId) {
         return checkNotFound(workAgreementRepository.findOne(agreementId), agreementId, WorkAgreement.class);
+    }
+
+    @Override
+    public void remove(@NonNull Integer agreementId) {
+        defaultChoiceRepository.cleanDefaultChoicesByAgreementId(agreementId);
+        workAgreementRepository.delete(agreementId);
     }
 }

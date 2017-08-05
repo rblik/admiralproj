@@ -12,4 +12,6 @@ public interface ClientService {
     List<Client> getAll();
 
     ClientDto get(Integer id);
+
+    void delete(Integer id);
 }

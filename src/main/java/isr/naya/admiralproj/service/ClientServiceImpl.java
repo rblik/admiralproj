@@ -12,6 +12,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 
 import static isr.naya.admiralproj.util.ValidationUtil.checkNotFound;
@@ -41,7 +42,14 @@ public class ClientServiceImpl implements ClientService {
     public ClientDto get(@NonNull Integer id) {
         Client withAddressesAndPhones = clientRepository.getWithAddressesAndPhones(id);
         List<Project> allByClientId = projectRepository.findAllByClientId(id);
-        ClientDto clientDto = new ClientDto(checkNotFound(withAddressesAndPhones, id, Client.class), allByClientId);
-        return clientDto;
+        allByClientId.forEach(project -> project.getWorkAgreements().forEach(workAgreement -> workAgreement.setWorkUnits(Collections.emptyList())));
+        return new ClientDto(checkNotFound(withAddressesAndPhones, id, Client.class), allByClientId);
+    }
+
+    @CacheEvict(value = {"clients", "projects"}, allEntries = true)
+    @Transactional
+    @Override
+    public void delete(@NonNull Integer id) {
+        checkNotFound(clientRepository.remove(id), id, Client.class);
     }
 }
