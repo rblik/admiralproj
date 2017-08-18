@@ -3,6 +3,7 @@ package isr.naya.admiralproj.report;
 import isr.naya.admiralproj.dto.*;
 import isr.naya.admiralproj.model.WorkUnit;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import static isr.naya.admiralproj.dto.TariffType.HOUR;
@@ -31,10 +32,7 @@ public interface ReportCreator {
     String AMOUNT = "סכום";
 
     static String durationToTimeString(Long duration) {
-        int round = Math.round(((duration + 2) / 5) * 5);
-        int hours = round / 60;
-        int minutes = round % 60;
-        return hours + "h " + ((minutes == 0) ? EMPTY_STR : minutes + "min");
+        return new DecimalFormat("0.00").format(duration/60.0) + " h.";
     }
 
     static String calculateIncome(Integer amount, TariffType type, Long duration) {

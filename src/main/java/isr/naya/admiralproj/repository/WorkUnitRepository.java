@@ -25,7 +25,7 @@ public interface WorkUnitRepository extends JpaRepository<WorkUnit, Integer> {
     @Query("select new isr.naya.admiralproj.dto.WorkInfo(wu.id, wa.id, p.id, p.name, c.id, c.name, wu.date, wu.start, wu.finish, wu.duration, wu.comment) from WorkUnit wu join wu.workAgreement wa join wa.employee e join wa.project p join p.client c where e.id = ?1 and wa.id=?2 and wu.date =?3 order by wu.start desc ")
     List<WorkInfo> getAllForEmployeeByDayAndAgreement(Integer employeeId, Integer workAgreementId, LocalDate day);
 
-    @Query("select new isr.naya.admiralproj.dto.WorkInfo(wu.id, wa.id, p.id, p.name, c.id, c.name, wu.date, wu.start, wu.finish, wu.duration, wu.comment) from WorkUnit wu join wu.workAgreement wa join wa.employee e join wa.project p join p.client c where e.id = ?1 and wu.date =?2 order by wu.start desc ")
+    @Query("select new isr.naya.admiralproj.dto.WorkInfo(wu.id, wa.id, p.id, p.name, c.id, c.name, wu.date, wu.start, wu.finish, wu.duration, wu.comment, wa.active) from WorkUnit wu join wu.workAgreement wa join wa.employee e join wa.project p join p.client c where e.id = ?1 and wu.date =?2 order by wu.start desc ")
     List<WorkInfo> getAllForEmployeeByDay(Integer employeeId, LocalDate day);
 
     @Query("select new isr.naya.admiralproj.dto.WorkInfo(wa.id, wu.date, wa.project.client.name, sum (wu.duration)) from WorkUnit wu join wu.workAgreement wa join wa.employee e join wa.project p join p.client c where e.id = ?1 and wu.date>=?2 and wu.date<?3 group by wa.id, wa.project.client.id, wa.project.client.name, wu.date order by wu.date desc ")

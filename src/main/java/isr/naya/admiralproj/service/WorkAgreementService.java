@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface WorkAgreementService {
 
+    List<AgreementDto> getAllActiveForEmployee(Integer employeeId);
+
     List<AgreementDto> getAllForEmployee(Integer employeeId);
 
     WorkAgreement save(Integer employeeId, Integer projectId, WorkAgreement workAgreement);
@@ -15,5 +17,7 @@ public interface WorkAgreementService {
 
     WorkAgreement get(Integer agreementId);
 
-    void remove(Integer agreementId);
+    void disable(Integer agreementId);
+
+    void enable(Integer agreementId);
 }

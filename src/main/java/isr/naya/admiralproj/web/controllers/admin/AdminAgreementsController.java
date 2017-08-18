@@ -47,7 +47,7 @@ public class AdminAgreementsController {
     @DeleteMapping("/{agreementId}")
     public void removeAgreement(@AuthenticationPrincipal AuthorizedUser admin,
                                 @PathVariable("agreementId") Integer agreementId) {
-        workAgreementService.remove(agreementId);
+        workAgreementService.disable(agreementId);
         log.info("Admin {} is removing agreement with id = {}", admin.getFullName(), agreementId);
     }
 }

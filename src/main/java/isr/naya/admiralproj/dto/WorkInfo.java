@@ -33,9 +33,14 @@ public class WorkInfo implements Serializable {
     private Integer amount;
     private Currency currency;
     private TariffType type;
+    private Boolean isActiveAgreement;
 
     public WorkInfo(Integer unitId, Integer agreementId, Integer employeeId, String employeeName, String employeeSurname, String employeeEmail, String employeeNumber, String departmentName, Integer projectId, String projectName, Integer clientId, String clientName, LocalDate date, LocalTime from, LocalTime to, Long duration, String comment) {
-        this(unitId, agreementId, employeeId, employeeName, employeeSurname, employeeEmail, employeeNumber, departmentName, projectId, projectName, clientId, clientName, date, from, to, duration, comment, null, null, null);
+        this(unitId, agreementId, employeeId, employeeName, employeeSurname, employeeEmail, employeeNumber, departmentName, projectId, projectName, clientId, clientName, date, from, to, duration, comment, null, null, null, null);
+    }
+
+    public WorkInfo(Integer unitId, Integer agreementId, Integer employeeId, String employeeName, String employeeSurname, String employeeEmail, String employeeNumber, String departmentName, Integer projectId, String projectName, Integer clientId, String clientName, LocalDate date, LocalTime from, LocalTime to, Long duration, String comment, Boolean isActiveAgreement) {
+        this(unitId, agreementId, employeeId, employeeName, employeeSurname, employeeEmail, employeeNumber, departmentName, projectId, projectName, clientId, clientName, date, from, to, duration, comment, null, null, null, isActiveAgreement);
     }
 
     public WorkInfo(Integer employeeId, String employeeName, String employeeSurname, String employeeEmail, String employeeNumber, String departmentName, LocalDate date, Long duration) {
@@ -48,6 +53,10 @@ public class WorkInfo implements Serializable {
 
     public WorkInfo(Integer unitId, Integer agreementId, Integer projectId, String projectName, Integer clientId, String clientName, LocalDate date, LocalTime from, LocalTime to, Long duration, String comment) {
         this(unitId, agreementId, null, null, null, null, null, null, projectId, projectName, clientId, clientName, date, from, to, duration, comment);
+    }
+
+    public WorkInfo(Integer unitId, Integer agreementId, Integer projectId, String projectName, Integer clientId, String clientName, LocalDate date, LocalTime from, LocalTime to, Long duration, String comment, Boolean isActiveAgreement) {
+        this(unitId, agreementId, null, null, null, null, null, null, projectId, projectName, clientId, clientName, date, from, to, duration, comment, isActiveAgreement);
     }
 
     public WorkInfo(Integer employeeId, String employeeName, String employeeSurname, String employeeEmail, String employeeNumber, String departmentName, LocalDate date) {
@@ -63,6 +72,6 @@ public class WorkInfo implements Serializable {
     }
 
     public WorkInfo(Integer employeeId, String employeeName, String employeeSurname, String departmentName, Integer projectId, String projectName, String clientName, Long duration, Integer amount, Currency currency, TariffType type) {
-        this(null, null, employeeId, employeeName, employeeSurname, null, null, departmentName, projectId, projectName, null, clientName, null, null, null, duration, null, amount, currency, type);
+        this(null, null, employeeId, employeeName, employeeSurname, null, null, departmentName, projectId, projectName, null, clientName, null, null, null, duration, null, amount, currency, type, null);
     }
 }

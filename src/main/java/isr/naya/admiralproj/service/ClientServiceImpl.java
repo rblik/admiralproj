@@ -3,6 +3,7 @@ package isr.naya.admiralproj.service;
 import isr.naya.admiralproj.dto.ClientDto;
 import isr.naya.admiralproj.model.Client;
 import isr.naya.admiralproj.model.Project;
+import isr.naya.admiralproj.model.WorkAgreement;
 import isr.naya.admiralproj.repository.ClientRepository;
 import isr.naya.admiralproj.repository.ProjectRepository;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static isr.naya.admiralproj.util.ValidationUtil.checkNotFound;
 
@@ -42,7 +44,12 @@ public class ClientServiceImpl implements ClientService {
     public ClientDto get(@NonNull Integer id) {
         Client withAddressesAndPhones = clientRepository.getWithAddressesAndPhones(id);
         List<Project> allByClientId = projectRepository.findAllByClientId(id);
-        allByClientId.forEach(project -> project.getWorkAgreements().forEach(workAgreement -> workAgreement.setWorkUnits(Collections.emptyList())));
+        allByClientId.forEach(project ->
+                project.setWorkAgreements(project.getWorkAgreements()
+                        .parallelStream()
+                        .filter(WorkAgreement::isActive)
+                        .peek(workAgreement -> workAgreement.setWorkUnits(Collections.emptyList()))
+                        .collect(Collectors.toList())));
         return new ClientDto(checkNotFound(withAddressesAndPhones, id, Client.class), allByClientId);
     }
 

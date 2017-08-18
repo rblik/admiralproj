@@ -86,7 +86,7 @@ public class UserController {
 
     @GetMapping("/agreements")
     public List<AgreementDto> getAgreements(@AuthenticationPrincipal AuthorizedUser user) {
-        List<AgreementDto> agreements = workAgreementService.getAllForEmployee(user.getId());
+        List<AgreementDto> agreements = workAgreementService.getAllActiveForEmployee(user.getId());
         log.info("Employee {} is retrieving his agreements", user.getFullName());
         return agreements;
     }

@@ -27,8 +27,13 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
     private DefaultChoiceRepository defaultChoiceRepository;
 
     @Override
-    public List<AgreementDto> getAllForEmployee(@NonNull Integer employeeId) {
+    public List<AgreementDto> getAllActiveForEmployee(@NonNull Integer employeeId) {
         return workAgreementRepository.getAllActiveWithProjectsAndClientsByEmployeeId(employeeId);
+    }
+
+    @Override
+    public List<AgreementDto> getAllForEmployee(@NonNull Integer employeeId) {
+        return workAgreementRepository.getAllWithProjectsAndClientsByEmployeeId(employeeId);
     }
 
     @Override
@@ -52,9 +57,21 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
         return checkNotFound(workAgreementRepository.findOne(agreementId), agreementId, WorkAgreement.class);
     }
 
+    @CacheEvict(value = {"clients", "projects", "employees"}, allEntries = true)
+    @Transactional
     @Override
-    public void remove(@NonNull Integer agreementId) {
-        defaultChoiceRepository.cleanDefaultChoicesByAgreementId(agreementId);
-        workAgreementRepository.delete(agreementId);
+    public void disable(@NonNull Integer agreementId) {
+        WorkAgreement one = workAgreementRepository.getOne(agreementId);
+        one.setActive(false);
+        workAgreementRepository.save(one);
+    }
+
+    @CacheEvict(value = {"clients", "projects", "employees"}, allEntries = true)
+    @Transactional
+    @Override
+    public void enable(@NonNull Integer agreementId) {
+        WorkAgreement one = workAgreementRepository.getOne(agreementId);
+        one.setActive(true);
+        workAgreementRepository.save(one);
     }
 }

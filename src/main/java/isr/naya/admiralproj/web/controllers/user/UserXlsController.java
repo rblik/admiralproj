@@ -62,7 +62,7 @@ public class UserXlsController {
     public ResponseEntity<byte[]> getTemplate(@AuthenticationPrincipal AuthorizedUser user,
                                               @RequestParam("from") LocalDate from,
                                               @RequestParam("to") LocalDate to) {
-        List<AgreementDto> agreements = workAgreementService.getAllForEmployee(user.getId());
+        List<AgreementDto> agreements = workAgreementService.getAllActiveForEmployee(user.getId());
         List<WorkInfo> infos = workInfoService.getWorkInfos(from, to, Optional.of(user.getId()), Optional.empty(), Optional.empty(), Optional.empty());
         ReportFile file = reportCreator.generateTemplate(agreements, infos);
         log.info("Employee {} is getting his xls report template from {} to {}", user.getFullName(), from, to);
