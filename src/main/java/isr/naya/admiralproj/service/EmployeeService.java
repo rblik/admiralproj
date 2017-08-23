@@ -10,6 +10,8 @@ public interface EmployeeService {
 
     int updatePass(Integer employeeId, String pass);
 
+    int refreshPass(Integer employeeId, String pass);
+
     int enable(Integer employeeId);
 
     int disable(Integer employeeId);

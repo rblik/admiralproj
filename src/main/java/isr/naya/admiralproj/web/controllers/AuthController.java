@@ -1,5 +1,6 @@
 package isr.naya.admiralproj.web.controllers;
 
+import isr.naya.admiralproj.AuthorizedUser;
 import isr.naya.admiralproj.web.security.JwtTokenUtil;
 import isr.naya.admiralproj.web.security.dto.JwtAuthRequest;
 import isr.naya.admiralproj.web.security.dto.JwtAuthResponse;
@@ -37,8 +38,10 @@ public class AuthController {
             return status(UNAUTHORIZED).build();
         }
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token = tokenUtil.generateToken(service.loadUserByUsername(request.getEmail()));
+        AuthorizedUser user = (AuthorizedUser)service.loadUserByUsername(request.getEmail());
+        String token = tokenUtil.generateToken(user);
 
-        return ok(new JwtAuthResponse(token));
+        Long lastRegistrationCheck = user.getLastRegistrationCheck();
+        return ok(new JwtAuthResponse(token, lastRegistrationCheck == null ? 0 : lastRegistrationCheck));
     }
 }

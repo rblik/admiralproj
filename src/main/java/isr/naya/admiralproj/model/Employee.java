@@ -56,6 +56,9 @@ public class Employee extends BaseEntity{
     @Column(name = "company_phone")
     private String companyPhone;
 
+    @Column(name = "last_registration_check")
+    private Long lastRegistrationCheck;
+
     /**
      * regexp
      * https://github.com/srinath4ever/JavaTest/blob/master/JavaTest/src/com/core/regex/RegExDemo.java
@@ -86,6 +89,7 @@ public class Employee extends BaseEntity{
 
     @PrePersist
     public void encodePassword() {
+        this.lastRegistrationCheck = 0L;
         this.password = encode(this.password);
     }
 }

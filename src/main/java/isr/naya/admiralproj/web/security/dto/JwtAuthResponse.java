@@ -7,4 +7,5 @@ import lombok.Value;
 @AllArgsConstructor
 public class JwtAuthResponse {
     private String token;
+    private Long lastRegistrationCheck;
 }

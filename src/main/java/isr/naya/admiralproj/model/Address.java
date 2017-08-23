@@ -10,7 +10,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "addresses")
 @Data
-@EqualsAndHashCode(callSuper = false,of = {"area", "city", "street", "houseNumber"})
+@EqualsAndHashCode(of = {"area", "city", "street", "houseNumber"}, callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

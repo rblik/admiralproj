@@ -71,7 +71,7 @@ public class UserController {
     @PutMapping("/profile/password")
     public ResponseEntity<?> updatePassword(@AuthenticationPrincipal AuthorizedUser user,
                                             @RequestParam("password") String password) {
-        employeeService.updatePass(user.getId(), password);
+        employeeService.refreshPass(user.getId(), password);
         log.info("Employee {} is updating his password", user.getFullName());
         CompletableFuture.runAsync(() ->
                 service.sendSimpleMessage(user.getUsername(), "סיסמא חדשה", password));

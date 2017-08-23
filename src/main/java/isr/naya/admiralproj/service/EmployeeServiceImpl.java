@@ -35,9 +35,17 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
         return employeeRepository.save(employee);
     }
 
+    @CacheEvict(value = "employees", allEntries = true)
     @Override
     public int updatePass(@NonNull Integer employeeId, @NonNull String pass) {
         return checkNotFound(employeeRepository.updatePassword(employeeId, encode(pass)), employeeId, Employee.class);
+    }
+
+    @CacheEvict(value = "employees", allEntries = true)
+    @Override
+    public int refreshPass(Integer employeeId, String pass) {
+        long ts = System.currentTimeMillis();
+        return checkNotFound(employeeRepository.refreshPassword(employeeId, encode(pass), ts), employeeId, Employee.class);
     }
 
     @Override

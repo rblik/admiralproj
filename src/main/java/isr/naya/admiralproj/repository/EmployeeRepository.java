@@ -18,6 +18,11 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
     @Transactional
     @Modifying
+    @Query("update Employee e set e.password=?2, e.lastRegistrationCheck=?3 where e.id=?1")
+    int refreshPassword(Integer employeeId, String pass, long ts);
+
+    @Transactional
+    @Modifying
     @Query("update Employee e set e.enabled=false where e.id=?1")
     int disable(Integer employeeId);
 

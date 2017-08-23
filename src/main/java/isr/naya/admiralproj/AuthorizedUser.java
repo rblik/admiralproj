@@ -10,12 +10,16 @@ public class AuthorizedUser extends User {
     private Integer id;
     private String name;
     private String surname;
+    @Getter
+    private Long lastRegistrationCheck;
+
 
     public AuthorizedUser(Employee employee) {
         super(employee.getEmail(), employee.getPassword(), employee.isEnabled(), true, true, true, employee.getRoles());
         this.id = employee.getId();
         this.name = employee.getName();
         this.surname = employee.getSurname();
+        this.lastRegistrationCheck = employee.getLastRegistrationCheck();
     }
 
     public String getFullName() {
