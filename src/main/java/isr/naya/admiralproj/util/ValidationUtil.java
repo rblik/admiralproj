@@ -1,9 +1,6 @@
 package isr.naya.admiralproj.util;
 
-import isr.naya.admiralproj.exception.DateLockedException;
-import isr.naya.admiralproj.exception.NotFoundException;
-import isr.naya.admiralproj.exception.TimeOverlappingException;
-import isr.naya.admiralproj.exception.TimeRangeException;
+import isr.naya.admiralproj.exception.*;
 import isr.naya.admiralproj.model.DateLock;
 import isr.naya.admiralproj.model.WorkUnit;
 import lombok.AccessLevel;
@@ -12,6 +9,8 @@ import lombok.NonNull;
 
 import java.time.Month;
 import java.util.List;
+
+import static isr.naya.admiralproj.web.security.password.PasswordUtil.isMatch;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ValidationUtil {
@@ -46,6 +45,14 @@ public class ValidationUtil {
     public static <T> int checkNotFound(Integer obj, Integer id, Class<T> clazz) {
         checkNotFound(obj != 0, clazz.getSimpleName().replaceAll("([a-z])([A-Z])", "$1 $2").toLowerCase() + " with ID " + id + " for this user");
         return obj;
+    }
+
+    public static <T> boolean isNotSamePass(String pass, String encodedDbPass) {
+        if (!isMatch(pass, encodedDbPass)) {
+        return true;
+        } else {
+            throw new SamePasswordException("Same pass");
+        }
     }
 
     public static <T> T checkNotFound(T obj, Integer id, Class<T> clazz) {

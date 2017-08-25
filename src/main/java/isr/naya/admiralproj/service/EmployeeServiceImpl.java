@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static isr.naya.admiralproj.util.ValidationUtil.checkNotFound;
+import static isr.naya.admiralproj.util.ValidationUtil.isNotSamePass;
 import static isr.naya.admiralproj.web.security.password.PasswordUtil.encode;
 
 @Service
@@ -45,7 +46,11 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
     @Override
     public int refreshPass(Integer employeeId, String pass) {
         long ts = System.currentTimeMillis();
-        return checkNotFound(employeeRepository.refreshPassword(employeeId, encode(pass), ts), employeeId, Employee.class);
+        String password = employeeRepository.getOne(employeeId).getPassword();
+        if (isNotSamePass(pass, password)) {
+            return checkNotFound(employeeRepository.refreshPassword(employeeId, encode(pass), ts), employeeId, Employee.class);
+        }
+        return -1;
     }
 
     @Override

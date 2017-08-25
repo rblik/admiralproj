@@ -71,6 +71,13 @@ public class ExceptionInfoHandler {
     }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST) // 400
+    @ExceptionHandler(SamePasswordException.class)
+    @Order(Ordered.HIGHEST_PRECEDENCE + 1)
+    public ErrorInfoDTO timeRangeError(HttpServletRequest req, SamePasswordException e) {
+        return logAndGetErrorInfo(req, e, false);
+    }
+
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST) // 400
     @ExceptionHandler(ExceptionConverter.class)
     @Order(Ordered.HIGHEST_PRECEDENCE + 1)
     public ErrorInfoDTO pdfError(HttpServletRequest req, ExceptionConverter e) {
