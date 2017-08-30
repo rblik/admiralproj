@@ -19,7 +19,7 @@ public interface ReportCreator {
     String DATE = "תאריך";
     String DAY_OF_MONTH = "יום בחודש";
     String DAY = "יום";
-    String PROJECT_ID = "מזהה מיקום עבודה";
+    String PROJECT_ID = "קוד פעילות";
     String SINCE = "מ-";
     String UNTIL = "עד-";
     String DURATION = "משך";
