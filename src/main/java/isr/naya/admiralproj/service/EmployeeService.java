@@ -32,4 +32,6 @@ public interface EmployeeService {
     List<Employee> getAllWithDepartmentsAndAgreements();
 
     List<Employee> getParticularWithDepartmentsAndAgreements(List<Integer> employeeIds);
+
+    Employee getByEmail(String email);
 }

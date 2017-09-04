@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Random;
 import java.util.regex.Pattern;
 
 import static org.springframework.util.StringUtils.isEmpty;
@@ -36,4 +37,19 @@ public class PasswordUtil {
         return BCRYPT_PATTERN.matcher(newPassword).matches();
     }
 
+    public static String getSaltString() {
+        String SALTCHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < 8) { // length of the random string.
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
+        }
+        return salt.toString();
+    }
+
+    public static void main(String[] args) {
+        String encode = encode("123");
+        System.out.println("encode = " + encode);
+    }
 }

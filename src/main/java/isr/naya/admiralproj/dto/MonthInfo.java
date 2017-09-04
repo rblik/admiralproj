@@ -16,7 +16,7 @@ public class MonthInfo {
     private int year;
     private int month;
     private Boolean locked;
-    private int hoursSum;
+    private double hoursSum;
 
     public MonthInfo(MonthlyStandard standardForMonth) {
         this.year = standardForMonth.getYearMonth().getYear();

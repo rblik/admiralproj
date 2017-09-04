@@ -13,7 +13,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
     @Transactional
     @Modifying
-    @Query("update Employee e set e.password=?2 where e.id=?1")
+    @Query("update Employee e set e.password=?2, e.lastRegistrationCheck=0 where e.id=?1")
     int updatePassword(Integer employeeId, String pass);
 
     @Transactional
@@ -55,4 +55,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
     @Query("select e from Employee e join fetch e.department d join fetch e.workAgreements wa where e.id in ?1")
     List<Employee> getPartucularWithDepartmentsAndAgreements(List<Integer> employeeIds);
+
+    Employee getByEmail(String email);
 }

@@ -22,7 +22,7 @@ public interface ReportCreator {
     String PROJECT_ID = "קוד פעילות";
     String SINCE = "מ-";
     String UNTIL = "עד-";
-    String DURATION = "משך";
+    String DURATION = "'משך ש";
     String DESCRIPTION = "תאור";
     String EMPL_SURNAME = "שם משפחה";
     String EMPL_NAME = "שם";
@@ -32,7 +32,7 @@ public interface ReportCreator {
     String AMOUNT = "סכום";
 
     static String durationToTimeString(Long duration) {
-        return new DecimalFormat("0.00").format(duration/60.0) + " h.";
+        return new DecimalFormat("0.00").format(duration/60.0);
     }
 
     static String calculateIncome(Integer amount, TariffType type, Long duration) {

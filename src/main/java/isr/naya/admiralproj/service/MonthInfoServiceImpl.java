@@ -22,7 +22,7 @@ public class MonthInfoServiceImpl implements MonthInfoService {
     private MonthlyStandardRepository monthlyStandardRepository;
 
     @Override
-    public MonthlyStandard saveStandardForMonth(@NonNull Integer year, @NonNull Integer month, @NonNull Integer hoursSum) {
+    public MonthlyStandard saveStandardForMonth(@NonNull Integer year, @NonNull Integer month, @NonNull Double hoursSum) {
         MonthlyStandard standard = MonthlyStandard
                 .builder()
                 .yearMonth(of(year, month))
@@ -52,7 +52,7 @@ public class MonthInfoServiceImpl implements MonthInfoService {
     @Override
     public MonthlyStandard getStandardForMonth(Integer year, Integer month) {
         MonthlyStandard monthlyStandard = monthlyStandardRepository.findOne(of(year, month));
-        if (monthlyStandard == null) monthlyStandard = MonthlyStandard.builder().yearMonth(YearMonth.of(year, month)).hoursSum(0).build();
+        if (monthlyStandard == null) monthlyStandard = MonthlyStandard.builder().yearMonth(YearMonth.of(year, month)).hoursSum(0.0).build();
         return monthlyStandard;
     }
 }

@@ -26,15 +26,15 @@ public class MonthInfoServiceTest {
 
     @Test
     public void testSaveStandard() {
-        MonthlyStandard month = monthInfoService.saveStandardForMonth(2017, Month.JULY.getValue(), 200);
+        MonthlyStandard month = monthInfoService.saveStandardForMonth(2017, Month.JULY.getValue(), 200.0);
         assertNotNull(month);
-        MonthlyStandard month1 = monthInfoService.saveStandardForMonth(2017, Month.JUNE.getValue(), 200);
+        MonthlyStandard month1 = monthInfoService.saveStandardForMonth(2017, Month.JUNE.getValue(), 200.0);
         List<MonthlyStandard> allStandards = monthInfoService.getAllStandards();
         MonthlyStandard standardForMonth = monthInfoService.getStandardForMonth(2017, 7);
         List<MonthlyStandard> standardsForNLastMonths = monthInfoService.getStandardsForNLastMonths(5);
-        monthInfoService.saveStandardForMonth(2017, Month.JULY.getValue(), 150);
+        monthInfoService.saveStandardForMonth(2017, Month.JULY.getValue(), 150.0);
         List<MonthlyStandard> standardsForNLastMonths1 = monthInfoService.getStandardsForNLastMonths(5);
         assertThat(standardsForNLastMonths1, hasSize(2));
-        assertThat(standardsForNLastMonths1, hasItem(MonthlyStandard.builder().yearMonth(YearMonth.of(2017,Month.JULY)).hoursSum(150).build()));
+        assertThat(standardsForNLastMonths1, hasItem(MonthlyStandard.builder().yearMonth(YearMonth.of(2017,Month.JULY)).hoursSum(150.0).build()));
     }
 }

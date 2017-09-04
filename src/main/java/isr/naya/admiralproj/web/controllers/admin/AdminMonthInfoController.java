@@ -66,7 +66,7 @@ public class AdminMonthInfoController {
     public MonthInfo updateHoursSumForAllEmployees(@AuthenticationPrincipal AuthorizedUser admin,
                                                    @RequestParam("year") Integer year,
                                                    @RequestParam("month") Integer month,
-                                                   @RequestParam("hoursSum") Integer hoursSum) {
+                                                   @RequestParam("hoursSum") Double hoursSum) {
         MonthlyStandard monthlyStandard = monthInfoService.saveStandardForMonth(year, month, hoursSum);
         log.info("Admin {} is updating hours sum for employees year {} month {}", admin.getFullName(), year, month);
         return new MonthInfo(monthlyStandard);

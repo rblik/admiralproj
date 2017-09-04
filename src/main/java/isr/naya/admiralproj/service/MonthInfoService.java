@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface MonthInfoService {
 
-    MonthlyStandard saveStandardForMonth(Integer year, Integer month, Integer hoursSum);
+    MonthlyStandard saveStandardForMonth(Integer year, Integer month, Double hoursSum);
 
     List<MonthlyStandard> getAllStandards();
 

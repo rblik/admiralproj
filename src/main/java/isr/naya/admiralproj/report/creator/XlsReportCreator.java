@@ -263,7 +263,7 @@ public class XlsReportCreator implements ReportCreator {
         row.createCell(5).setCellValue(getCurrencySign(workInfo.getCurrency()) + ", " +
                 ((workInfo.getType() != null) ? workInfo.getType().getName() : ""));
         Cell cell6 = row.createCell(6);
-        cell6.setCellFormula(workInfo.getDuration() + "/60.0");
+        cell6.setCellValue(durationToTimeString(workInfo.getDuration()));
         Cell cell7 = row.createCell(7);
         cell7.setCellValue(Double.valueOf(calculateIncome(workInfo.getAmount(), workInfo.getType(), workInfo.getDuration())));
         cell7.setCellType(CellType.NUMERIC);

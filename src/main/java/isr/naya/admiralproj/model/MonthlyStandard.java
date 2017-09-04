@@ -24,5 +24,5 @@ public class MonthlyStandard implements Serializable{
     private YearMonth yearMonth;
 
     @Column(name = "hours_sum")
-    private Integer hoursSum;
+    private Double hoursSum;
 }
