@@ -90,6 +90,12 @@ public class Employee extends BaseEntity{
     @PrePersist
     public void encodePassword() {
         this.lastRegistrationCheck = 0L;
+        this.email=this.email.trim();
         this.password = encode(this.password);
+    }
+
+    @PreUpdate
+    public void trimUpdatePwd(){
+        this.email = this.email.trim();
     }
 }

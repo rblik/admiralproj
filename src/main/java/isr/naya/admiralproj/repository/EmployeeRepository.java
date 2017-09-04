@@ -37,7 +37,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     @Query("select distinct e from Employee e join fetch e.department join fetch e.roles where e.id=?1")
     Employee getOneWithDepartment(Integer id);
 
-    @Query("select e from Employee e join fetch e.roles where e.email=?1")
+    @Query("select e from Employee e join fetch e.roles where lower(e.email)=?1")
     Employee getByEmailWithRoles(String email);
 
     @Query("select e from Employee e join fetch e.department d where d.id=?1")
@@ -57,4 +57,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     List<Employee> getPartucularWithDepartmentsAndAgreements(List<Integer> employeeIds);
 
     Employee getByEmail(String email);
+
+    List<Employee> findAll();
 }

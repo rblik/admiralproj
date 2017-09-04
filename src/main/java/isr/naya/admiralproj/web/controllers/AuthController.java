@@ -39,7 +39,7 @@ public class AuthController {
 
         final Authentication authentication;
         try {
-            authentication = manager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+            authentication = manager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail().trim(), request.getPassword()));
         } catch (AuthenticationException e) {
             return status(UNAUTHORIZED).build();
         }

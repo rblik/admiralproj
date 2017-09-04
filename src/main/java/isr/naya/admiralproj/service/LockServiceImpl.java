@@ -42,7 +42,25 @@ public class LockServiceImpl implements LockService {
 
     @Override
     @Transactional
+    public void saveLockForAll(@NonNull Integer year, @NonNull Integer month) {
+        for (Employee employee : employeeRepository.findAll()) {
+            DateLock lock = DateLock.builder().yearMonth(of(year, month)).employee(employee).build();
+            lockRepository.save(lock);
+        }
+
+    }
+
+    @Override
+    @Transactional
+    public void removeLockForAll(@NonNull Integer year, @NonNull Integer month) {
+        for (Employee employee : employeeRepository.findAll()) {
+            lockRepository.delete(employee.getId(), of(year, month));
+        }
+    }
+
+    @Override
+    @Transactional
     public void removeLock(Integer employeeId, Integer year, Integer month) {
-        checkNotFound(lockRepository.delete(employeeId, of(year,month)), year, month, employeeId, DateLock.class);
+        checkNotFound(lockRepository.delete(employeeId, of(year, month)), year, month, employeeId, DateLock.class);
     }
 }

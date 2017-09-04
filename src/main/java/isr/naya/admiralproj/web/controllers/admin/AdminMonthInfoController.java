@@ -13,6 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Month;
+import java.time.YearMonth;
 import java.util.List;
 
 @Slf4j
@@ -45,21 +46,33 @@ public class AdminMonthInfoController {
 
     @PostMapping
     public DateLock saveLock(@AuthenticationPrincipal AuthorizedUser admin,
-                             @RequestParam("employeeId") Integer employeeId,
+                             @RequestParam(value = "employeeId", required = false) Integer employeeId,
                              @RequestParam("year") Integer year,
                              @RequestParam("month") Integer month) {
-        DateLock saved = lockService.saveLock(employeeId, year, month);
-        log.info("Admin {} is saving new month info for employee (id = {}) for month {}", admin.getFullName(), employeeId, Month.of(saved.getYearMonth().getMonthValue()));
-        return saved;
+        if (employeeId != null) {
+            DateLock saved = lockService.saveLock(employeeId, year, month);
+            log.info("Admin {} is saving new month info for employee (id = {}) for month {}", admin.getFullName(), employeeId, Month.of(saved.getYearMonth().getMonthValue()));
+            return saved;
+        } else {
+            lockService.saveLockForAll(year, month);
+            log.info("Admin {} is saving new month info for all employees  for month {}", admin.getFullName(), Month.of(month));
+            return DateLock.builder().yearMonth(YearMonth.of(year, month)).build();
+        }
+
     }
 
     @DeleteMapping
     public void removeLock(@AuthenticationPrincipal AuthorizedUser admin,
-                           @RequestParam("employeeId") Integer employeeId,
+                           @RequestParam(value = "employeeId", required = false) Integer employeeId,
                            @RequestParam("year") Integer year,
                            @RequestParam("month") Integer month) {
-        lockService.removeLock(employeeId, year, month);
-        log.info("Admin {} is removing lock for Employee (id = {}) year {} month", admin.getFullName(), employeeId, year, Month.of(month));
+        if (employeeId != null) {
+            lockService.removeLock(employeeId, year, month);
+            log.info("Admin {} is removing lock for Employee (id = {}) year {} month", admin.getFullName(), employeeId, year, Month.of(month));
+        } else {
+            log.info("Admin {} is removing lock for all employees year {} month", admin.getFullName(), year, Month.of(month));
+            lockService.removeLockForAll(year,month);
+        }
     }
 
     @PutMapping

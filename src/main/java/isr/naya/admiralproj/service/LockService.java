@@ -9,5 +9,9 @@ public interface LockService {
 
     DateLock saveLock(Integer employeeId, Integer year, Integer month);
 
+    void saveLockForAll(Integer year, Integer month);
+
+    void removeLockForAll(Integer year, Integer month);
+
     void removeLock(Integer employeeId, Integer year, Integer month);
 }
