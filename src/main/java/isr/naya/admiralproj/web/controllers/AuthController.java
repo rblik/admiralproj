@@ -54,7 +54,7 @@ public class AuthController {
     @PostMapping(value = "/backend/auth/restorepassword", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> restorePassword(@RequestBody JwtAuthRequest request) {
         String email = request.getEmail();
-        Employee employee = employeeService.getByEmail(email);
+        Employee employee = employeeService.getByEmail(email.toLowerCase());
         if (employee != null) {
             String saltString = getSaltString();
             employeeService.updatePass(employee.getId(), saltString);
