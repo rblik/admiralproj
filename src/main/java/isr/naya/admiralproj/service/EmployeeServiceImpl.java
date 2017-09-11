@@ -69,6 +69,12 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
         return employeeRepository.getAllWithDepartments();
     }
 
+    @Cacheable(value = "employees", key = "getMethodName()")
+    @Override
+    public List<Employee> getAllActiveWithDepartments() {
+        return employeeRepository.getAllActiveWithDepartments();
+    }
+
     @Cacheable(value = "employees", key = "getMethodName() + #departmentId")
     @Override
     public List<Employee> getAllByDepartment(@NonNull Integer departmentId) {

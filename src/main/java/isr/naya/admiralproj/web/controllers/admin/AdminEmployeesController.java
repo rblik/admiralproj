@@ -43,6 +43,13 @@ public class AdminEmployeesController {
         return employees;
     }
 
+    @GetMapping("/all")
+    public List<Employee> getAllEnabledEmployees(@AuthenticationPrincipal AuthorizedUser admin) {
+        List<Employee> employees = employeeService.getAllActiveWithDepartments();
+        log.info("Admin {} is retrieving all enabled employees", admin.getFullName());
+        return employees;
+    }
+
     @JsonView(JsonUtil.AdminView.class)
     @GetMapping("/{employeeId}")
     public Employee getEmployee(@AuthenticationPrincipal AuthorizedUser admin,

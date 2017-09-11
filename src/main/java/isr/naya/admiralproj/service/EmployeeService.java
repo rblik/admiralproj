@@ -18,6 +18,8 @@ public interface EmployeeService {
 
     List<Employee> getAllWithDepartments();
 
+    List<Employee> getAllActiveWithDepartments();
+
     List<Employee> getAllByDepartment(Integer departmentId);
 
     Employee get(Integer id);
