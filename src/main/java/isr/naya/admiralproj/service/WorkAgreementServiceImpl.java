@@ -42,6 +42,8 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
     public WorkAgreement save(@NonNull Integer employeeId, @NonNull Integer projectId, @NonNull WorkAgreement workAgreement) {
         Tariff tariffSaved = tariffRepository.save(workAgreement.getTariff());
         workAgreement.setTariff(tariffSaved);
+        if(projectRepository.getOneWithClient(projectId).isEnabled()) workAgreement.setActive(true);
+            else workAgreement.setActive(false);
         workAgreement.setEmployee(checkNotFound(employeeRepository.findOne(employeeId), employeeId, Employee.class));
         workAgreement.setProject(checkNotFound(projectRepository.findOne(projectId), projectId, Project.class));
         return workAgreementRepository.save(workAgreement);
