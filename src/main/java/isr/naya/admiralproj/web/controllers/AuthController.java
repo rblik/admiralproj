@@ -3,7 +3,9 @@ package isr.naya.admiralproj.web.controllers;
 import isr.naya.admiralproj.AuthorizedUser;
 import isr.naya.admiralproj.mail.MailService;
 import isr.naya.admiralproj.model.Employee;
+import isr.naya.admiralproj.model.FrontalMessage;
 import isr.naya.admiralproj.service.EmployeeService;
+import isr.naya.admiralproj.service.FrontalMessageService;
 import isr.naya.admiralproj.web.security.JwtTokenUtil;
 import isr.naya.admiralproj.web.security.dto.JwtAuthRequest;
 import isr.naya.admiralproj.web.security.dto.JwtAuthResponse;
@@ -16,8 +18,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.List;
 
 import static isr.naya.admiralproj.web.security.password.PasswordUtil.getSaltString;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
@@ -27,7 +32,7 @@ import static org.springframework.http.ResponseEntity.status;
 @CorsRestController
 @AllArgsConstructor
 public class AuthController {
-
+    private FrontalMessageService frontalMessageService;
     private AuthenticationManager manager;
     private UserDetailsService service;
     private EmployeeService employeeService;
@@ -58,11 +63,16 @@ public class AuthController {
         if (employee != null) {
             String saltString = getSaltString();
             employeeService.updatePass(employee.getId(), saltString);
-            mailService.sendSimpleMessage(employee.getEmail(), "סיסמא חדשה", saltString);
+            mailService.sendSimpleMessage(employee.getEmail().trim().toLowerCase(), "סיסמא חדשה", saltString);
             return ok().body("Generated new password");
         } else {
             return ResponseEntity.status(404).body("Email not found");
         }
 
+    }
+
+    @GetMapping("/backend/auth/frontalmessages")
+    public List<FrontalMessage> getAllFrontalMessages() {
+        return frontalMessageService.getAll();
     }
 }

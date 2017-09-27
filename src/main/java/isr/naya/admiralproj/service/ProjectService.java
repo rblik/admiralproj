@@ -17,4 +17,6 @@ public interface ProjectService {
     Project getWithClient(Integer id);
 
     void remove(Integer id);
+
+    List<Project> getAllEnabledWithClients();
 }

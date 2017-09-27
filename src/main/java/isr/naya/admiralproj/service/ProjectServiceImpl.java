@@ -66,4 +66,10 @@ public class ProjectServiceImpl implements ProjectService {
         defaultChoiceRepository.cleanDefaultChoicesByProjectId(id);
         projectRepository.delete(id);
     }
+
+    @Cacheable(value = "projects", key = "getMethodName()")
+    @Override
+    public List<Project> getAllEnabledWithClients() {
+        return projectRepository.getAllEnabledWithClients();
+    }
 }

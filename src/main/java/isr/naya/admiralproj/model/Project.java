@@ -20,6 +20,9 @@ public class Project extends BaseEntity{
         this.name = name;
     }
 
+    @Column( name = "isEnabled")
+    private boolean isEnabled;
+
     @NotNull
     @Column(name = "name", nullable = false)
     private String name;

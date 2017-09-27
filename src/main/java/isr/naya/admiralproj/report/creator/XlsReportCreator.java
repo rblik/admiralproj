@@ -263,7 +263,10 @@ public class XlsReportCreator implements ReportCreator {
         row.createCell(5).setCellValue(getCurrencySign(workInfo.getCurrency()) + ", " +
                 ((workInfo.getType() != null) ? workInfo.getType().getName() : ""));
         Cell cell6 = row.createCell(6);
-        cell6.setCellValue(durationToTimeString(workInfo.getDuration()));
+
+        cell6.setCellValue(Double.parseDouble(durationToTimeString(workInfo.getDuration())));
+        System.out.println("current saving range of time "+cell6.getNumericCellValue());
+        cell6.setCellType(CellType.NUMERIC);
         Cell cell7 = row.createCell(7);
         cell7.setCellValue(Double.valueOf(calculateIncome(workInfo.getAmount(), workInfo.getType(), workInfo.getDuration())));
         cell7.setCellType(CellType.NUMERIC);
@@ -271,7 +274,6 @@ public class XlsReportCreator implements ReportCreator {
     }
 
     private void addFullRow(Row row, WorkInfo workInfo) {
-
         row.createCell(0).setCellValue(workInfo.getClientName());
         row.createCell(1).setCellValue(workInfo.getProjectName());
         row.createCell(2).setCellValue(workInfo.getDepartmentName());
