@@ -41,7 +41,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and().authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/backend/auth/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/backend/auth/**").permitAll()
+                    .antMatchers(HttpMethod.GET, "/backend/auth/**").permitAll()
                 .antMatchers("/backend/admin/**").hasRole("ADMIN")
                 .antMatchers("/backend/admin/frontalmessages/**").hasRole("ADMIN")
                 .antMatchers("/backend/**").hasAnyRole("USER", "ADMIN")

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -40,7 +41,8 @@ public class UserController {
     private MailService service;
     private DefaultChoiceService choiceService;
     private LockService lockService;
-
+    private ProjectService projectService;
+    private ClientService clientService;
 
     @JsonView(UserView.class)
     @GetMapping("/profile")
@@ -87,8 +89,14 @@ public class UserController {
     @GetMapping("/agreements")
     public List<AgreementDto> getAgreements(@AuthenticationPrincipal AuthorizedUser user) {
         List<AgreementDto> agreements = workAgreementService.getAllActiveForEmployee(user.getId());
+        List<AgreementDto> filteredAgreement=new ArrayList<>();
+        for (AgreementDto agreement : agreements) {
+            if (projectService.get(agreement.getProjectId()).isEnabled()&clientService.get(agreement.getClientId()).isEnabled()){
+                filteredAgreement.add(agreement);
+            }
+        }
         log.info("Employee {} is retrieving his agreements", user.getFullName());
-        return agreements;
+        return filteredAgreement;
     }
 
     @GetMapping("/monthinfo")

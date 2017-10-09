@@ -16,6 +16,7 @@ public class ClientDto implements Serializable {
         this.id = client.getId();
         this.companyNumber = client.getCompanyNumber();
         this.clientNumber = client.getClientNumber();
+        this.isEnabled= client.isEnabled();
         this.name = client.getName();
         this.phones = client.getPhones();
         this.addresses = client.getAddresses();
@@ -25,6 +26,7 @@ public class ClientDto implements Serializable {
     private Integer id;
     private String companyNumber;
     private String clientNumber;
+    private boolean isEnabled;
     private String name;
     private Set<String> phones;
     private Set<Address> addresses;

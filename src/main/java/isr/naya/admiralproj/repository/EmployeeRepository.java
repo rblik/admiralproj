@@ -47,13 +47,13 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     List<Employee> getAllByDepartment(Integer departmentId);
 
 //    for missing days only
-    @Query("select e from Employee e join fetch e.department d join fetch e.workAgreements wa where d.id=?1")
+    @Query("select e from Employee e join fetch e.department d join fetch e.workAgreements wa where d.id=?1 and e.enabled=true ")
     List<Employee> getAllByDepartmentWithAgreements(Integer departmentId);
 
     @Query("select e from Employee e join fetch e.department d join fetch e.workAgreements wa where e.id=?1")
     Employee getOneWithDepartmentAndAgreements(Integer id);
 
-    @Query("select e from Employee e join fetch e.department d join fetch e.workAgreements wa")
+    @Query("select e from Employee e join fetch e.department d join fetch e.workAgreements wa where e.enabled=true")
     List<Employee> getAllWithDepartmentsAndAgreements();
 
     @Query("select e from Employee e join fetch e.department d join fetch e.workAgreements wa where e.id in ?1")

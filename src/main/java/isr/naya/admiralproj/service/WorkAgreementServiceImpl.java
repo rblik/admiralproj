@@ -76,4 +76,12 @@ public class WorkAgreementServiceImpl implements WorkAgreementService {
         one.setActive(true);
         workAgreementRepository.save(one);
     }
+
+    @CacheEvict(value = {"clients", "projects", "employees"}, allEntries = true)
+    @Transactional
+    @Override
+    public void delete(Integer agreementId) {
+        workAgreementRepository.delete(agreementId);
+    }
+
 }

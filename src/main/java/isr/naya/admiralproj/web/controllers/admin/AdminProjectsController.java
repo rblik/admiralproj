@@ -61,4 +61,11 @@ public class AdminProjectsController {
         projectService.remove(projectId);
         log.info("Admin {} is removing project with id = {}", admin.getFullName(), projectId);
     }
+
+    @GetMapping("/enabled")
+    public List<Project> getAllEnabledProjects(@AuthenticationPrincipal AuthorizedUser admin){
+        List<Project> projects = projectService.getAllEnabledWithClients();
+        log.info("Admin {} is retrieving all projects", admin.getFullName());
+        return projects;
+    }
 }

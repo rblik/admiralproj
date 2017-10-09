@@ -20,4 +20,6 @@ public interface WorkAgreementService {
     void disable(Integer agreementId);
 
     void enable(Integer agreementId);
+
+    void delete(Integer agreementId);
 }

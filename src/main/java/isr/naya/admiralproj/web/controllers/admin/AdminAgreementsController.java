@@ -48,6 +48,13 @@ public class AdminAgreementsController {
     public void removeAgreement(@AuthenticationPrincipal AuthorizedUser admin,
                                 @PathVariable("agreementId") Integer agreementId) {
         workAgreementService.disable(agreementId);
-        log.info("Admin {} is removing agreement with id = {}", admin.getFullName(), agreementId);
+        log.info("Admin {} is disabling agreement with id = {}", admin.getFullName(), agreementId);
+    }
+
+    @PutMapping("/{agreementId}")
+    public void enableAgreement(@AuthenticationPrincipal AuthorizedUser admin,
+                                @PathVariable("agreementId") Integer agreementId) {
+        workAgreementService.enable(agreementId);
+        log.info("Admin {} is enabling agreement with id = {}", admin.getFullName(), agreementId);
     }
 }

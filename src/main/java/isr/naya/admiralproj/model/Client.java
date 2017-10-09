@@ -23,6 +23,8 @@ public class Client extends BaseEntity{
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column( name = "is_enabled")
+    private boolean isEnabled;
 
     @Column(name = "client_number")
     private String clientNumber;

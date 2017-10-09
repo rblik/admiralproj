@@ -20,7 +20,7 @@ public class Project extends BaseEntity{
         this.name = name;
     }
 
-    @Column( name = "isEnabled")
+    @Column( name = "is_enabled")
     private boolean isEnabled;
 
     @NotNull
