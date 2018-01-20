@@ -33,7 +33,7 @@ public class WorkAgreementServiceTest {
 
     @Test
     public void testSave() {
-        WorkAgreement save = service.save(1, 14, WorkAgreement.builder().tariff(Tariff.builder().currency(Currency.SHEKEL).type(TariffType.HOUR).amount(100).build()).
+        WorkAgreement save = service.save(1, 14, WorkAgreement.builder().tariff(Tariff.builder().currency(Currency.SHEKEL).type(TariffType.HOUR).amount(100d).build()).
                 workUnits(emptyList()).build());
         assertThat(save, hasProperty("id", is(7)));
     }
@@ -42,7 +42,7 @@ public class WorkAgreementServiceTest {
     public void testSaveWithWrongEmployeeId() {
         thrown.expect(NotFoundException.class);
         thrown.expectMessage("Not found employee");
-        service.save(-1, 1, WorkAgreement.builder().tariff(Tariff.builder().currency(Currency.SHEKEL).type(TariffType.HOUR).amount(100).build()).
+        service.save(-1, 1, WorkAgreement.builder().tariff(Tariff.builder().currency(Currency.SHEKEL).type(TariffType.HOUR).amount(100d).build()).
                 workUnits(emptyList()).build());
     }
 
@@ -50,7 +50,7 @@ public class WorkAgreementServiceTest {
     public void testSaveWithWrongProjectId() {
         thrown.expect(NotFoundException.class);
         thrown.expectMessage("Not found project");
-        service.save(1, -1, WorkAgreement.builder().tariff(Tariff.builder().currency(Currency.SHEKEL).type(TariffType.HOUR).amount(100).build()).
+        service.save(1, -1, WorkAgreement.builder().tariff(Tariff.builder().currency(Currency.SHEKEL).type(TariffType.HOUR).amount(100d).build()).
                 workUnits(emptyList()).build());
     }
 

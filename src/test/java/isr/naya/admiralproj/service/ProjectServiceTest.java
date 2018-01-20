@@ -31,20 +31,20 @@ public class ProjectServiceTest {
 
     @Test
     public void testSave() {
-        Project proj = service.save(6, Project.builder().name("NewProj").tariff(Tariff.builder().amount(100).currency(Currency.SHEKEL).type(TariffType.HOUR).build()).build());
+        Project proj = service.save(6, Project.builder().name("NewProj").tariff(Tariff.builder().amount(100d).currency(Currency.SHEKEL).type(TariffType.HOUR).build()).build());
         assertThat(service.getWithClient(proj.getId()), allOf(hasProperty("name", is("NewProj")), hasProperty("client", hasProperty("name", is("Elbit")))));
     }
 
     @Test(expected = ConstraintViolationException.class)
     public void testSaveWrong() {
-        service.save(6, Project.builder().tariff(Tariff.builder().amount(100).currency(Currency.SHEKEL).type(TariffType.HOUR).build()).build());
+        service.save(6, Project.builder().tariff(Tariff.builder().amount(100d).currency(Currency.SHEKEL).type(TariffType.HOUR).build()).build());
     }
 
     @Test
     public void testSaveWithWrongClient() {
         thrown.expect(NotFoundException.class);
         thrown.expectMessage("Not found client");
-        service.save(-1, Project.builder().name("NewProj").tariff(Tariff.builder().amount(100).currency(Currency.SHEKEL).type(TariffType.HOUR).build()).build());
+        service.save(-1, Project.builder().name("NewProj").tariff(Tariff.builder().amount(100d).currency(Currency.SHEKEL).type(TariffType.HOUR).build()).build());
     }
 
     @Test

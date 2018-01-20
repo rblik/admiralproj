@@ -4,6 +4,7 @@ import isr.naya.admiralproj.dto.*;
 import isr.naya.admiralproj.model.WorkUnit;
 
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.List;
 
 import static isr.naya.admiralproj.dto.TariffType.HOUR;
@@ -35,7 +36,7 @@ public interface ReportCreator {
         return new DecimalFormat("0.00").format(duration/60.0);
     }
 
-    static String calculateIncome(Integer amount, TariffType type, Long duration) {
+    static String calculateIncome(Double amount, TariffType type, Long duration) {
         return String.valueOf(amount * ((type == HOUR) ? duration / 60.0 : 1));
     }
 
@@ -53,10 +54,16 @@ public interface ReportCreator {
     }
 
     default ReportFile create(List<WorkInfo> infoList, ReportType reportType) {
-        return create(infoList, reportType, null);
+        return create(infoList, reportType, null, null);
+    }
+    default ReportFile create(List<WorkInfo> infoList, ReportType reportType, LocalDate from) {
+        return create(infoList, reportType, null, from);
+    }
+    default ReportFile create(List<WorkInfo> infoList, ReportType reportType, String employeeTitle) {
+        return create(infoList, reportType, employeeTitle, null);
     }
 
-    ReportFile create(List<WorkInfo> infoList, ReportType reportType, String employeeTitle);
+    ReportFile create(List<WorkInfo> infoList, ReportType reportType, String employeeTitle, LocalDate from);
 
     ReportFile generateTemplate(List<AgreementDto> agreements, List<WorkInfo> infos);
 

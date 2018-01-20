@@ -24,5 +24,5 @@ public class Tariff extends BaseEntity {
     private Currency currency;
 
     @Column(name = "amount")
-    private Integer amount;
+    private Double amount;
 }

@@ -12,7 +12,7 @@ public class AgreementDto implements Serializable {
     private Integer agreementId;
     private boolean active;
     private Integer tariffId;
-    private Integer tariffAmount;
+    private Double tariffAmount;
     private Currency tariffCurrency;
     private TariffType tariffType;
     private Integer employeeId;
@@ -43,7 +43,7 @@ public class AgreementDto implements Serializable {
         this(agreementId, active, null, null, null, null, employeeId, employeeName, employeeSurname, departmentId, departmentName, projectId, projectName, null, null, null, null, clientId, clientName);
     }
 
-    public AgreementDto(Integer agreementId, boolean active, Integer tariffId, Integer tariffAmount, Currency tariffCurrency, TariffType tariffType, Integer projectId, String projectName, Integer clientId, String clientName) {
+    public AgreementDto(Integer agreementId, boolean active, Integer tariffId, Double tariffAmount, Currency tariffCurrency, TariffType tariffType, Integer projectId, String projectName, Integer clientId, String clientName) {
         this(agreementId, active, tariffId, tariffAmount, tariffCurrency, tariffType, null, null, null, null, null, projectId, projectName, null, null, null, null, clientId, clientName);
     }
 }

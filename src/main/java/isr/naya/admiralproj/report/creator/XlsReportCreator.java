@@ -10,6 +10,7 @@ import isr.naya.admiralproj.report.ReportCreator;
 import isr.naya.admiralproj.report.ReportType;
 import isr.naya.admiralproj.report.annotations.Xlsx;
 import isr.naya.admiralproj.repository.WorkAgreementRepository;
+import isr.naya.admiralproj.service.MonthInfoService;
 import isr.naya.admiralproj.util.MappingUtil;
 import lombok.NonNull;
 import lombok.SneakyThrows;
@@ -40,17 +41,20 @@ public class XlsReportCreator implements ReportCreator {
 
     private final WorkAgreementRepository workAgreementRepository;
 
+    private MonthInfoService monthInfoService;
     @Autowired
-    public XlsReportCreator(WorkAgreementRepository workAgreementRepository) {
+    public XlsReportCreator(WorkAgreementRepository workAgreementRepository,
+                            MonthInfoService monthInfoService) {
         this.workAgreementRepository = workAgreementRepository;
+        this.monthInfoService = monthInfoService;
     }
 
     @Override
-    public ReportFile create(@NonNull List<WorkInfo> infoList, @NonNull ReportType reportType, String employeeTitle) {
+    public ReportFile create(@NonNull List<WorkInfo> infoList, @NonNull ReportType reportType, String employeeTitle, LocalDate from) {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet(createSafeSheetName(reportType.name() + LocalDate.now().toString()));
-
+        CellStyle cellStyle = getCellStyle(workbook);
         Row row = sheet.createRow(0);
 
         sheet.getCTWorksheet().getSheetViews().getSheetViewArray(0).setRightToLeft(true);
@@ -69,7 +73,20 @@ public class XlsReportCreator implements ReportCreator {
                 sheet.setColumnWidth(i, 4000);
             }
         }
-
+        if(INCOME == reportType && from != null){
+            for (int i = 1; i < 5; i++) {
+                sheet.createRow(rowNum+i);
+                rowNum++;
+            }
+            XSSFCell cell = sheet.createRow(rowNum + 1).createCell(3);
+            cell.setCellValue(":'תקן חודשי ,ש");
+            cell.setCellStyle(cellStyle);
+            cell.setCellType(CellType.STRING);
+            XSSFCell cellNum = sheet.createRow(rowNum + 2).createCell(3);
+            cellNum.setCellStyle(cellStyle);
+            cellNum.setCellType(CellType.NUMERIC);
+            cellNum.setCellValue(monthInfoService.getStandardForMonth(from.getYear(),from.getMonthValue()).getHoursSum());
+        }
         try {
             workbook.write(os);
             workbook.close();
@@ -80,6 +97,17 @@ public class XlsReportCreator implements ReportCreator {
         }
 
         return new ReportFile(XLS, os.toByteArray());
+    }
+
+    private CellStyle getCellStyle(XSSFWorkbook workbook) {
+        CellStyle cellStyle = workbook.createCellStyle();
+        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+        cellStyle.setBorderBottom(BorderStyle.THIN);
+        cellStyle.setBorderTop(BorderStyle.THIN);
+        cellStyle.setAlignment(HorizontalAlignment.RIGHT);
+        cellStyle.setBorderRight(BorderStyle.THIN);
+        cellStyle.setBorderLeft(BorderStyle.THIN);
+        return cellStyle;
     }
 
     @Override
@@ -236,7 +264,7 @@ public class XlsReportCreator implements ReportCreator {
         } else if (INDIVIDUAL_PIVOTAL == reportType) {
             titles = Arrays.asList(CLIENT, PROJECT, DATE, DAY, SINCE, UNTIL, DURATION, DESCRIPTION);
         } else if (INCOME == reportType) {
-            titles = Arrays.asList(CLIENT, PROJECT, DEPARTMENT, EMPLOYEE, AMOUNT, TARIFF, DURATION, TOTAL);
+            titles = Arrays.asList(CLIENT, PROJECT, DEPARTMENT, EMPL_NUMBER, EMPLOYEE, AMOUNT, TARIFF, DURATION, TOTAL);
         } else if (PARTIAL == reportType) {
             titles = Arrays.asList(EMPL_NAME, EMPL_SURNAME, DEPARTMENT, DATE, DAY, DURATION);
         } else if (EMPTY == reportType) {
@@ -256,20 +284,21 @@ public class XlsReportCreator implements ReportCreator {
         row.createCell(0).setCellValue(workInfo.getClientName());
         row.createCell(1).setCellValue(workInfo.getProjectName());
         row.createCell(2).setCellValue(workInfo.getDepartmentName());
-        row.createCell(3).setCellValue(workInfo.getEmployeeSurname() + ' ' + workInfo.getEmployeeName());
-        Cell cell4 = row.createCell(4);
-        cell4.setCellValue(((workInfo.getAmount()) != null ? workInfo.getAmount() : 0));
-        cell4.setCellType(CellType.NUMERIC);
-        row.createCell(5).setCellValue(getCurrencySign(workInfo.getCurrency()) + ", " +
+        row.createCell(3).setCellValue(workInfo.getEmployeeNumber());
+        row.createCell(4).setCellValue(workInfo.getEmployeeSurname() + ' ' + workInfo.getEmployeeName());
+        Cell cell5 = row.createCell(5);
+        cell5.setCellValue(((workInfo.getAmount()) != null ? workInfo.getAmount() : 0));
+        cell5.setCellType(CellType.NUMERIC);
+        row.createCell(6).setCellValue(getCurrencySign(workInfo.getCurrency()) + ", " +
                 ((workInfo.getType() != null) ? workInfo.getType().getName() : ""));
-        Cell cell6 = row.createCell(6);
-
-        cell6.setCellValue(Double.parseDouble(durationToTimeString(workInfo.getDuration())));
-        System.out.println("current saving range of time "+cell6.getNumericCellValue());
-        cell6.setCellType(CellType.NUMERIC);
         Cell cell7 = row.createCell(7);
-        cell7.setCellValue(Double.valueOf(calculateIncome(workInfo.getAmount(), workInfo.getType(), workInfo.getDuration())));
+
+        cell7.setCellValue(Double.parseDouble(durationToTimeString(workInfo.getDuration())));
+        System.out.println("current saving range of time "+cell7.getNumericCellValue());
         cell7.setCellType(CellType.NUMERIC);
+        Cell cell8 = row.createCell(8);
+        cell8.setCellValue(Double.valueOf(calculateIncome(workInfo.getAmount(), workInfo.getType(), workInfo.getDuration())));
+        cell8.setCellType(CellType.NUMERIC);
         alignCenter(row);
     }
 

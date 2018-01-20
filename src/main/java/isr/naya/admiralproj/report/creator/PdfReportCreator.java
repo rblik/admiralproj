@@ -10,13 +10,15 @@ import isr.naya.admiralproj.model.WorkUnit;
 import isr.naya.admiralproj.report.ReportCreator;
 import isr.naya.admiralproj.report.ReportType;
 import isr.naya.admiralproj.report.annotations.Pdf;
+import isr.naya.admiralproj.service.MonthInfoService;
 import isr.naya.admiralproj.util.MappingUtil;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -31,9 +33,15 @@ import static java.util.Collections.singletonList;
 @Slf4j
 @Pdf
 public class PdfReportCreator implements ReportCreator {
+    private MonthInfoService monthInfoService;
+
+    @Autowired
+    public PdfReportCreator(MonthInfoService monthInfoService) {
+        this.monthInfoService = monthInfoService;
+    }
 
     @Override
-    public ReportFile create(@NonNull List<WorkInfo> infoList, @NonNull ReportType reportType, String employeeTitle) {
+    public ReportFile create(@NonNull List<WorkInfo> infoList, @NonNull ReportType reportType, String employeeTitle, LocalDate from) {
 
         ByteArrayOutputStream os;
         try {
@@ -57,10 +65,10 @@ public class PdfReportCreator implements ReportCreator {
             for (List<WorkInfo> infos : partition) {
                 ColumnText column = createColumn(writer.getDirectContent(), reportType);
                 column.addElement(createTitle(bf, reportType, 14, EMPTY_STR));
-                column.addElement(createImage(reportType));
                 if (INDIVIDUAL_EMPTY == reportType || INDIVIDUAL_PIVOTAL == reportType)
                     column.addElement(createTitle(bf, reportType, 10, employeeTitle));
                 column.addElement(createTable(infos, bf, reportType));
+                if(INCOME==reportType) column.addElement(createFooter(from, bf, 10));
                 //            close
                 column.go();
                 document.newPage();
@@ -75,6 +83,13 @@ public class PdfReportCreator implements ReportCreator {
 
     }
 
+    private Paragraph createFooter(LocalDate from, BaseFont bf, int fontSize) {
+        Double hoursSum = monthInfoService.getStandardForMonth(from.getYear(), from.getMonthValue()).getHoursSum();
+        Paragraph paragraph = new Paragraph("תקן חודשי: " + hoursSum + " ש'", new Font(bf, fontSize));
+        paragraph.setAlignment(Element.ALIGN_LEFT);
+        return paragraph;
+    }
+
     @Override
     public ReportFile generateTemplate(List<AgreementDto> agreements, List<WorkInfo> infos) {
         return ReportFile.empty(PDF);
@@ -87,7 +102,7 @@ public class PdfReportCreator implements ReportCreator {
 
     private PdfPTable createTable(List<WorkInfo> infoList, BaseFont bf, ReportType reportType) throws DocumentException {
 
-        int colNumber = (PIVOTAL == reportType) ? 11 : (INDIVIDUAL_PIVOTAL == reportType) ? 8 : (INCOME == reportType) ? 7 : (INDIVIDUAL_EMPTY == reportType) ? 2 : (PARTIAL == reportType) ? 6 : 5;
+        int colNumber = (PIVOTAL == reportType) ? 11 : (INDIVIDUAL_PIVOTAL == reportType) ? 8 : (INCOME == reportType) ? 8 : (INDIVIDUAL_EMPTY == reportType) ? 2 : (PARTIAL == reportType) ? 6 : 5;
         PdfPTable table = new PdfPTable(colNumber);
         float cols[] = new float[0];
 
@@ -96,7 +111,7 @@ public class PdfReportCreator implements ReportCreator {
         } else if (INDIVIDUAL_PIVOTAL == reportType) {
             cols = new float[]{180, 50, 30, 30, 20, 70, 100, 80};
         } else if (INCOME == reportType) {
-            cols = new float[]{60, 50, 80, 120, 70, 100, 80};
+            cols = new float[]{60, 50, 70, 120, 40, 70, 100, 70};
         } else if (PARTIAL == reportType) {
             cols = new float[]{50, 20, 70, 120, 120, 120};
         } else if (EMPTY == reportType) {
@@ -127,7 +142,7 @@ public class PdfReportCreator implements ReportCreator {
                         .forEach(s -> table.addCell(createCell(s, font10, true)));
                 infoList.forEach(workInfo -> addIndividualFullRow(table, workInfo, font8));
             } else if (INCOME == reportType) {
-                ImmutableList.of(TOTAL, DURATION, TARIFF, EMPLOYEE, DEPARTMENT, PROJECT, CLIENT)
+                ImmutableList.of(TOTAL, DURATION, TARIFF, EMPLOYEE, EMPL_NUMBER, DEPARTMENT, PROJECT, CLIENT)
                         .forEach(s -> table.addCell(createCell(s, font10, true)));
                 infoList.forEach(workInfo -> addIncomeRow(table, workInfo, font8));
             } else if (PARTIAL == reportType) {
@@ -156,6 +171,7 @@ public class PdfReportCreator implements ReportCreator {
                         getCurrencySign(workInfo.getCurrency()) + ' ' +
                         ((workInfo.getType() != null) ? workInfo.getType().getName() : ""), font));
         table.addCell(createCell(workInfo.getEmployeeSurname() + ' ' + workInfo.getEmployeeName(), font));
+        table.addCell(createCell(workInfo.getEmployeeNumber(), font));
         table.addCell(createCell(workInfo.getDepartmentName(), font));
         table.addCell(createCell(workInfo.getProjectName(), font));
         table.addCell(createCell(workInfo.getClientName(), font));
@@ -260,13 +276,5 @@ public class PdfReportCreator implements ReportCreator {
         Paragraph paragraph = new Paragraph(title, new Font(bf, fontSize));
         paragraph.setAlignment(Element.ALIGN_CENTER);
         return paragraph;
-    }
-
-    private Image createImage(ReportType reportType) throws BadElementException, IOException {
-        Image image = Image.getInstance("reports/pic.png");
-        image.scaleAbsolute(50, 50);
-        image.setAlignment(Element.ALIGN_CENTER);
-        image.setSpacingAfter(25);
-        return image;
     }
 }
