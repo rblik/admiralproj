@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -68,6 +69,19 @@ public class UserController {
         DefaultChoice choice = choiceService.get(user.getId());
         log.info("Employee {} is retrieving his default choice", user.getFullName());
         return choice;
+    }
+
+    @GetMapping(value = "/profile/defaultchoices")
+    public Collection<DefaultChoice> getAllDefaultChoices(@AuthenticationPrincipal AuthorizedUser user) {
+        Collection<DefaultChoice> choice = choiceService.getAll(user.getId());
+        log.info("Employee {} is retrieving all his default choices", user.getFullName());
+        return choice;
+    }
+
+    @DeleteMapping(value = "/profile/defaultchoices/{defaultChoiceId}")
+    public void deleteDefaultChoiceById(@AuthenticationPrincipal AuthorizedUser user, @PathVariable("defaultChoiceId") Integer defaultChoiceId) {
+        choiceService.delete(defaultChoiceId);
+        log.info("Employee {} is removing default choice record on id {}", user.getFullName(),defaultChoiceId);
     }
 
     @PutMapping("/profile/password")

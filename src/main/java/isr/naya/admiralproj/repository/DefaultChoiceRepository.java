@@ -7,9 +7,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
+
 public interface DefaultChoiceRepository extends JpaRepository<DefaultChoice, Integer> {
 
     DefaultChoice findByIdAndAgreementActive(Integer integer, boolean active);
+
+    Collection<DefaultChoice> findAllByEmployeeIdAndAgreementActive(Integer integer, boolean active);
+
+    Integer removeDefaultChoiceById(Integer id);
 
     @Modifying
     @Transactional

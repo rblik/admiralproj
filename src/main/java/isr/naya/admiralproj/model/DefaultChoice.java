@@ -1,24 +1,18 @@
 package isr.naya.admiralproj.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalTime;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "default_choices")
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class DefaultChoice implements Serializable{
-
-    @Id
-    private Integer id;
+public class DefaultChoice extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "agreement_id", referencedColumnName = "id")
@@ -30,4 +24,7 @@ public class DefaultChoice implements Serializable{
     @Column(name = "finish", columnDefinition = "time")
     private LocalTime finish;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id", referencedColumnName = "id")
+    private Employee employee;
 }
