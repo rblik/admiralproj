@@ -33,7 +33,12 @@ public interface ReportCreator {
     String AMOUNT = "סכום";
 
     static String durationToTimeString(Long duration) {
-        return new DecimalFormat("0.00").format(duration/60.0);
+        String format = new DecimalFormat("0.00").format(duration / 60.0);
+        String[] split = format.split(",");
+        if(split.length==2){
+            return split[0]+"."+split[1];
+        }
+        return format;
     }
 
     static String calculateIncome(Double amount, TariffType type, Long duration) {

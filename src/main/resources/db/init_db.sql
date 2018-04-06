@@ -113,7 +113,7 @@ CREATE TABLE projects
 
 CREATE TABLE tariffs (
   id            INTEGER PRIMARY KEY DEFAULT nextval('tariff_seq'),
-  tariff_amount INTEGER NOT NULL,
+  tariff_amount DOUBLE PRECISION NOT NULL,
   tariff_type   VARCHAR
 );
 
@@ -121,7 +121,7 @@ CREATE TABLE work_agreements
 (
   id            INTEGER PRIMARY KEY DEFAULT nextval('work_seq'),
   tariff_type   VARCHAR NOT NULL,
-  tariff_amount INTEGER NOT NULL,
+  tariff_amount DOUBLE PRECISION NOT NULL,
   employee_id   INTEGER NOT NULL,
   project_id    INTEGER NOT NULL,
   since         DATE                DEFAULT now(),
