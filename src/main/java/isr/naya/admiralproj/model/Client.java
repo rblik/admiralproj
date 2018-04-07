@@ -29,6 +29,9 @@ public class Client extends BaseEntity{
     @Column(name = "client_number")
     private String clientNumber;
 
+    @Column(name = "color")
+    private String color;
+
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "client_phones", joinColumns = @JoinColumn(name = "client_id"))
     @Column(name = "phone")
