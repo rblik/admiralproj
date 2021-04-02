@@ -264,7 +264,7 @@ public class XlsReportCreator implements ReportCreator {
         } else if (INDIVIDUAL_PIVOTAL == reportType) {
             titles = Arrays.asList(CLIENT, PROJECT, DATE, DAY, SINCE, UNTIL, DURATION, DESCRIPTION);
         } else if (INCOME == reportType) {
-            titles = Arrays.asList(CLIENT, PROJECT, DEPARTMENT, EMPL_NUMBER, EMPLOYEE, AMOUNT, TARIFF, DURATION, TOTAL);
+            titles = Arrays.asList(CLIENT, CLIENT_NUMBER, PROJECT, DEPARTMENT, EMPL_NUMBER, EMPLOYEE, AMOUNT, TARIFF, DURATION, TOTAL);
         } else if (PARTIAL == reportType) {
             titles = Arrays.asList(EMPL_NAME, EMPL_SURNAME, DEPARTMENT, DATE, DAY, DURATION);
         } else if (EMPTY == reportType) {
@@ -282,21 +282,22 @@ public class XlsReportCreator implements ReportCreator {
 
     private void addIncomeRow(Row row, WorkInfo workInfo) {
         row.createCell(0).setCellValue(workInfo.getClientName());
-        row.createCell(1).setCellValue(workInfo.getProjectName());
-        row.createCell(2).setCellValue(workInfo.getDepartmentName());
-        row.createCell(3).setCellValue(workInfo.getEmployeeNumber());
-        row.createCell(4).setCellValue(workInfo.getEmployeeSurname() + ' ' + workInfo.getEmployeeName());
-        Cell cell5 = row.createCell(5);
+        row.createCell(1).setCellValue(workInfo.getClientNumber());
+        row.createCell(2).setCellValue(workInfo.getProjectName());
+        row.createCell(3).setCellValue(workInfo.getDepartmentName());
+        row.createCell(4).setCellValue(workInfo.getEmployeeNumber());
+        row.createCell(5).setCellValue(workInfo.getEmployeeSurname() + ' ' + workInfo.getEmployeeName());
+        Cell cell5 = row.createCell(6);
         cell5.setCellValue(((workInfo.getAmount()) != null ? workInfo.getAmount() : 0));
         cell5.setCellType(CellType.NUMERIC);
-        row.createCell(6).setCellValue(getCurrencySign(workInfo.getCurrency()) + ", " +
+        row.createCell(7).setCellValue(getCurrencySign(workInfo.getCurrency()) + ", " +
                 ((workInfo.getType() != null) ? workInfo.getType().getName() : ""));
-        Cell cell7 = row.createCell(7);
+        Cell cell7 = row.createCell(8);
 
         cell7.setCellValue(Double.parseDouble(durationToTimeString(workInfo.getDuration())));
         System.out.println("current saving range of time "+cell7.getNumericCellValue());
         cell7.setCellType(CellType.NUMERIC);
-        Cell cell8 = row.createCell(8);
+        Cell cell8 = row.createCell(9);
         cell8.setCellValue(Double.valueOf(calculateIncome(workInfo.getAmount(), workInfo.getType(), workInfo.getDuration())));
         cell8.setCellType(CellType.NUMERIC);
         alignCenter(row);

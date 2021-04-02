@@ -13,6 +13,7 @@ public interface ReportCreator {
     String DEJA_VU_SANS = "DejaVuSans.ttf";
     String UTF8 ="utf-8";
     String CLIENT = "לקוח";
+    String CLIENT_NUMBER = "מספר לקוח";
     String PROJECT = "פרויקט";
     String DEPARTMENT = "צוות";
     String EMPL_NUMBER = "מ''ע";

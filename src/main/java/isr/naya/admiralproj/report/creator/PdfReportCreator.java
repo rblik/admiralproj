@@ -102,7 +102,7 @@ public class PdfReportCreator implements ReportCreator {
 
     private PdfPTable createTable(List<WorkInfo> infoList, BaseFont bf, ReportType reportType) throws DocumentException {
 
-        int colNumber = (PIVOTAL == reportType) ? 11 : (INDIVIDUAL_PIVOTAL == reportType) ? 8 : (INCOME == reportType) ? 8 : (INDIVIDUAL_EMPTY == reportType) ? 2 : (PARTIAL == reportType) ? 6 : 5;
+        int colNumber = (PIVOTAL == reportType) ? 11 : (INDIVIDUAL_PIVOTAL == reportType) ? 8 : (INCOME == reportType) ? 9 : (INDIVIDUAL_EMPTY == reportType) ? 2 : (PARTIAL == reportType) ? 6 : 5;
         PdfPTable table = new PdfPTable(colNumber);
         float cols[] = new float[0];
 
@@ -111,7 +111,7 @@ public class PdfReportCreator implements ReportCreator {
         } else if (INDIVIDUAL_PIVOTAL == reportType) {
             cols = new float[]{180, 50, 30, 30, 20, 70, 100, 80};
         } else if (INCOME == reportType) {
-            cols = new float[]{60, 50, 70, 120, 40, 70, 100, 70};
+            cols = new float[]{60, 50, 70, 120, 40, 70, 70, 40,70};
         } else if (PARTIAL == reportType) {
             cols = new float[]{50, 20, 70, 120, 120, 120};
         } else if (EMPTY == reportType) {
@@ -142,7 +142,7 @@ public class PdfReportCreator implements ReportCreator {
                         .forEach(s -> table.addCell(createCell(s, font10, true)));
                 infoList.forEach(workInfo -> addIndividualFullRow(table, workInfo, font8));
             } else if (INCOME == reportType) {
-                ImmutableList.of(TOTAL, DURATION, TARIFF, EMPLOYEE, EMPL_NUMBER, DEPARTMENT, PROJECT, CLIENT)
+                ImmutableList.of(TOTAL, DURATION, TARIFF, EMPLOYEE, EMPL_NUMBER, DEPARTMENT, PROJECT,CLIENT_NUMBER, CLIENT)
                         .forEach(s -> table.addCell(createCell(s, font10, true)));
                 infoList.forEach(workInfo -> addIncomeRow(table, workInfo, font8));
             } else if (PARTIAL == reportType) {
@@ -174,6 +174,7 @@ public class PdfReportCreator implements ReportCreator {
         table.addCell(createCell(workInfo.getEmployeeNumber(), font));
         table.addCell(createCell(workInfo.getDepartmentName(), font));
         table.addCell(createCell(workInfo.getProjectName(), font));
+        table.addCell(createCell(workInfo.getClientNumber(), font));
         table.addCell(createCell(workInfo.getClientName(), font));
     }
 
